@@ -1367,8 +1367,6 @@ footer {
     padding: 0 12px;
 }
 
-/* ---------- "COMO FUNCIONA" CTA BUTTON ---------- */
-
 .buttons {
     margin-top: clamp(30px, 6vw, 50px);
     text-align: center;
@@ -1399,7 +1397,7 @@ footer {
     border-radius: 30px;
 
     cursor: pointer;
-    transition: color 0.5s;
+    transition: color 0.30s;
 }
 
 .blob-btn::before {
@@ -1425,7 +1423,7 @@ footer {
     height: 100%;
     border-radius: 30px;
     background: var(--ink);
-    transition: all 0.3s 0.2s;
+    transition: all 0.30s 0.30s;
 }
 
 .blob-btn__inner {
@@ -1456,7 +1454,7 @@ footer {
     background: var(--ink);
     border-radius: 100%;
     transform: translate3d(0, 150%, 0) scale(1.4);
-    transition: transform 0.45s;
+    transition: transform 0.95s;
 }
 
 .blob-btn__blob:nth-child(1) { left: 0%; transition-delay: 0s; }

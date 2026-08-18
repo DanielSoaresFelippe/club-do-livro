@@ -374,15 +374,9 @@
 
     const toggle = document.querySelector('.nav-toggle');
     const links = document.querySelector('.nav-links');
-    toggle.addEventListener('click', () => {
-      const isOpen = links.style.display === 'flex';
-      links.style.display = isOpen ? 'none' : 'flex';
-      links.style.cssText += isOpen ? '' : `
-        position:absolute; top:70px; left:0; right:0; margin:0 20px;
-        background:rgba(255,253,248,0.97); border-radius:24px; padding:20px;
-        flex-direction:column; align-items:flex-start; gap:16px;
-        box-shadow:0 10px 30px rgba(42,35,19,0.18);
-      `;
+
+    toggle.addEventListener('click', function () {
+        links.classList.toggle('nav-open');
     });
 
     document.getElementById('workThemes').addEventListener('click', () => {

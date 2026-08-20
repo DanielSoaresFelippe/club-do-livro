@@ -323,38 +323,70 @@ section {
 
 .auth-modal {
     position: relative;
-    width: min(460px, 100%);
-    /* height is never fixed and never forced to scroll — every gap,
-       padding and font inside uses vh-based clamp() so the whole card
-       shrinks to fit the viewport instead of overflowing it.
-       overflow stays visible here (not hidden) so the torn-paper
-       artwork, which deliberately sits outside the box edges, is
-       never clipped — the safety clip lives on .auth-panels instead. */
+    width: min(420px, 100%);
     max-height: calc(100dvh - clamp(16px, 5vh, 48px));
-    overflow: visible;
-    padding: clamp(16px, 6vh, 56px) clamp(20px, 6vw, 46px) clamp(14px, 4vh, 46px);
+    overflow-y: auto;
+    padding: clamp(24px, 5vh, 42px) clamp(24px, 6vw, 38px);
     margin: auto;
-    transform: scale(0.92) rotate(-1deg);
-    transition: transform .35s ease;
-    background: transparent;
+    background-image: url(../img/fundoLogin.jpg);
+    background-size: 100% auto;
+    border: 2px solid var(--ink);
+    border-radius: 24px;
+    box-shadow: 8px 8px 0 var(--ink);
+    transform: scale(0.95);
+    transition: transform .3s ease;
     isolation: isolate;
     display: flex;
     flex-direction: column;
 }
 
-/* the torn-paper artwork behind the form: offsets are percentage/vw based
-   (via --paper-pad) so the "paper" scales down proportionally with the
-   card instead of overflowing the viewport on small screens */
-.auth-modal::before {
-    content: "";
-    position: absolute;
-    z-index: -1;
-    top: calc(-1 * var(--paper-pad) * 4);
-    right: calc(-1 * var(--paper-pad));
-    bottom: calc(-1 * var(--paper-pad) * 4);
-    left: calc(-1 * var(--paper-pad));
-    background: url('../img/paperLogin.png') center / 100% 100% no-repeat;
-    transform: rotate(-1deg);
+.auth-photo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: clamp(6px, 2vh, 12px);
+}
+
+.auth-photo-preview {
+    width: 84px;
+    height: 84px;
+    border-radius: 50%;
+    border: 2px solid var(--ink);
+    background: #ffc4d8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    font-size: 1.6rem;
+    color: var(--ink-soft);
+    flex-shrink: 0;
+}
+
+.auth-photo-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.auth-photo-label {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--ink);
+    border: 2px solid var(--ink);
+    border-radius: 999px;
+    padding: 6px 16px;
+    cursor: pointer;
+    transition: background .2s ease, color .2s ease;
+}
+
+.auth-photo-label:hover {
+    background: var(--ink);
+    color: var(--cream);
+}
+
+.auth-photo input[type="file"] {
+    display: none;
 }
 
 .auth-overlay.is-open .auth-modal {
@@ -450,7 +482,15 @@ section {
 .auth-panels {
     position: relative;
     min-height: 0;
-    overflow: hidden;
+    flex: 1 1 auto;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.auth-panels::-webkit-scrollbar {
+    display: none;
 }
 
 .auth-form {
@@ -529,16 +569,9 @@ section {
     font-size: 14px;
 }
 
-/* very short viewports (landscape phones): the vh-based clamp()s above
-   already shrink everything proportionally; this just trims the purely
-   decorative bits so the essential form always wins the space */
 @media (max-height: 620px) {
-    .auth-modal {
-        transform: scale(0.97);
-    }
-    .auth-overlay.is-open .auth-modal {
-        transform: scale(1);
-    }
+    .auth-modal { transform: scale(0.98); }
+    .auth-overlay.is-open .auth-modal { transform: scale(1); }
     .auth-eyebrow { display: none; }
 }
 
@@ -547,22 +580,6 @@ section {
     .auth-switch { margin-bottom: 8px; }
     .auth-forgot { display: none; }
 }
-
-/* really narrow phones: paper art becomes a plain rounded card instead,
-   since the artwork ratio no longer reads well below ~340px */
-@media (max-width: 340px) {
-    .auth-modal::before {
-        display: none;
-    }
-    .auth-modal {
-        background: var(--cream);
-        border: 3px solid var(--ink);
-        border-radius: 24px;
-        box-shadow: 6px 6px 0 var(--ink);
-    }
-}
-
-/* ---------- HERO ---------- */
 
 .hero {
     position: relative;
@@ -728,8 +745,6 @@ section {
         transform: translateX(-50%);
     }
 }
-
-/* ---------- THEMES ---------- */
 
 .themes-section {
     background-image: url(../img/paper.png);

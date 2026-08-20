@@ -56,18 +56,23 @@
           <p class="auth-hint">Ainda não tem conta? <button type="button" data-auth-tab="cadastro">Cadastre-se</button></p>
         </form>
 
-        <form class="auth-form" id="cadastroForm">
+        <form class="auth-form" id="cadastroForm" enctype="multipart/form-data">
+          <div class="auth-photo">
+            <div class="auth-photo-preview" id="cadastroFotoPreview"><i class="fa-regular fa-images"></i></div>
+            <label class="auth-photo-label" for="cadastroFoto">Adicionar foto</label>
+            <input type="file" id="cadastroFoto" name="foto_perfil" accept="image/*">
+          </div>
           <div class="auth-field">
             <label for="cadastroNome">Nome</label>
-            <input type="text" id="cadastroNome" placeholder="Seu nome" required>
+            <input type="text" id="cadastroNome" name="nome" placeholder="Seu nome" required>
           </div>
           <div class="auth-field">
             <label for="cadastroEmail">E-mail</label>
-            <input type="email" id="cadastroEmail" placeholder="voce@email.com" required>
+            <input type="email" id="cadastroEmail" name="email" placeholder="voce@email.com" required>
           </div>
           <div class="auth-field">
             <label for="cadastroSenha">Senha</label>
-            <input type="password" id="cadastroSenha" placeholder="Crie uma senha" required>
+            <input type="password" id="cadastroSenha" name="senha" placeholder="Crie uma senha" required>
           </div>
           <button type="submit" class="btn btn-primary auth-submit">Criar conta</button>
           <p class="auth-hint">Já tem conta? <button type="button" data-auth-tab="login">Entrar</button></p>
@@ -450,6 +455,20 @@
     cadastroForm.addEventListener('submit', (event) => {
       event.preventDefault();
       closeAuth();
+    });
+
+    const cadastroFoto = document.getElementById('cadastroFoto');
+    const cadastroFotoPreview = document.getElementById('cadastroFotoPreview');
+
+    cadastroFoto.addEventListener('change', () => {
+      const file = cadastroFoto.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        cadastroFotoPreview.innerHTML = `<img src="${e.target.result}" alt="Prévia da foto">`;
+      };
+      reader.readAsDataURL(file);
     });
   </script>
 </body>

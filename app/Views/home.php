@@ -7,6 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,500;1,9..144,600&family=Caveat:wght@500;600;700&family=Bangers&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
   <link rel="stylesheet" href="<?= assetUrl('assets/styles/home.css') ?>">
 </head>
 <body>
@@ -17,9 +18,9 @@
         Clube do Livro
       </a>
       <ul class="nav-links">
-        <li><a href="#como-funciona">Como funciona</a></li>
         <li><a href="#categorias">Categorias</a></li>
-        <li><a href="#comunidade">Comunidade</a></li>
+        <li><a href="#recentes">Agora na estante</a></li>
+        <li><a href="#como-funciona">Como funciona</a></li>
       </ul>
       <div class="nav-actions">
         <a href="#" class="login-link" data-auth-open="login">Login</a>
@@ -49,7 +50,10 @@
           </div>
           <div class="auth-field">
             <label for="loginSenha">Senha</label>
-            <input type="password" id="loginSenha" placeholder="••••••••" required>
+            <div class="auth-password-wrap">
+              <input type="password" id="loginSenha" placeholder="••••••••" required>
+              <button type="button" class="auth-password-toggle" data-target="loginSenha" aria-label="Mostrar senha"><i class="fa-solid fa-eye"></i></button>
+            </div>
           </div>
           <a href="#" class="auth-forgot">Esqueci minha senha</a>
           <button type="submit" class="btn btn-primary auth-submit">Entrar</button>
@@ -58,7 +62,7 @@
 
         <form class="auth-form" id="cadastroForm" enctype="multipart/form-data">
           <div class="auth-photo">
-            <div class="auth-photo-preview" id="cadastroFotoPreview"><i class="fa-regular fa-images"></i></div>
+            <div class="auth-photo-preview" id="cadastroFotoPreview"><i class="fa-solid fa-images"></i></div>
             <label class="auth-photo-label" for="cadastroFoto">Adicionar foto</label>
             <input type="file" id="cadastroFoto" name="foto_perfil" accept="image/*">
           </div>
@@ -71,8 +75,29 @@
             <input type="email" id="cadastroEmail" name="email" placeholder="voce@email.com" required>
           </div>
           <div class="auth-field">
+            <label for="cadastroTelefone">Telefone</label>
+            <input type="tel" id="cadastroTelefone" name="telefone" placeholder="(00) 00000-0000">
+          </div>
+          <div class="auth-field">
+            <label for="cadastroTipo">Você quer</label>
+            <select id="cadastroTipo" name="tipo" required>
+              <option value="" disabled selected>Selecione uma opção</option>
+              <option value="cliente">Ler — quero encontrar e pegar livros</option>
+              <option value="colaborador">Vender/Doar — quero disponibilizar meus livros</option>
+            </select>
+          </div>
+          <div class="auth-field">
             <label for="cadastroSenha">Senha</label>
-            <input type="password" id="cadastroSenha" name="senha" placeholder="Crie uma senha" required>
+            <div class="auth-password-wrap">
+              <input type="password" id="cadastroSenha" name="senha" placeholder="Crie uma senha" required>
+              <button type="button" class="auth-password-toggle" data-target="cadastroSenha" aria-label="Mostrar senha"><i class="fa-solid fa-eye"></i></button>
+            </div>
+            <ul class="auth-password-rules" id="cadastroSenhaRules">
+              <li data-rule="length">Mín. 8 caracteres</li>
+              <li data-rule="upper">1 letra maiúscula</li>
+              <li data-rule="number">1 número</li>
+              <li data-rule="special">1 caractere especial</li>
+            </ul>
           </div>
           <button type="submit" class="btn btn-primary auth-submit">Criar conta</button>
           <p class="auth-hint">Já tem conta? <button type="button" data-auth-tab="login">Entrar</button></p>
@@ -452,11 +477,6 @@
       closeAuth();
     });
 
-    cadastroForm.addEventListener('submit', (event) => {
-      event.preventDefault();
-      closeAuth();
-    });
-
     const cadastroFoto = document.getElementById('cadastroFoto');
     const cadastroFotoPreview = document.getElementById('cadastroFotoPreview');
 
@@ -469,6 +489,86 @@
         cadastroFotoPreview.innerHTML = `<img src="${e.target.result}" alt="Prévia da foto">`;
       };
       reader.readAsDataURL(file);
+    });
+
+    document.querySelectorAll('.auth-password-toggle').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const input = document.getElementById(btn.dataset.target);
+        const mostrando = input.type === 'text';
+        input.type = mostrando ? 'password' : 'text';
+        btn.innerHTML = mostrando ? '<i class="fa-solid fa-eye"></i>' : '<i class="fa-solid fa-eye-slash"></i>';
+      });
+    });
+
+    const cadastroSenha = document.getElementById('cadastroSenha');
+    const senhaRules = document.getElementById('cadastroSenhaRules');
+
+    const regrasSenha = {
+      length:  (v) => v.length >= 8,
+      upper:   (v) => /[A-Z]/.test(v),
+      number:  (v) => /[0-9]/.test(v),
+      special: (v) => /[^A-Za-z0-9]/.test(v),
+    };
+
+    function senhaEhValida(valor) {
+      return Object.values(regrasSenha).every((teste) => teste(valor));
+    }
+
+    cadastroSenha.addEventListener('input', () => {
+      const valor = cadastroSenha.value;
+      Object.entries(regrasSenha).forEach(([regra, teste]) => {
+        senhaRules.querySelector(`[data-rule="${regra}"]`).classList.toggle('valid', teste(valor));
+      });
+    });
+
+    cadastroForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+
+      if (!senhaEhValida(cadastroSenha.value)) {
+        cadastroSenha.focus();
+        return;
+      }
+
+      const formData = new FormData(cadastroForm);
+      const submitBtn = cadastroForm.querySelector('.auth-submit');
+      submitBtn.disabled = true;
+
+      try {
+        const resp = await fetch('<?= base_url('cadastro') ?>', {
+          method: 'POST',
+          body: formData,
+          headers: { 'X-Requested-With': 'XMLHttpRequest' },
+        });
+        const data = await resp.json();
+
+        if (data.success) {
+          closeAuth();
+        } else {
+          console.log(data.errors);
+        }
+      } catch (err) {
+        console.error(err);
+      } finally {
+        submitBtn.disabled = false;
+      }
+    });
+
+    const cadastroTelefone = document.getElementById('cadastroTelefone');
+
+    cadastroTelefone.addEventListener('input', () => {
+      let valor = cadastroTelefone.value.replace(/\D/g, '').slice(0, 11);
+
+      if (valor.length > 10) {
+        valor = valor.replace(/^(\d{2})(\d{5})(\d{0,4}).*/, '($1) $2-$3');
+      } else if (valor.length > 6) {
+        valor = valor.replace(/^(\d{2})(\d{4})(\d{0,4}).*/, '($1) $2-$3');
+      } else if (valor.length > 2) {
+        valor = valor.replace(/^(\d{2})(\d{0,5}).*/, '($1) $2');
+      } else if (valor.length > 0) {
+        valor = valor.replace(/^(\d{0,2})/, '($1');
+      }
+
+      cadastroTelefone.value = valor;
     });
   </script>
 </body>

@@ -9,3 +9,5 @@
 !/writable/uploads/index.html
 .env
 builds
+debugbar_*
+public/uploads/perfil/

@@ -24,9 +24,6 @@
     --font-script: 'Caveat', cursive;
     --font-comic: 'Bangers', cursive;
     --font-body: 'Poppins', sans-serif;
-
-    /* fluid spacing/paper padding used by the auth modal so it scales
-       smoothly instead of jumping at breakpoints */
     --paper-pad: clamp(14px, 4vw, 25px);
     --section-pad-y: clamp(50px, 9vw, 110px);
 }
@@ -264,7 +261,6 @@ section {
     padding: 6px 8px;
 }
 
-/* mobile dropdown state, toggled via JS by adding .nav-open on .nav-links */
 .nav-links.nav-open {
     display: flex !important;
     position: absolute;
@@ -292,11 +288,6 @@ section {
     border-top: 1px solid rgba(42, 35, 19, 0.12);
 }
 
-/* ---------- AUTH MODAL (login/cadastro) ---------- */
-/* Built to scale fluidly with clamp()/vw so the paper background image,
-   the card, and the inputs all shrink together on any viewport instead
-   of relying only on breakpoints. */
-
 .auth-overlay {
     position: fixed;
     inset: 0;
@@ -310,8 +301,6 @@ section {
     opacity: 0;
     visibility: hidden;
     transition: opacity .35s ease, visibility 0s linear .35s;
-    /* every size inside the card is vh-aware, so it always fits without
-       needing to scroll — this is a safety net only, not a scroll UI */
     overflow: hidden;
 }
 
@@ -324,12 +313,12 @@ section {
 .auth-modal {
     position: relative;
     width: min(420px, 100%);
-    max-height: calc(100dvh - clamp(16px, 5vh, 48px));
+    max-height: calc(80dvh - clamp(16px, 5vh, 48px));
     overflow-y: auto;
     padding: clamp(24px, 5vh, 42px) clamp(24px, 6vw, 38px);
-    margin: auto;
-    background-image: url(../img/fundoLogin.jpg);
-    background-size: 100% auto;
+    background-image: url(../img/fundoLogin.png);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
     border: 2px solid var(--ink);
     border-radius: 24px;
     box-shadow: 8px 8px 0 var(--ink);
@@ -353,7 +342,7 @@ section {
     height: 84px;
     border-radius: 50%;
     border: 2px solid var(--ink);
-    background: #ffc4d8;
+    background: #fff4c4;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -367,6 +356,68 @@ section {
     width: 100%;
     height: 100%;
     object-fit: cover;
+}
+
+.auth-password-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.auth-password-wrap input {
+    padding-right: 42px;
+}
+
+.auth-password-toggle {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    font-size: 1.05rem;
+    color: var(--ink-soft);
+    cursor: pointer;
+    padding: 6px;
+    line-height: 1;
+}
+
+.auth-password-toggle:hover {
+    color: var(--ink);
+}
+
+.auth-password-rules {
+    list-style: none;
+    margin: 6px 0 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 12px;
+}
+
+.auth-password-rules li {
+    font-size: 0.7rem;
+    color: var(--ink-soft);
+    position: relative;
+    padding-left: 14px;
+    transition: color .2s ease;
+}
+
+.auth-password-rules li::before {
+    content: '○';
+    position: absolute;
+    left: 0;
+    font-size: 0.65rem;
+}
+
+.auth-password-rules li.valid {
+    color: var(--green-deep);
+    font-weight: 600;
+}
+
+.auth-password-rules li.valid::before {
+    content: '●';
+    color: var(--green-mid);
 }
 
 .auth-photo-label {
@@ -520,7 +571,6 @@ section {
 .auth-field input {
     width: 100%;
     font-family: var(--font-body);
-    /* 16px min stops iOS Safari from auto-zooming into the field on focus */
     font-size: max(0.95rem, 16px);
     color: var(--ink);
     background: var(--white);
@@ -534,6 +584,33 @@ section {
 .auth-field input:focus {
     box-shadow: 3px 3px 0 var(--ink);
     transform: translateY(-2px);
+}
+
+.auth-field select {
+    width: 100%;
+    font-family: var(--font-body);
+    font-size: max(0.95rem, 16px);
+    color: var(--ink);
+    background: var(--white);
+    border: 2px solid var(--ink);
+    border-radius: 12px;
+    padding: clamp(8px, 1.8vh, 12px) 14px;
+    outline: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232a2313' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 18px;
+    transition: box-shadow .25s ease, transform .25s ease;
+}
+
+.auth-field select:focus {
+    box-shadow: 3px 3px 0 var(--ink);
+    transform: translateY(-2px);
+}
+
+.auth-field select:invalid {
+    color: var(--ink-soft);
 }
 
 .auth-forgot {
@@ -1034,8 +1111,6 @@ section {
     height: 100%;
 }
 
-/* ---------- CATEGORIES ---------- */
-
 .categories-section {
     background: var(--olive-deeper);
     padding: 0 0 clamp(70px, 12vw, 130px);
@@ -1117,8 +1192,6 @@ section {
 .cat-card .btn {
     width: 100%;
 }
-
-/* ---------- RECENT BOOKS ---------- */
 
 .recent-books-section {
     position: relative;

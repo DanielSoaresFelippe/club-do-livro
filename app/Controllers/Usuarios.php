@@ -73,4 +73,183 @@ class Usuarios extends BaseController
             ],
         ]);
     }
+
+    public function login()
+    {
+        $usuarioModel = new UsuarioModel();
+
+        if(!$this->validate([
+            'email' => 'required|valid_email',
+            'senha' => 'required'
+        ])) {
+            return $this->response->setStatusCode(422)->setJSON([
+                'sucess' => false,
+                'errors' => $this->validator->getErrors(),
+            ]);
+        }
+
+        $email = $this->request->getPost('email');
+        $senha = $this->request->getPost('senha');
+
+        $usuario = $usuarioModel->where('email', $email)->where('ativo', 1)->first();
+
+        if(!$usuario || !password_verify($senha, $usuario['senha'])){
+            return $this->response->setStatusCode(422)->setJSON([
+                'sucess' => false,
+                'errors' => ['login' => 'E-mail ou senha inválidos.'],
+            ]);
+        }
+
+        session()->set([
+            'usuario_id'     => $usuario['id_usuario'],
+            'usuario_nome'   => $usuario['nome'],
+            'usuario_tipo'   => $usuario['tipo'],
+            'usuario_logado' => true,
+        ]);
+
+        return $this->response->setJSON([
+            'sucess'   => true,
+            'redirect' => base_url('usuarios/perfil'),
+        ]);
+    }
+
+    public function logout()
+    {
+        session()->destroy();
+        return redirect()->to(base_url('/'));
+    }
+
+    public function perfil()
+    {
+        if (!session()->get('usuario_logado')) {
+            return redirect()->to(base_url('/'))->with('erro', 'Faça login para acessar sua carteirinha.');
+        }
+ 
+        $usuarioModel = new UsuarioModel();
+        $usuario = $usuarioModel->find(session()->get('usuario_id'));
+ 
+        if (!$usuario) {
+            session()->destroy();
+            return redirect()->to(base_url('/'));
+        }
+ 
+        return view('usuarios/carteirinha', ['usuario' => $usuario]);
+    }
+ 
+    public function dadosPerfil()
+    {
+        if (!session()->get('usuario_logado')) {
+            return $this->response->setStatusCode(401)->setJSON(['success' => false]);
+        }
+ 
+        $usuarioModel = new UsuarioModel();
+        $usuario = $usuarioModel->find(session()->get('usuario_id'));
+ 
+        if (!$usuario) {
+            return $this->response->setStatusCode(404)->setJSON(['success' => false]);
+        }
+ 
+        unset($usuario['senha']);
+        $usuario['foto_url'] = $usuario['foto_perfil']
+            ? base_url('uploads/perfil/' . $usuario['foto_perfil'])
+            : null;
+ 
+        return $this->response->setJSON(['success' => true, 'usuario' => $usuario]);
+    }
+ 
+    public function atualizarPerfil()
+    {
+        if (!session()->get('usuario_logado')) {
+            return $this->response->setStatusCode(401)->setJSON(['success' => false]);
+        }
+ 
+        $id = session()->get('usuario_id');
+        $usuarioModel = new UsuarioModel();
+ 
+        $regras = [
+            'nome'     => 'required|min_length[2]|max_length[150]',
+            'email'    => "required|valid_email|is_unique[usuarios.email,id_usuario,{$id}]",
+            'telefone' => 'permit_empty|min_length[8]|max_length[20]',
+        ];
+ 
+        $senha = $this->request->getPost('senha');
+        if (!empty($senha)) {
+            $regras['senha'] = 'min_length[8]|regex_match[/^(?=.*[A-Z])(?=.*[0-9])(?=.*[\W_]).+$/]';
+        }
+ 
+        if (!$this->validate($regras, [
+            'senha' => [
+                'min_length'  => 'A senha precisa ter no mínimo 8 caracteres.',
+                'regex_match' => 'A senha precisa ter 1 letra maiúscula, 1 número e 1 caractere especial.',
+            ],
+        ])) {
+            return $this->response->setStatusCode(422)->setJSON([
+                'success' => false,
+                'errors'  => $this->validator->getErrors(),
+            ]);
+        }
+ 
+        $dados = [
+            'nome'     => $this->request->getPost('nome'),
+            'email'    => $this->request->getPost('email'),
+            'telefone' => preg_replace('/\D/', '', (string) $this->request->getPost('telefone')),
+        ];
+ 
+        if (!empty($senha)) {
+            $dados['senha'] = password_hash($senha, PASSWORD_DEFAULT);
+        }
+ 
+        $foto = $this->request->getFile('foto_perfil');
+        if ($foto && $foto->isValid() && !$foto->hasMoved()) {
+            if (!in_array($foto->getMimeType(), ['image/jpeg', 'image/png', 'image/webp'])) {
+                return $this->response->setStatusCode(422)->setJSON([
+                    'success' => false,
+                    'errors'  => ['foto_perfil' => 'A foto precisa ser JPG, PNG ou WEBP.'],
+                ]);
+            }
+            if ($foto->getSize() > 2048 * 1024) {
+                return $this->response->setStatusCode(422)->setJSON([
+                    'success' => false,
+                    'errors'  => ['foto_perfil' => 'A foto deve ter no máximo 2MB.'],
+                ]);
+            }
+ 
+            $nomeFoto = $foto->getRandomName();
+            $foto->move(FCPATH . 'uploads/perfil', $nomeFoto);
+            $dados['foto_perfil'] = $nomeFoto;
+        }
+ 
+        $usuarioModel->update($id, $dados);
+ 
+        session()->set('usuario_nome', $dados['nome']);
+ 
+        $usuarioAtualizado = $usuarioModel->find($id);
+        unset($usuarioAtualizado['senha']);
+        $usuarioAtualizado['foto_url'] = $usuarioAtualizado['foto_perfil']
+            ? base_url('uploads/perfil/' . $usuarioAtualizado['foto_perfil'])
+            : null;
+ 
+        return $this->response->setJSON([
+            'success' => true,
+            'usuario' => $usuarioAtualizado,
+        ]);
+    }
+ 
+    public function historico()
+    {
+        if (!session()->get('usuario_logado')) {
+            return redirect()->to(base_url('/'));
+        }
+ 
+        return view('usuarios/historico');
+    }
+ 
+    public function favoritos()
+    {
+        if (!session()->get('usuario_logado')) {
+            return redirect()->to(base_url('/'));
+        }
+ 
+        return view('usuarios/favoritos');
+    }
 }

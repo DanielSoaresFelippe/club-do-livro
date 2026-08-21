@@ -24,7 +24,7 @@
       </ul>
       <div class="nav-actions">
         <a href="#" class="login-link" data-auth-open="login">Login</a>
-        <a href="#" class="btn btn-primary" data-auth-open="cadastro">Entrar</a>
+        <a href="#" class="btn btn-primary" data-auth-open="cadastro">Cadastar</a>
       </div>
       <button class="nav-toggle" aria-label="Abrir menu">☰</button>
     </nav>
@@ -32,76 +32,79 @@
 
   <div class="auth-overlay" id="authOverlay">
     <div class="auth-modal">
-      <button class="auth-close" id="authClose" aria-label="Fechar">✕</button>
-      <span class="eyebrow auth-eyebrow">bem-vindo de volta</span>
-      <h2 class="auth-title" id="authTitle">Entrar</h2>
+      <div class="auth-image"></div>
+      <div class="auth-content">
+        <button class="auth-close" id="authClose" aria-label="Fechar">✕</button>
+        <span class="eyebrow auth-eyebrow">bem-vindo de volta</span>
+        <h2 class="auth-title" id="authTitle">Entrar</h2>
 
-      <div class="auth-switch" id="authSwitch">
-        <div class="auth-switch-slider"></div>
-        <button type="button" class="is-active" data-auth-tab="login">Login</button>
-        <button type="button" data-auth-tab="cadastro">Cadastro</button>
-      </div>
+        <div class="auth-switch" id="authSwitch">
+          <div class="auth-switch-slider"></div>
+          <button type="button" class="is-active" data-auth-tab="login">Login</button>
+          <button type="button" data-auth-tab="cadastro">Cadastro</button>
+        </div>
 
-      <div class="auth-panels">
-        <form class="auth-form is-active" id="loginForm">
-          <div class="auth-field">
-            <label for="loginEmail">E-mail</label>
-            <input type="email" id="loginEmail" placeholder="voce@email.com" required>
-          </div>
-          <div class="auth-field">
-            <label for="loginSenha">Senha</label>
-            <div class="auth-password-wrap">
-              <input type="password" id="loginSenha" placeholder="••••••••" required>
-              <button type="button" class="auth-password-toggle" data-target="loginSenha" aria-label="Mostrar senha"><i class="fa-solid fa-eye"></i></button>
+        <div class="auth-panels">
+          <form class="auth-form is-active" id="loginForm">
+            <div class="auth-field">
+              <label for="loginEmail">E-mail</label>
+              <input type="email" id="loginEmail" placeholder="voce@email.com" required>
             </div>
-          </div>
-          <a href="#" class="auth-forgot">Esqueci minha senha</a>
-          <button type="submit" class="btn btn-primary auth-submit">Entrar</button>
-          <p class="auth-hint">Ainda não tem conta? <button type="button" data-auth-tab="cadastro">Cadastre-se</button></p>
-        </form>
-
-        <form class="auth-form" id="cadastroForm" enctype="multipart/form-data">
-          <div class="auth-photo">
-            <div class="auth-photo-preview" id="cadastroFotoPreview"><i class="fa-solid fa-images"></i></div>
-            <label class="auth-photo-label" for="cadastroFoto">Adicionar foto</label>
-            <input type="file" id="cadastroFoto" name="foto_perfil" accept="image/*">
-          </div>
-          <div class="auth-field">
-            <label for="cadastroNome">Nome</label>
-            <input type="text" id="cadastroNome" name="nome" placeholder="Seu nome" required>
-          </div>
-          <div class="auth-field">
-            <label for="cadastroEmail">E-mail</label>
-            <input type="email" id="cadastroEmail" name="email" placeholder="voce@email.com" required>
-          </div>
-          <div class="auth-field">
-            <label for="cadastroTelefone">Telefone</label>
-            <input type="tel" id="cadastroTelefone" name="telefone" placeholder="(00) 00000-0000">
-          </div>
-          <div class="auth-field">
-            <label for="cadastroTipo">Você quer</label>
-            <select id="cadastroTipo" name="tipo" required>
-              <option value="" disabled selected>Selecione uma opção</option>
-              <option value="cliente">Ler — quero encontrar e pegar livros</option>
-              <option value="colaborador">Vender/Doar — quero disponibilizar meus livros</option>
-            </select>
-          </div>
-          <div class="auth-field">
-            <label for="cadastroSenha">Senha</label>
-            <div class="auth-password-wrap">
-              <input type="password" id="cadastroSenha" name="senha" placeholder="Crie uma senha" required>
-              <button type="button" class="auth-password-toggle" data-target="cadastroSenha" aria-label="Mostrar senha"><i class="fa-solid fa-eye"></i></button>
+            <div class="auth-field">
+              <label for="loginSenha">Senha</label>
+              <div class="auth-password-wrap">
+                <input type="password" id="loginSenha" placeholder="••••••••" required>
+                <button type="button" class="auth-password-toggle" data-target="loginSenha" aria-label="Mostrar senha"><i class="fa-solid fa-eye"></i></button>
+              </div>
             </div>
-            <ul class="auth-password-rules" id="cadastroSenhaRules">
-              <li data-rule="length">Mín. 8 caracteres</li>
-              <li data-rule="upper">1 letra maiúscula</li>
-              <li data-rule="number">1 número</li>
-              <li data-rule="special">1 caractere especial</li>
-            </ul>
-          </div>
-          <button type="submit" class="btn btn-primary auth-submit">Criar conta</button>
-          <p class="auth-hint">Já tem conta? <button type="button" data-auth-tab="login">Entrar</button></p>
-        </form>
+            <a href="#" class="auth-forgot">Esqueci minha senha</a>
+            <button type="submit" class="btn btn-primary auth-submit">Entrar</button>
+            <p class="auth-hint">Ainda não tem conta? <button type="button" data-auth-tab="cadastro">Cadastre-se</button></p>
+          </form>
+
+          <form class="auth-form" id="cadastroForm" enctype="multipart/form-data">
+            <div class="auth-photo">
+              <div class="auth-photo-preview" id="cadastroFotoPreview"><i class="fa-solid fa-images"></i></div>
+              <label class="auth-photo-label" for="cadastroFoto">Adicionar foto</label>
+              <input type="file" id="cadastroFoto" name="foto_perfil" accept="image/*">
+            </div>
+            <div class="auth-field">
+              <label for="cadastroNome">Nome</label>
+              <input type="text" id="cadastroNome" name="nome" placeholder="Seu nome" required>
+            </div>
+            <div class="auth-field">
+              <label for="cadastroEmail">E-mail</label>
+              <input type="email" id="cadastroEmail" name="email" placeholder="voce@email.com" required>
+            </div>
+            <div class="auth-field">
+              <label for="cadastroTelefone">Telefone</label>
+              <input type="tel" id="cadastroTelefone" name="telefone" placeholder="(00) 00000-0000">
+            </div>
+            <div class="auth-field">
+              <label for="cadastroTipo">Você quer</label>
+              <select id="cadastroTipo" name="tipo" required>
+                <option value="" disabled selected>Selecione uma opção</option>
+                <option value="cliente">Ler — quero encontrar e pegar livros</option>
+                <option value="colaborador">Vender/Doar — quero disponibilizar meus livros</option>
+              </select>
+            </div>
+            <div class="auth-field">
+              <label for="cadastroSenha">Senha</label>
+              <div class="auth-password-wrap">
+                <input type="password" id="cadastroSenha" name="senha" placeholder="Crie uma senha" required>
+                <button type="button" class="auth-password-toggle" data-target="cadastroSenha" aria-label="Mostrar senha"><i class="fa-solid fa-eye"></i></button>
+              </div>
+              <ul class="auth-password-rules" id="cadastroSenhaRules">
+                <li data-rule="length">Mín. 8 caracteres</li>
+                <li data-rule="upper">1 letra maiúscula</li>
+                <li data-rule="number">1 número</li>
+                <li data-rule="special">1 caractere especial</li>
+              </ul>
+            </div>
+            <button type="submit" class="btn btn-primary auth-submit">Criar conta</button>
+            <p class="auth-hint">Já tem conta? <button type="button" data-auth-tab="login">Entrar</button></p>
+          </form>
+        </div>
       </div>
     </div>
   </div>
@@ -472,10 +475,55 @@
       }
     });
 
-    loginForm.addEventListener('submit', (event) => {
+    loginForm.addEventListener('submit', async (event) => {
       event.preventDefault();
-      closeAuth();
+      limparErrosLogin();
+
+      const formData = new FormData();
+      formData.append('email', document.getElementById('loginEmail').value);
+      formData.append('senha', document.getElementById('loginSenha').value);
+
+      const submitBtn = loginForm.querySelector('.auth-submit');
+      submitBtn.disabled = true;
+
+      try {
+        const resp = await fetch('<?= base_url('usuarios/login') ?>', {
+          method: 'POST',
+          body: formData,
+          headers: { 'X-Requested-With': 'XMLHttpRequest' },
+        });
+        const data = await resp.json();
+
+        if (data.sucess) {
+          window.location.href = data.redirect;
+        } else {
+          mostrarErroLogin(data.errors?.login || 'E-mail ou senha inválidos.');
+        }
+      } catch (err) {
+        console.error(err);
+        mostrarErroLogin('Erro ao tentar entrar. Tente novamente.');
+      } finally {
+        submitBtn.disabled = false;
+      }
     });
+
+    function mostrarErroLogin(mensagem) {
+      let erroEl = loginForm.querySelector('.auth-erro-geral');
+      if (!erroEl) {
+        erroEl = document.createElement('p');
+        erroEl.className = 'auth-erro-geral';
+        erroEl.style.color = '#b23b3b';
+        erroEl.style.fontSize = '13px';
+        erroEl.style.marginTop = '4px';
+        loginForm.querySelector('.auth-submit').insertAdjacentElement('beforebegin', erroEl);
+      }
+      erroEl.textContent = mensagem;
+    }
+
+    function limparErrosLogin() {
+      const erroEl = loginForm.querySelector('.auth-erro-geral');
+      if (erroEl) erroEl.textContent = '';
+    }
 
     const cadastroFoto = document.getElementById('cadastroFoto');
     const cadastroFotoPreview = document.getElementById('cadastroFotoPreview');

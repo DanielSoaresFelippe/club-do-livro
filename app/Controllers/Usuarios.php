@@ -141,19 +141,19 @@ class Usuarios extends BaseController
         if (!session()->get('usuario_logado')) {
             return $this->response->setStatusCode(401)->setJSON(['success' => false]);
         }
- 
+
         $usuarioModel = new UsuarioModel();
         $usuario = $usuarioModel->find(session()->get('usuario_id'));
- 
+
         if (!$usuario) {
             return $this->response->setStatusCode(404)->setJSON(['success' => false]);
         }
- 
+
         unset($usuario['senha']);
         $usuario['foto_url'] = $usuario['foto_perfil']
             ? base_url('uploads/perfil/' . $usuario['foto_perfil'])
             : null;
- 
+
         return $this->response->setJSON(['success' => true, 'usuario' => $usuario]);
     }
  
@@ -162,25 +162,36 @@ class Usuarios extends BaseController
         if (!session()->get('usuario_logado')) {
             return $this->response->setStatusCode(401)->setJSON(['success' => false]);
         }
- 
+
         $id = session()->get('usuario_id');
         $usuarioModel = new UsuarioModel();
- 
+
+        $usuarioAtual = $usuarioModel->find($id);
+        if (!$usuarioAtual) {
+            session()->destroy();
+            return $this->response->setStatusCode(401)->setJSON(['success' => false]);
+        }
+
         $regras = [
             'nome'     => 'required|min_length[2]|max_length[150]',
             'email'    => "required|valid_email|is_unique[usuarios.email,id_usuario,{$id}]",
             'telefone' => 'permit_empty|min_length[8]|max_length[20]',
+            'tipo'     => 'required|in_list[cliente,colaborador]',
         ];
- 
+
         $senha = $this->request->getPost('senha');
         if (!empty($senha)) {
             $regras['senha'] = 'min_length[8]|regex_match[/^(?=.*[A-Z])(?=.*[0-9])(?=.*[\W_]).+$/]';
         }
- 
+
         if (!$this->validate($regras, [
             'senha' => [
                 'min_length'  => 'A senha precisa ter no mínimo 8 caracteres.',
                 'regex_match' => 'A senha precisa ter 1 letra maiúscula, 1 número e 1 caractere especial.',
+            ],
+            'tipo' => [
+                'required' => 'Selecione se você quer ler ou vender/trocar livros.',
+                'in_list'  => 'Opção inválida.',
             ],
         ])) {
             return $this->response->setStatusCode(422)->setJSON([
@@ -188,17 +199,19 @@ class Usuarios extends BaseController
                 'errors'  => $this->validator->getErrors(),
             ]);
         }
- 
+
         $dados = [
             'nome'     => $this->request->getPost('nome'),
             'email'    => $this->request->getPost('email'),
             'telefone' => preg_replace('/\D/', '', (string) $this->request->getPost('telefone')),
+            'tipo'     => $this->request->getPost('tipo'),
+            'foto_perfil' => $usuarioAtual['foto_perfil'], 
         ];
- 
+
         if (!empty($senha)) {
             $dados['senha'] = password_hash($senha, PASSWORD_DEFAULT);
         }
- 
+
         $foto = $this->request->getFile('foto_perfil');
         if ($foto && $foto->isValid() && !$foto->hasMoved()) {
             if (!in_array($foto->getMimeType(), ['image/jpeg', 'image/png', 'image/webp'])) {
@@ -213,22 +226,33 @@ class Usuarios extends BaseController
                     'errors'  => ['foto_perfil' => 'A foto deve ter no máximo 2MB.'],
                 ]);
             }
- 
+
             $nomeFoto = $foto->getRandomName();
             $foto->move(FCPATH . 'uploads/perfil', $nomeFoto);
             $dados['foto_perfil'] = $nomeFoto;
         }
- 
-        $usuarioModel->update($id, $dados);
- 
-        session()->set('usuario_nome', $dados['nome']);
- 
+
+        $sucesso = $usuarioModel->skipValidation(true)->update($id, $dados);
+
+        if (!$sucesso) {
+            log_message('error', 'Falha ao atualizar usuario ' . $id . ': ' . json_encode($usuarioModel->errors()));
+            return $this->response->setStatusCode(500)->setJSON([
+                'success' => false,
+                'errors'  => ['geral' => 'Não foi possível salvar as alterações.'],
+            ]);
+        }
+
+        session()->set([
+            'usuario_nome' => $dados['nome'],
+            'usuario_tipo' => $dados['tipo'],
+        ]);
+
         $usuarioAtualizado = $usuarioModel->find($id);
         unset($usuarioAtualizado['senha']);
         $usuarioAtualizado['foto_url'] = $usuarioAtualizado['foto_perfil']
             ? base_url('uploads/perfil/' . $usuarioAtualizado['foto_perfil'])
             : null;
- 
+
         return $this->response->setJSON([
             'success' => true,
             'usuario' => $usuarioAtualizado,

@@ -12,50 +12,89 @@
 </head>
 <body>
 
-<div class="carteirinha-area">
-    <button type="button" class="pasta pasta-perfil" id="btnAbrirPerfil">
-        <svg viewBox="0 0 74 58" xmlns="http://www.w3.org/2000/svg">
-            <path d="M2 12 C2 8 5 6 9 6 H28 L34 12 H65 C69 12 72 15 72 19 V50 C72 54 69 56 65 56 H9 C5 56 2 54 2 50 Z" fill="#e05c7a"/>
-        </svg>
-        <span>Meu Perfil</span>
-    </button>
-    
-    <button type="button" class="pasta pasta-site" id="btnAbrirSite">
-        <svg viewBox="0 0 74 58" xmlns="http://www.w3.org/2000/svg">
-            <path d="M2 12 C2 8 5 6 9 6 H28 L34 12 H65 C69 12 72 15 72 19 V50 C72 54 69 56 65 56 H9 C5 56 2 54 2 50 Z" fill="#ffdf77"/>
-        </svg>
-        <span>Acessar o site</span>
-    </button>
+<div class="nav-wrap">
+    <nav class="navbar" id="navbar">
+        <a href="<?= base_url() ?>" class="nav-logo">
+            Clube do Livro
+        </a>
+        <form action="<?= base_url('usuarios/logout') ?>" method="post" class="nav-actions">
+            <button type="submit" class="btn btn-outline btn-sm nav-sair">
+                <i class="fa-solid fa-right-from-bracket"></i> Sair
+            </button>
+        </form>
+    </nav>
+</div>
 
-    <button type="button" class="pasta pasta-historico" id="btnHistorico">
-        <svg viewBox="0 0 74 58" xmlns="http://www.w3.org/2000/svg">
-            <path d="M2 12 C2 8 5 6 9 6 H28 L34 12 H65 C69 12 72 15 72 19 V50 C72 54 69 56 65 56 H9 C5 56 2 54 2 50 Z" fill="#8fb84a"/>
-        </svg>
-        <span>Historico de Livros</span>
-    </button>
+<header class="perfil-hero" id="top">
+    <img class="flor flor-esquerda dado" src='<?= base_url('assets/img/bybooksDados.png'); ?>'>
 
-    <button type="button" class="pasta pasta-favoritos" id="btnFavoritos">
-        <svg viewBox="0 0 74 58" xmlns="http://www.w3.org/2000/svg">
-            <path d="M2 12 C2 8 5 6 9 6 H28 L34 12 H65 C69 12 72 15 72 19 V50 C72 54 69 56 65 56 H9 C5 56 2 54 2 50 Z" fill="#8a2f2f"/>
-        </svg>
-        <span>Favoritos</span>
-    </button>
+    <img class="flor flor-direita relicario" src='<?= base_url('assets/img/bookLoversRelicario.png'); ?>'>
 
-    <div class="cartao">
-        <div class="certificado-wrap">
-            <img class="certificado-bg" src="<?= base_url('assets/img/certificadoLeitor.png') ?>" alt="Certificado de amante de livros">
+    <div class="perfil-hero-inner">
+        <span class="eyebrow">minha conta</span>
+        <h1>Olá, <?= esc($usuario['nome']) ?>!</h1>
+        <p>Acompanhe seu perfil, seu histórico e os livros que você favoritou.</p>
+    </div>
+</header>
 
-            <div class="foto-perfil-usuario">
-                <img src="<?= $usuario['foto_perfil'] ? base_url('uploads/perfil/' . $usuario['foto_perfil']) : base_url('assets/img/avatar-padrao.png') ?>" alt="Foto de <?= esc($usuario['nome']) ?>">
+<div class="divisor-quadradinhos"></div>
+
+<section class="carteirinha-section">
+    <div class="carteirinha-area">
+        <div class="cartao">
+            <div class="certificado-wrap">
+                <img class="certificado-bg" src="<?= base_url('assets/img/certificadoLeitor.png') ?>" alt="Certificado de amante de livros">
+
+                <div class="foto-perfil-usuario">
+                    <img src="<?= $usuario['foto_perfil'] ? base_url('uploads/perfil/' . $usuario['foto_perfil']) : base_url('assets/img/avatar-padrao.png') ?>" alt="Foto de <?= esc($usuario['nome']) ?>">
+                </div>
+
+                <div class="campo-nome"><?= esc($usuario['nome']) ?></div>
+                <div class="campo-email"><?= esc($usuario['email']) ?></div>
             </div>
-
-            <div class="campo-nome"><?= esc($usuario['nome']) ?></div>
-            <div class="campo-email"><?= esc($usuario['email']) ?></div>
         </div>
 
-        <div class="nome-usuario"><?= esc($usuario['nome']) ?></div>
+        <div class="pastas-linha">
+            <button type="button" class="pasta" id="btnAbrirPerfil" data-pasta="perfil">
+                <svg viewBox="0 0 74 58" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M2 12 C2 8 5 6 9 6 H28 L34 12 H65 C69 12 72 15 72 19 V50 C72 54 69 56 65 56 H9 C5 56 2 54 2 50 Z" fill="#e05c7a"/>
+                </svg>
+                <span>Meu Perfil</span>
+            </button>
+
+            <button type="button" class="pasta" id="btnHistorico" data-pasta="historico">
+                <svg viewBox="0 0 74 58" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M2 12 C2 8 5 6 9 6 H28 L34 12 H65 C69 12 72 15 72 19 V50 C72 54 69 56 65 56 H9 C5 56 2 54 2 50 Z" fill="#8fb84a"/>
+                </svg>
+                <span>Histórico de Livros</span>
+            </button>
+
+            <button type="button" class="pasta" id="btnFavoritos" data-pasta="favoritos">
+                <svg viewBox="0 0 74 58" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M2 12 C2 8 5 6 9 6 H28 L34 12 H65 C69 12 72 15 72 19 V50 C72 54 69 56 65 56 H9 C5 56 2 54 2 50 Z" fill="#8a2f2f"/>
+                </svg>
+                <span>Favoritos</span>
+            </button>
+
+            <button type="button" class="pasta" id="btnAbrirSite" data-pasta="site">
+                <svg viewBox="0 0 74 58" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M2 12 C2 8 5 6 9 6 H28 L34 12 H65 C69 12 72 15 72 19 V50 C72 54 69 56 65 56 H9 C5 56 2 54 2 50 Z" fill="#ffdf77"/>
+                </svg>
+                <span>Acessar o site</span>
+            </button>
+        </div>
     </div>
-</div>
+</section>
+
+<section class="conteudo-pastas" id="conteudoPastas">
+    <div class="painel-pasta painel-ativo" data-painel="historico">
+        <?= $this->include('usuarios/historico') ?>
+    </div>
+
+    <div class="painel-pasta" data-painel="favoritos">
+        <?= $this->include('usuarios/favoritos') ?>
+    </div>
+</section>
 
 <div class="modal-overlay" id="modalPerfil">
     <div class="modal-perfil">
@@ -77,6 +116,13 @@
             <input type="text" id="perfilTelefone" name="telefone">
             <div class="modal-erro" data-erro-de="telefone"></div>
 
+            <label for="perfilTipo">Quero</label>
+            <select id="perfilTipo" name="tipo" required>
+                <option value="cliente">Ler / comprar livros</option>
+                <option value="colaborador">Vender / trocar livros</option>
+            </select>
+            <div class="modal-erro" data-erro-de="tipo"></div>
+
             <label for="perfilSenha">Nova senha (deixe em branco para manter a atual)</label>
             <input type="password" id="perfilSenha" name="senha">
             <div class="modal-erro" data-erro-de="senha"></div>
@@ -90,6 +136,48 @@
         </form>
     </div>
 </div>
+
+<div class="nuvem-divisor nuvem-divisor--footer">
+    <svg viewBox="0 0 1440 90" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <path fill="var(--ink)" d="
+            M0,90
+            Q60,10 120,90
+            Q180,10 240,90
+            Q300,10 360,90
+            Q420,10 480,90
+            Q540,10 600,90
+            Q660,10 720,90
+            Q780,10 840,90
+            Q900,10 960,90
+            Q1020,10 1080,90
+            Q1140,10 1200,90
+            Q1260,10 1320,90
+            Q1380,10 1440,90
+            L1440,90 Z"/>
+    </svg>
+
+    <svg class="flor flor-footer-esquerda" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="40" cy="40" r="26" fill="var(--pink-deep)"/>
+        <circle cx="82" cy="40" r="26" fill="var(--pink-deep)"/>
+        <circle cx="40" cy="82" r="26" fill="var(--pink-deep)"/>
+        <circle cx="82" cy="82" r="26" fill="var(--pink-deep)"/>
+        <circle cx="61" cy="61" r="12" fill="var(--olive)"/>
+    </svg>
+
+    <svg class="flor flor-footer-direita" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="40" cy="40" r="30" fill="var(--pink-deep)"/>
+        <circle cx="80" cy="40" r="30" fill="var(--pink-deep)"/>
+        <circle cx="40" cy="80" r="30" fill="var(--pink-deep)"/>
+        <circle cx="80" cy="80" r="30" fill="var(--pink-deep)"/>
+        <circle cx="60" cy="60" r="14" fill="var(--olive)"/>
+    </svg>
+</div>
+
+<footer>
+    <div class="footer-bottom">
+        <span>© 2026 Clube do Livro. Daniel S., Daniel Q., Gleicekelly, Silmara, Thaise</span>
+    </div>
+</footer>
 
 <script>
 const urlBase = "<?= base_url() ?>";
@@ -114,6 +202,7 @@ btnAbrirPerfil.addEventListener('click', async () => {
         document.getElementById('perfilNome').value = dados.usuario.nome ?? '';
         document.getElementById('perfilEmail').value = dados.usuario.email ?? '';
         document.getElementById('perfilTelefone').value = dados.usuario.telefone ?? '';
+        document.getElementById('perfilTipo').value = dados.usuario.tipo ?? 'cliente';
         document.getElementById('perfilSenha').value = '';
         modalFotoPreview.src = dados.usuario.foto_url ?? (urlBase + 'assets/img/avatar-padrao.png');
 
@@ -177,14 +266,32 @@ function limparErros() {
     document.querySelectorAll('.modal-erro').forEach(el => el.textContent = '');
 }
 
-document.getElementById('btnHistorico').addEventListener('click', () => {
-    window.location.href = urlBase + 'usuarios/historico';
+document.querySelectorAll('.pasta').forEach((botao) => {
+    botao.addEventListener('click', () => {
+        const pasta = botao.dataset.pasta;
+
+        if (pasta === 'site') {
+            window.location.href = urlBase;
+            return;
+        }
+        if (pasta === 'perfil') {
+            return; 
+        }
+
+        document.querySelectorAll('.pasta').forEach(p => p.classList.remove('pasta-ativa'));
+        botao.classList.add('pasta-ativa');
+
+        document.querySelectorAll('.painel-pasta').forEach(painel => {
+            painel.classList.toggle('painel-ativo', painel.dataset.painel === pasta);
+        });
+
+        document.getElementById('conteudoPastas').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
 });
-document.getElementById('btnFavoritos').addEventListener('click', () => {
-    window.location.href = urlBase + 'usuarios/favoritos';
-});
-document.getElementById('btnAbrirSite').addEventListener('click', () => {
-    window.location.href = urlBase;
+
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 30);
 });
 </script>
 

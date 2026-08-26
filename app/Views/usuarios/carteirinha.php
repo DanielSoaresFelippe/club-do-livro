@@ -17,6 +17,11 @@
         <a href="<?= base_url() ?>" class="nav-logo">
             Clube do Livro
         </a>
+         <div class="nav-links">
+            <a id="btnAbrirPerfil">Alterar Perfil</a>
+            <a id="navHistorico">Visualizar Histórico</a>
+            <a id="navFavoritos">Visualizar Favoritos</a>
+        </div>
         <form action="<?= base_url('usuarios/logout') ?>" method="post" class="nav-actions">
             <button type="submit" class="btn btn-outline btn-sm nav-sair">
                 <i class="fa-solid fa-right-from-bracket"></i> Sair
@@ -33,11 +38,21 @@
     <div class="perfil-hero-inner">
         <span class="eyebrow">minha conta</span>
         <h1>Olá, <?= esc($usuario['nome']) ?>!</h1>
-        <p>Acompanhe seu perfil, seu histórico e os livros que você favoritou.</p>
+        <h2>Acompanhe seu perfil, seu histórico e os livros que você favoritou.</h2>
+    </div>
+    <div class="ribbon">
+      <div class="ribbon-track">
+        <span>Cada livro trocado ganha uma nova história</span>
+        <span>Ler é multiplicar histórias</span>
+        <span>Seu livro merece outra estante</span>
+        <span>Nenhuma história termina, ela só muda de dono</span>
+        <span>Cada livro trocado ganha uma nova história</span>
+        <span>Ler é multiplicar histórias</span>
+        <span>Seu livro merece outra estante</span>
+        <span>Nenhuma história termina, ela só muda de dono</span>
+      </div>
     </div>
 </header>
-
-<div class="divisor-quadradinhos"></div>
 
 <section class="carteirinha-section">
     <div class="carteirinha-area">
@@ -156,21 +171,9 @@
             L1440,90 Z"/>
     </svg>
 
-    <svg class="flor flor-footer-esquerda" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="40" cy="40" r="26" fill="var(--pink-deep)"/>
-        <circle cx="82" cy="40" r="26" fill="var(--pink-deep)"/>
-        <circle cx="40" cy="82" r="26" fill="var(--pink-deep)"/>
-        <circle cx="82" cy="82" r="26" fill="var(--pink-deep)"/>
-        <circle cx="61" cy="61" r="12" fill="var(--olive)"/>
-    </svg>
+    <img class="flor flor-footer-esquerda" src="<?= base_url('assets/img/betterthanthemovies.jpg') ?>">
 
-    <svg class="flor flor-footer-direita" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="40" cy="40" r="30" fill="var(--pink-deep)"/>
-        <circle cx="80" cy="40" r="30" fill="var(--pink-deep)"/>
-        <circle cx="40" cy="80" r="30" fill="var(--pink-deep)"/>
-        <circle cx="80" cy="80" r="30" fill="var(--pink-deep)"/>
-        <circle cx="60" cy="60" r="14" fill="var(--olive)"/>
-    </svg>
+    <img class="flor flor-footer-direita" src="<?= base_url('assets/img/enemiestolovers.png') ?>">
 </div>
 
 <footer>
@@ -293,6 +296,34 @@ const navbar = document.getElementById('navbar');
 window.addEventListener('scroll', () => {
     navbar.classList.toggle('scrolled', window.scrollY > 30);
 });
+
+function ativarPasta(pasta) {
+    if (pasta === 'site') {
+        window.location.href = urlBase;
+        return;
+    }
+    if (pasta === 'perfil') {
+        btnAbrirPerfil.click(); 
+        return;
+    }
+
+    document.querySelectorAll('.pasta').forEach(p => {
+        p.classList.toggle('pasta-ativa', p.dataset.pasta === pasta);
+    });
+
+    document.querySelectorAll('.painel-pasta').forEach(painel => {
+        painel.classList.toggle('painel-ativo', painel.dataset.painel === pasta);
+    });
+
+    document.getElementById('conteudoPastas').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+document.querySelectorAll('.pasta').forEach((botao) => {
+    botao.addEventListener('click', () => ativarPasta(botao.dataset.pasta));
+});
+
+document.getElementById('navHistorico').addEventListener('click', () => ativarPasta('historico'));
+document.getElementById('navFavoritos').addEventListener('click', () => ativarPasta('favoritos'));
 </script>
 
 </body>

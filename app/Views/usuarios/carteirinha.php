@@ -114,10 +114,14 @@
 <div class="modal-overlay" id="modalPerfil">
     <div class="modal-perfil">
         <button type="button" class="modal-fechar" id="fecharModalPerfil">&times;</button>
-        <h2>Meu perfil</h2>
+        <h2>Editar perfil</h2>
 
         <img id="modalFotoPreview" class="modal-foto-preview" src="" alt="Foto de perfil">
 
+        <span id="btnTrocarFoto" class="modal-foto-btn">
+            Trocar foto de perfil
+        </span>
+            
         <form id="formPerfil" enctype="multipart/form-data">
             <label for="perfilNome">Nome</label>
             <input type="text" id="perfilNome" name="nome" required>
@@ -128,7 +132,7 @@
             <div class="modal-erro" data-erro-de="email"></div>
 
             <label for="perfilTelefone">Telefone</label>
-            <input type="text" id="perfilTelefone" name="telefone">
+            <input type="text" id="perfilTelefone" name="telefone" maxlength="15" inputmode="numeric" placeholder="(00) 00000-0000">
             <div class="modal-erro" data-erro-de="telefone"></div>
 
             <label for="perfilTipo">Quero</label>
@@ -138,12 +142,17 @@
             </select>
             <div class="modal-erro" data-erro-de="tipo"></div>
 
-            <label for="perfilSenha">Nova senha (deixe em branco para manter a atual)</label>
-            <input type="password" id="perfilSenha" name="senha">
+            <label for="perfilSenha"> Nova senha (deixe em branco para manter a atual) </label>
+            <div class="perfil-password-wrap">
+                <input type="password" id="perfilSenha" name="senha">
+                <button type="button" class="perfil-password-toggle" id="togglePerfilSenha" aria-label="Mostrar senha">
+                    <i class="fa-solid fa-eye"></i>
+                </button>
+            </div>
+
             <div class="modal-erro" data-erro-de="senha"></div>
 
-            <label for="perfilFoto">Trocar foto de perfil</label>
-            <input type="file" id="perfilFoto" name="foto_perfil" accept="image/jpeg,image/png,image/webp">
+            <input type="file" id="perfilFoto" name="foto_perfil" accept="image/jpeg,image/png,image/webp" hidden>
             <div class="modal-erro" data-erro-de="foto_perfil"></div>
 
             <button type="submit" class="modal-salvar">Salvar alterações</button>
@@ -170,15 +179,17 @@
             Q1380,10 1440,90
             L1440,90 Z"/>
     </svg>
-
-    <img class="flor flor-footer-esquerda" src="<?= base_url('assets/img/betterthanthemovies.jpg') ?>">
-
-    <img class="flor flor-footer-direita" src="<?= base_url('assets/img/enemiestolovers.png') ?>">
 </div>
 
 <footer>
+    <img class="flor flor-footer-esquerda" src="<?= base_url('assets/img/betterthanthemovies.jpg') ?>">
+    <img class="flor flor-footer-direita" src="<?= base_url('assets/img/enemiestolovers.png') ?>">
+
     <div class="footer-bottom">
-        <span>© 2026 Clube do Livro. Daniel S., Daniel Q., Gleicekelly, Silmara, Thaise</span>
+        <span>
+            © 2026 Clube do Livro. Daniel S., Daniel Q., 
+            Gleicekelly, Silmara, Thaise
+        </span>
     </div>
 </footer>
 
@@ -204,7 +215,7 @@ btnAbrirPerfil.addEventListener('click', async () => {
 
         document.getElementById('perfilNome').value = dados.usuario.nome ?? '';
         document.getElementById('perfilEmail').value = dados.usuario.email ?? '';
-        document.getElementById('perfilTelefone').value = dados.usuario.telefone ?? '';
+        document.getElementById('perfilTelefone').value = mascararTelefone(dados.usuario.telefone ?? '');
         document.getElementById('perfilTipo').value = dados.usuario.tipo ?? 'cliente';
         document.getElementById('perfilSenha').value = '';
         modalFotoPreview.src = dados.usuario.foto_url ?? (urlBase + 'assets/img/avatar-padrao.png');
@@ -215,6 +226,24 @@ btnAbrirPerfil.addEventListener('click', async () => {
     }
 });
 
+const perfilSenha = document.getElementById('perfilSenha');
+const togglePerfilSenha = document.getElementById('togglePerfilSenha');
+
+togglePerfilSenha.addEventListener('click', () => {
+    const mostrando = perfilSenha.type === 'text';
+
+    perfilSenha.type = mostrando ? 'password' : 'text';
+
+    togglePerfilSenha.innerHTML = mostrando
+        ? '<i class="fa-solid fa-eye"></i>'
+        : '<i class="fa-solid fa-eye-slash"></i>';
+
+    togglePerfilSenha.setAttribute(
+        'aria-label',
+        mostrando ? 'Mostrar senha' : 'Ocultar senha'
+    );
+});
+
 btnFecharPerfil.addEventListener('click', () => modalPerfil.classList.remove('aberto'));
 modalPerfil.addEventListener('click', (evento) => {
     if (evento.target === modalPerfil) modalPerfil.classList.remove('aberto');
@@ -223,6 +252,10 @@ modalPerfil.addEventListener('click', (evento) => {
 document.getElementById('perfilFoto').addEventListener('change', (evento) => {
     const arquivo = evento.target.files[0];
     if (arquivo) modalFotoPreview.src = URL.createObjectURL(arquivo);
+});
+
+document.getElementById('btnTrocarFoto').addEventListener('click', () => {
+    document.getElementById('perfilFoto').click();
 });
 
 formPerfil.addEventListener('submit', async (evento) => {
@@ -257,6 +290,27 @@ formPerfil.addEventListener('submit', async (evento) => {
     } catch (erro) {
         console.error('Erro ao salvar perfil', erro);
     }
+});
+
+function mascararTelefone(valor) {
+    valor = valor.replace(/\D/g, '').slice(0, 11);
+
+    if (valor.length > 10) {
+        valor = valor.replace(/^(\d{2})(\d{5})(\d{0,4}).*/, '($1) $2-$3');
+    } else if (valor.length > 6) {
+        valor = valor.replace(/^(\d{2})(\d{4})(\d{0,4}).*/, '($1) $2-$3');
+    } else if (valor.length > 2) {
+        valor = valor.replace(/^(\d{2})(\d{0,5}).*/, '($1) $2');
+    } else if (valor.length > 0) {
+        valor = valor.replace(/^(\d*)/, '($1');
+    }
+
+    return valor;
+}
+
+const perfilTelefone = document.getElementById('perfilTelefone');
+perfilTelefone.addEventListener('input', (evento) => {
+    evento.target.value = mascararTelefone(evento.target.value);
 });
 
 function mostrarErros(erros) {
@@ -322,6 +376,7 @@ document.querySelectorAll('.pasta').forEach((botao) => {
     botao.addEventListener('click', () => ativarPasta(botao.dataset.pasta));
 });
 
+document.getElementById('btnAbrirPerfil').addEventListener('click', () => ativarPasta('perfil'));
 document.getElementById('navHistorico').addEventListener('click', () => ativarPasta('historico'));
 document.getElementById('navFavoritos').addEventListener('click', () => ativarPasta('favoritos'));
 </script>

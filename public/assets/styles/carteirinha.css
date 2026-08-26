@@ -153,10 +153,9 @@ section {
 .perfil-hero-inner {
     max-width: 640px;
     margin: auto;
-    margin-top: -50px;
 }
 
-.perfil-hero-inner .eyebrow { justify-content: center; margin-bottom: 14px; }
+.perfil-hero-inner .eyebrow { justify-content: center; margin-bottom: 14px; transform: translateY(-40px);}
 
 .perfil-hero-inner h1 {
     font-family: var(--font-comic);
@@ -169,6 +168,7 @@ section {
     position: relative;
     z-index: 10;
     white-space: nowrap;
+    transform: translateY(-50px);
 }
 
 .perfil-hero-inner h2 {
@@ -179,6 +179,7 @@ section {
     margin-bottom: 14px;
     position: relative;
     z-index: 10;
+    transform: translateY(-50px);
 }
 
 /* .perfil-hero-inner p {
@@ -191,6 +192,39 @@ section {
     position: relative;
     z-index: 10;
 } */
+
+.perfil-password-wrap {
+    position: relative;
+    width: 100%;
+}
+
+.perfil-password-wrap input {
+    width: 100%;
+    padding-right: 45px;
+}
+
+.perfil-password-toggle {
+    position: absolute;
+    top: 50%;
+    right: 12px;
+    transform: translateY(-50%);
+
+    border: none;
+    background: transparent;
+
+    color: var(--ink);
+    cursor: pointer;
+
+    font-size: 18px;
+    padding: 5px;
+
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.perfil-password-toggle:hover {
+    transform: translateY(-50%) scale(1.1);
+    opacity: 0.7;
+}
 
 .nuvem-divisor {
     position: absolute;
@@ -222,10 +256,6 @@ section {
 }
 .flor-esquerda { left: -15px; bottom: -50px; width: 400px; z-index: 95;}
 .flor-direita  { right: 50px; top: 10%; width: 300px;}
-.flor-footer-esquerda,
-.flor-footer-direita {
-    width: clamp(70px, 8vw, 110px);
-}
 
 .dado:hover {
     animation: jogarDado 0.8s ease-in-out;
@@ -432,11 +462,11 @@ section {
     align-items: center;
     gap: 6px;
     pointer-events: auto;
-    transition: transform .15s ease;
+    cursor: pointer;
     animation: flutuarPasta 3.4s ease-in-out infinite;
+    transition: transform 0.25s ease, filter 0.25s ease;
 }
 
-.pasta:hover { transform: translateY(-4px) rotate(-2deg); }
 .pasta.pasta-ativa svg { filter: drop-shadow(0 0 0 3px var(--ink)) drop-shadow(0 4px 6px rgba(0,0,0,.15)); }
 
 .pasta svg {
@@ -466,8 +496,8 @@ section {
 .pasta:nth-child(4) { animation-delay: -2.4s; }
 
 .pasta:hover {
-    animation-play-state: paused;
-    transform: translateY(-6px) rotate(-4deg);
+    transform: translate(12px, -12px) rotate(2deg);
+    filter: drop-shadow(8px 10px 8px rgba(0, 0, 0, 0.20));
 }
 
 @keyframes flutuarPasta {
@@ -491,12 +521,13 @@ section {
     display: none;
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,.5);
+    background: transparent;
     align-items: center;
     justify-content: center;
     z-index: 999;
     padding: 20px;
 }
+
 .modal-overlay.aberto { display: flex; }
 
 .modal-perfil {
@@ -508,8 +539,15 @@ section {
     position: relative;
     max-height: 90vh;
     overflow-y: auto;
+    scrollbar-width: none;     
+    -ms-overflow-style: none;   
 }
-.modal-perfil h2 { margin-top: 0; color: #7a2f2f; }
+
+.modal-perfil::-webkit-scrollbar {
+    display: none;          
+}
+
+.modal-perfil h2 { margin-top: 0; color: #7a2f2f; font-family: var(--font-comic); letter-spacing: 1.5px; font-weight: lighter;}
 .modal-fechar {
     position: absolute;
     top: 14px; right: 18px;
@@ -524,6 +562,42 @@ section {
     border-radius: 6px;
     font-size: 14px;
 }
+
+.modal-perfil select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 100%;
+    padding: 10px 40px 10px 12px;
+    border: 1px solid #ccc7b0;
+    border-radius: 6px;
+    font-size: 14px;
+    font-family: inherit;
+    color: var(--ink);
+    background-color: #fff;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9'><path d='M1 1L7 7L13 1' stroke='%237a2f2f' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    background-size: 12px;
+    cursor: pointer;
+    transition: border-color .2s ease, box-shadow .2s ease;
+}
+.modal-perfil select:hover {
+    border-color: #b23b3b;
+}
+.modal-perfil select:focus {
+    outline: none;
+    border-color: #7a2f2f;
+    box-shadow: 0 0 0 3px rgba(122, 47, 47, 0.15);
+}
+.modal-perfil select::-ms-expand {
+    display: none;
+}
+.modal-perfil select option {
+    color: var(--ink);
+    background: #fff;
+}
+
 .modal-foto-preview {
     display: block;
     width: 90px; height: 90px;
@@ -533,6 +607,25 @@ section {
     border: 3px solid #fff;
     box-shadow: 0 3px 8px rgba(0,0,0,.2);
 }
+
+.modal-foto-btn {
+    padding: 9px 18px;
+    background-color: #7a2f2f;
+    border-radius: 999px;
+    font-size: 13px;
+    cursor: pointer;
+    color: #ffffff;
+    transition: background .2s ease, transform .2s ease;
+    display: flex;
+    justify-content: center;
+    margin: 20px;
+}
+
+.modal-foto-btn:hover {
+    background: #5e2323;
+    transform: translateY(-1px);
+}
+
 .modal-erro { color: #b23b3b; font-size: 12px; margin-top: 4px; }
 .modal-salvar {
     width: 100%;
@@ -550,6 +643,7 @@ footer {
     background: var(--ink);
     color: var(--cream);
     padding: 26px clamp(16px, 4vw, 24px) 30px;
+    position: relative;
 }
 
 .footer-bottom {
@@ -563,8 +657,198 @@ footer {
     gap: 12px;
 }
 
+.flor-footer-esquerda {
+    position: absolute;
+    width: 180px;
+    height: auto;
+    left: 50px;
+    top: 0;
+    transform: translateY(-70%) rotate(-15deg);
+    transform-origin: bottom center;
+    z-index: 50;
+    animation: flutuarFlorEsquerda 3s ease-in-out infinite;
+}
+
+.flor-footer-direita {
+    position: absolute;
+    width: 215px;
+    height: auto;
+    right: 50px;
+    top: 0;
+    transform: translateY(-70%) rotate(15deg);
+    transform-origin: bottom center;
+    z-index: 50;
+    animation: flutuarFlorDireita 3.5s ease-in-out infinite;
+}
+
+@keyframes flutuarFlorEsquerda {
+    0%, 100% {
+        transform: translateY(-70%) rotate(-15deg);
+    }
+
+    50% {
+        transform: translateY(-85%) rotate(-10deg);
+    }
+
+}
+
+@keyframes flutuarFlorDireita {
+    0%, 100% {
+        transform: translateY(-70%) rotate(15deg);
+    }
+
+    50% {
+        transform: translateY(-85%) rotate(20deg);
+    }
+}
+
+.flor-footer-esquerda,
+.flor-footer-direita {
+    transition: filter 0.3s ease;
+}
+
+@media (max-width: 1024px) {
+    .cartao {
+        width: 92vw;
+        max-width: 92vw;
+    }
+
+    .pasta[data-pasta="perfil"]    { top: 6px; left: 6px; }
+    .pasta[data-pasta="historico"] { top: 6px; right: 6px; }
+    .pasta[data-pasta="favoritos"] { bottom: 6px; left: 6px; }
+    .pasta[data-pasta="site"]      { bottom: 6px; right: 6px; }
+
+    .campo-nome, .campo-email {
+        font-size: clamp(11px, 2.1vw, 18px);
+    }
+}
+
+@media (max-width: 768px) {
+    .nav-wrap {
+        top: 8px;
+        padding: 0 10px;
+    }
+
+    .navbar {
+        flex-wrap: wrap;
+        justify-content: center;
+        padding: 10px 14px;
+        border-radius: 22px;
+        row-gap: 10px;
+    }
+
+    .nav-links {
+        order: 3;
+        width: 100%;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 14px 20px;
+    }
+
+    .nav-links a {
+        font-size: 0.82rem;
+    }
+
+    .perfil-hero {
+        height: auto;
+        min-height: 480px;
+        padding-top: clamp(140px, 30vw, 190px);
+        padding-bottom: 70px;
+    }
+
+    .perfil-hero-inner h1 {
+        white-space: normal;
+        font-size: clamp(1.6rem, 8vw, 2.4rem);
+        letter-spacing: 1px;
+    }
+
+    .perfil-hero-inner h2 {
+        font-size: clamp(1rem, 4.5vw, 1.3rem);
+    }
+
+    .flor-esquerda,
+    .flor-direita {
+        width: 130px;
+    }
+
+    .flor-direita { right: 10px; }
+    .flor-esquerda { left: -10px; bottom: -30px; }
+
+    .cartao {
+        width: 96vw;
+        max-width: 96vw;
+    }
+
+    .foto-perfil-usuario {
+        border-width: 3px;
+    }
+
+    .campo-nome, .campo-email {
+        font-size: clamp(9px, 2.4vw, 15px);
+    }
+
+    .pasta svg {
+        width: clamp(56px, 16vw, 82px);
+    }
+
+    .pasta span {
+        font-size: 10px;
+        padding: 2px 6px;
+    }
+
+    .pasta[data-pasta="perfil"]    { top: 4px; left: 4px; }
+    .pasta[data-pasta="historico"] { top: 4px; right: 4px; }
+    .pasta[data-pasta="favoritos"] { bottom: 4px; left: 4px; }
+    .pasta[data-pasta="site"]      { bottom: 4px; right: 4px; }
+
+    .modal-perfil {
+        padding: 22px 18px;
+        border-radius: 10px;
+    }
+
+    .flor-footer-esquerda,
+    .flor-footer-direita {
+        width: 90px;
+    }
+
+    .flor-footer-esquerda { left: 12px; }
+    .flor-footer-direita { right: 12px; }
+}
+
 @media (max-width: 480px) {
-    .campo-nome, .campo-email { font-size: 3.4vw; }
-    .pasta svg { width: 68px; height: 30px; }
+    .campo-nome, .campo-email { font-size: clamp(7px, 3vw, 12px); }
+    .pasta svg { width: 46px; height: auto; }
     .flor { display: none; }
+
+    .nav-logo {
+        font-size: 0.95rem;
+    }
+
+    .foto-perfil-usuario {
+        border-width: 2px;
+        left: 9%;
+    }
+
+    .flor-footer-esquerda,
+    .flor-footer-direita {
+        width: 64px;
+    }
+
+    .footer-bottom {
+        font-size: 0.9rem;
+    }
+
+    .modal-perfil {
+        padding: 18px 14px;
+    }
+
+    .modal-perfil select,
+    .modal-perfil input {
+        font-size: 13px;
+        padding: 9px 10px;
+    }
+
+    .modal-perfil select {
+        padding-right: 34px;
+    }
 }

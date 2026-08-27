@@ -11,6 +11,19 @@
     --cream: #fbf3e2;
     --cream-dark: #f1e2c4;
     --white: #fffdf8;
+    --rope: #8a633e;
+    --rope-dark: #4d321f;
+    --rope-light: #b98b5f;
+    --wood: #d29a5c;
+    --wood-dark: #8a552c;
+    --wood-light: #e8bb7b;
+    --kraft-light: #c9a77b;
+    --kraft-dark: #765133;
+    --green-mid: #6f9b63;
+    --green-deep: #42653b;
+    --red-pow: #c96767;
+    --yellow-pow: #e6c95c;
+    --purple: #9a79a8;
     --font-display: 'Fraunces', serif;
     --font-script: 'Caveat', cursive;
     --font-comic: 'Bangers', cursive;
@@ -44,6 +57,8 @@ section {
     position: relative;
     width: 100%;
 }
+
+
 
 .nav-links {
     display: flex;
@@ -243,9 +258,21 @@ section {
 
 .nuvem-divisor--footer {
     position: relative;
-    height: clamp(60px, 8vw, 100px);
-    margin-top: -1px;
+    width: 100%;
+    height: 0;
+    margin: 0;
+    background: transparent;
     overflow: visible;
+    z-index: 10;
+}
+
+.nuvem-divisor--footer svg {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 60px;
+    display: block;
 }
 
 .flor {
@@ -506,16 +533,41 @@ section {
 }
 
 .conteudo-pastas {
-    background: var(--cream);
-    padding: clamp(40px, 7vw, 70px) clamp(16px, 4vw, 24px);
+    padding: 0;
+    background: none;
 }
 
 .painel-pasta {
     display: none;
-    max-width: 900px;
-    margin: 0 auto;
+    width: 100%;
+    min-height: 100vh;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    padding: clamp(40px, 7vw, 70px) clamp(16px, 4vw, 24px);
 }
-.painel-pasta.painel-ativo { display: block; }
+
+.painel-pasta.painel-ativo {
+    display: flex;
+    justify-content: center;
+}
+
+.painel-pasta[data-painel="historico"] {
+    background-image: url('../img/varal.png');
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+}
+
+.painel-pasta[data-painel="favoritos"] {
+    background-image: url('../img/fundoFavoritos.jpg');
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+}
+
+.painel-conteudo {
+    width: 100%;
+    max-width: 900px;
+}
 
 .modal-overlay {
     display: none;
@@ -679,6 +731,264 @@ footer {
     transform-origin: bottom center;
     z-index: 50;
     animation: flutuarFlorDireita 3.5s ease-in-out infinite;
+}
+
+.painel-vazio {
+    font-size: clamp(0.92rem, 2vw, 1.05rem);
+    color: var(--ink);
+    background: rgba(255, 253, 248, 0.55);
+    display: inline-block;
+    padding: 10px 18px;
+    border-radius: 14px;
+    position: relative;
+    z-index: 10;
+}
+
+.varal-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    margin-top: 20px;
+}
+
+.varal-viewport {
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+    overflow-x: hidden;
+    overflow-y: visible;
+    position: relative;
+    padding-top: 0;
+    padding-bottom: 40px;
+}
+
+.varal-trilha {
+    display: flex;
+    width: 100%;
+    align-items: flex-start;
+    transition: transform 0.7s cubic-bezier(0.65, 0, 0.35, 1);
+    will-change: transform;
+}
+
+.varal-pagina {
+    flex: 0 0 100%;
+    min-width: 100%;
+    position: relative;
+    aspect-ratio: 1672 / 941;
+    display: block;
+    overflow: visible;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+}
+
+.roupa-livro {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transform-origin: top center;
+    animation: balancarRoupa 3.2s ease-in-out infinite;
+    z-index: 5;
+}
+
+.roupa-1 { top: 30.3%; left: 25.9%; }
+.roupa-2 { top: 32.3%; left: 47.1%; }
+.roupa-3 { top: 32.1%; left: 71%;   }
+.roupa-4 { top: 74.6%; left: 32.2%; }
+.roupa-5 { top: 75.2%; left: 67.8%; }
+
+.roupa-livro:nth-child(2n) { animation-delay: -0.6s; }
+.roupa-livro:nth-child(3n) { animation-delay: -1.2s; }
+.roupa-livro:nth-child(4n) { animation-delay: -1.8s; }
+
+@keyframes balancarRoupa {
+    0%, 100% {
+        transform: translateX(-50%) rotate(0deg);
+    }
+    50% {
+        transform: translateX(-50%) rotate(1.6deg);
+    }
+}
+
+.varal-trilha.puxando .roupa-livro {
+    animation: balancarPuxao 0.7s ease-in-out;
+}
+
+@keyframes balancarPuxao {
+    0%   { transform: translateX(-50%) rotate(0deg) translateY(0); }
+    25%  { transform: translateX(-50%) rotate(-7deg) translateY(4px); }
+    55%  { transform: translateX(-50%) rotate(5deg) translateY(2px); }
+    80%  { transform: translateX(-50%) rotate(-2deg); }
+    100% { transform: translateX(-50%) rotate(0deg) translateY(0); }
+}
+
+.livro-cartao {
+    position: relative;
+    margin-top: 0;
+    width: 200px;
+    background: var(--white);
+    border: 3px solid var(--ink);
+    border-radius: 14px;
+    padding: 12px 12px 14px;
+    box-shadow: 6px 6px 0 var(--ink);
+    transition: transform .3s ease, box-shadow .3s ease;
+}
+
+.roupa-livro:hover .livro-cartao {
+    transform: translateY(-4px);
+    box-shadow: 8px 8px 0 var(--ink);
+}
+
+.livro-tag {
+    position: absolute;
+    top: -12px;
+    right: 10px;
+    font-family: var(--font-comic);
+    font-size: 0.62rem;
+    letter-spacing: 0.5px;
+    color: var(--white);
+    padding: 4px 10px;
+    border-radius: 999px;
+    border: 2px solid var(--ink);
+    transform: rotate(4deg);
+    box-shadow: 2px 2px 0 var(--ink);
+    white-space: nowrap;
+}
+
+.livro-tag.tag-troca { background: var(--green-mid); }
+.livro-tag.tag-venda { background: var(--red-pow); }
+.livro-tag.tag-ambos { background: var(--purple); }
+
+.livro-capa {
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 2px solid var(--ink);
+    margin-bottom: 10px;
+}
+
+.livro-capa img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    display: block;
+}
+
+.livro-status {
+    position: absolute;
+    bottom: 6px;
+    left: 6px;
+    right: 6px;
+    text-align: center;
+    font-size: 9px;
+    font-weight: 600;
+    text-transform: uppercase;
+    padding: 3px 4px;
+    border-radius: 999px;
+    color: var(--white);
+    background: var(--ink-soft);
+}
+
+.livro-status-disponivel   { background: var(--green-mid); }
+.livro-status-reservado    { background: var(--yellow-pow); color: var(--ink); }
+.livro-status-indisponivel { background: var(--red-pow); }
+
+.livro-info { display: flex; flex-direction: column; gap: 3px; }
+
+.livro-titulo {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 0.82rem;
+    line-height: 1.2;
+    color: var(--ink);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.livro-autor {
+    font-size: 0.68rem;
+    color: var(--ink-soft);
+    margin-bottom: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.livro-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+}
+
+.livro-preco {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 0.72rem;
+    color: var(--ink);
+}
+
+.livro-preco-troca {
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 0.62rem;
+    color: var(--green-deep);
+}
+
+.livro-cartao .btn-sm {
+    padding: 5px 12px;
+    font-size: 0.66rem;
+}
+
+.varal-navegacao {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.varal-seta {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: var(--white);
+    border: 2px solid var(--ink);
+    color: var(--ink);
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform .2s ease, opacity .2s ease;
+}
+
+.varal-seta:hover:not(:disabled) { transform: translateY(-2px); }
+.varal-seta:disabled { opacity: .35; cursor: default; }
+
+.varal-pontos { display: flex; gap: 8px; }
+
+.varal-ponto {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--kraft-light);
+    transition: background .2s ease, transform .2s ease;
+}
+
+.varal-ponto.ativo {
+    background: var(--ink);
+    transform: scale(1.2);
+}
+
+
+
+@media (max-width: 768px) {
+    .varal-pagina { padding-top: 36px; min-height: 300px; row-gap: 28px; }
+    .roupa-livro::before { top: 6px; }
+    .livro-cartao { width: 130px; margin-top: 24px; padding: 10px; }
+    .livro-capa img { height: 130px; }
 }
 
 @keyframes flutuarFlorEsquerda {

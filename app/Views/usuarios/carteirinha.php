@@ -103,11 +103,15 @@
 
 <section class="conteudo-pastas" id="conteudoPastas">
     <div class="painel-pasta painel-ativo" data-painel="historico">
-        <?= $this->include('usuarios/historico') ?>
+        <div class="painel-conteudo">
+            <?= $this->include('usuarios/historico') ?>
+        </div>
     </div>
 
     <div class="painel-pasta" data-painel="favoritos">
-        <?= $this->include('usuarios/favoritos') ?>
+        <div class="painel-conteudo">
+            <?= $this->include('usuarios/favoritos') ?>
+        </div>
     </div>
 </section>
 

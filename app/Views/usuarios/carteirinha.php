@@ -101,9 +101,29 @@
     </div>
 </section>
 
-<div class="nuvem-divisor nuvem-divisor--historico">
+<div class="nuvem-divisor nuvem-divisor--historico divisor-cabecalho divisor-ativo" data-divisor="historico">
     <svg viewBox="0 0 1440 90" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
         <path fill="var(--blue-historico)" d="
+            M0,90
+            Q60,10 120,90
+            Q180,10 240,90
+            Q300,10 360,90
+            Q420,10 480,90
+            Q540,10 600,90
+            Q660,10 720,90
+            Q780,10 840,90
+            Q900,10 960,90
+            Q1020,10 1080,90
+            Q1140,10 1200,90
+            Q1260,10 1320,90
+            Q1380,10 1440,90
+            L1440,90 Z"/>
+    </svg>
+</div>
+
+<div class="nuvem-divisor nuvem-divisor--favoritos divisor-cabecalho" data-divisor="favoritos">
+    <svg viewBox="0 0 1440 90" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <path fill="#fff9eb" d="
             M0,90
             Q60,10 120,90
             Q180,10 240,90
@@ -393,6 +413,10 @@ function ativarPasta(pasta) {
         painel.classList.toggle('painel-ativo', painel.dataset.painel === pasta);
     });
 
+    document.querySelectorAll('.divisor-cabecalho').forEach(divisor => {
+        divisor.classList.toggle('divisor-ativo', divisor.dataset.divisor === pasta);
+    });
+    
     document.getElementById('conteudoPastas').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
@@ -403,6 +427,7 @@ document.querySelectorAll('.pasta').forEach((botao) => {
 document.getElementById('btnAbrirPerfil').addEventListener('click', () => ativarPasta('perfil'));
 document.getElementById('navHistorico').addEventListener('click', () => ativarPasta('historico'));
 document.getElementById('navFavoritos').addEventListener('click', () => ativarPasta('favoritos'));
+
 </script>
 
 </body>

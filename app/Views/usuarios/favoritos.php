@@ -10,52 +10,76 @@ if (!isset($favoritos)) {
     ];
 }
 ?>
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>Favoritos - Clube do Livro</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,500;1,9..144,600&family=Caveat:wght@500;600;700&family=Bangers&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+<link rel="stylesheet" href="<?= assetUrl('assets/styles/carteirinha.css') ?>">
+</head>
+<body>
 
-<div class="painel-cabecalho-favoritos">
-    <h2>Favoritos</h2>
-    <p>Livros que você salvou para ver depois.</p>
-</div>
+<?= $this->include('partials/navbar') ?>
 
-<?php if (empty($favoritos)): ?>
-    <p class="painel-vazio">Você ainda não favoritou nenhum livro.</p>
-<?php else: ?>
-    <div class="favoritos-cesta">
-        <div class="favoritos-viewport">
-            <div class="favoritos-trilha">
-                <?php foreach (array_chunk($favoritos, 3) as $pagina): ?>
-                    <div class="favoritos-pagina">
-                        <?php foreach ($pagina as $i => $item): ?>
-                            <a href="<?= base_url('livro/detalhes/' . esc($item['id_livro'], 'url')) ?>" class="livro-cartao-favorito tilt-<?= $i % 3 ?>">
-                                <div class="livro-cartao">
-                                    <span class="livro-tag tag-favorito">Favorito</span>
-                                    <div class="livro-capa">
-                                        <img src="<?= base_url('uploads/livros/' . esc($item['capa'])) ?>" alt="<?= esc($item['titulo']) ?>">
-                                    </div>
-                                    <div class="livro-info">
-                                        <span class="livro-titulo"><?= esc($item['titulo']) ?></span>
-                                        <span class="livro-autor"><?= esc($item['autor']) ?></span>
-                                    </div>
-                                </div>
-                            </a>
+<section class="painel-pasta painel-ativo pagina-secundaria" data-painel="favoritos">
+    <div class="painel-conteudo">
+        <div class="painel-cabecalho-favoritos">
+            <h2>Favoritos</h2>
+            <p>Livros que você salvou para ver depois.</p>
+        </div>
+
+        <?php if (empty($favoritos)): ?>
+            <p class="painel-vazio">Você ainda não favoritou nenhum livro.</p>
+        <?php else: ?>
+            <div class="favoritos-cesta">
+                <div class="favoritos-viewport">
+                    <div class="favoritos-trilha">
+                        <?php foreach (array_chunk($favoritos, 3) as $pagina): ?>
+                            <div class="favoritos-pagina">
+                                <?php foreach ($pagina as $i => $item): ?>
+                                    <a href="<?= base_url('livro/detalhes/' . esc($item['id_livro'], 'url')) ?>" class="livro-cartao-favorito tilt-<?= $i % 3 ?>">
+                                        <div class="livro-cartao">
+                                            <span class="livro-tag tag-favorito">Favorito</span>
+                                            <div class="livro-capa">
+                                                <img src="<?= base_url('uploads/livros/' . esc($item['capa'])) ?>" alt="<?= esc($item['titulo']) ?>">
+                                            </div>
+                                            <div class="livro-info">
+                                                <span class="livro-titulo"><?= esc($item['titulo']) ?></span>
+                                                <span class="livro-autor"><?= esc($item['autor']) ?></span>
+                                            </div>
+                                        </div>
+                                    </a>
+                                <?php endforeach; ?>
+                            </div>
                         <?php endforeach; ?>
                     </div>
-                <?php endforeach; ?>
-            </div>
-        </div>
+                </div>
 
-        <div class="favoritos-navegacao">
-            <button type="button" class="varal-seta" id="favSetaAnterior" aria-label="Página anterior">&#8592;</button>
-            <div class="varal-pontos" id="favPontos"></div>
-            <button type="button" class="varal-seta" id="favSetaProxima" aria-label="Próxima página">&#8594;</button>
-        </div>
+                <div class="favoritos-navegacao">
+                    <button type="button" class="varal-seta" id="favSetaAnterior" aria-label="Página anterior">&#8592;</button>
+                    <div class="varal-pontos" id="favPontos"></div>
+                    <button type="button" class="varal-seta" id="favSetaProxima" aria-label="Próxima página">&#8594;</button>
+                </div>
+            </div>
+        <?php endif; ?>
     </div>
-<?php endif; ?>
+</section>
+
+<?= $this->include('partials/modal_perfil') ?>
+
+<?= $this->include('partials/footer') ?>
+
+<?= $this->include('partials/modal_perfil_script') ?>
 
 <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const trilha = document.querySelector('.favoritos-trilha');
-        if (!trilha) return;
-
+document.addEventListener('DOMContentLoaded', () => {
+    const trilha = document.querySelector('.favoritos-trilha');
+    if (trilha) {
         const paginas = trilha.querySelectorAll('.favoritos-pagina');
         const pontosContainer = document.getElementById('favPontos');
         const setaAnterior = document.getElementById('favSetaAnterior');
@@ -88,5 +112,14 @@ if (!isset($favoritos)) {
         setaProxima.addEventListener('click', () => irParaPagina(paginaAtual + 1));
 
         atualizar();
+    }
+
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+        navbar.classList.toggle('scrolled', window.scrollY > 30);
     });
+});
 </script>
+
+</body>
+</html>

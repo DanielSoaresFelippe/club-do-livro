@@ -1,7 +1,7 @@
 <?php
 if (!isset($favoritos)) {
     $favoritos = [
-        ['id_livro' => 1, 'titulo' => 'O Sol Entre as Páginas', 'autor' => 'Marina Aguiar', 'capa' => 'livro1.jpg'],
+        ['id_livro' => 1, 'titulo' => 'O Sol Entre as Páginas', 'autor' => 'Marina Aguiar', 'capa' => base_url('assets/img/heart.jpg')],
         ['id_livro' => 2, 'titulo' => 'Cartas Para Ninguém', 'autor' => 'Théo Bastos', 'capa' => 'livro2.jpg'],
         ['id_livro' => 3, 'titulo' => 'A Menina do Vento Sul', 'autor' => 'Iracema Coutinho', 'capa' => 'livro3.jpg'],
         ['id_livro' => 4, 'titulo' => 'Fragmentos de Uma Cidade', 'autor' => 'Rui Sampaio', 'capa' => 'livro4.jpg'],
@@ -26,13 +26,34 @@ if (!isset($favoritos)) {
 
 <?= $this->include('partials/navbar') ?>
 
+<header class="header-favoritos">
+    <div class="header-favoritos-conteudo">
+        <h2>Favoritos</h2>
+        <span class="eyebrow" style="color: var(--ink);">seus livros guardadinhos</span>
+        <p style="color: var(--ink)">Aqueles livros que você separou pra ler com calma, um dia desses.</p>
+    </div>
+</header>
+
+<div class="onda-abelha" aria-hidden="true">
+    <svg viewBox="0 0 1200 110" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+        <path class="onda-preenchimento"
+              d="M0,60 C 100,15 200,105 300,60 C 400,15 500,105 600,60 C 700,15 800,105 900,60 C 1000,15 1100,105 1200,60 L1200,110 L0,110 Z" />
+        <path id="trilhaOnda" class="onda-linha"
+              d="M0,60 C 100,15 200,105 300,60 C 400,15 500,105 600,60 C 700,15 800,105 900,60 C 1000,15 1100,105 1200,60" />
+
+        <image class="abelhinha"
+            href="<?= base_url('assets/img/abelhinha.png') ?>"
+            xlink:href="<?= base_url('assets/img/abelhinha.png') ?>"
+            width="130" height="95" x="-65" y="-47.5">
+            <animateMotion dur="15s" repeatCount="indefinite" rotate="autoReverse">
+                <mpath href="#trilhaOnda" />
+            </animateMotion>
+        </image>
+    </svg>
+</div>
+
 <section class="painel-pasta painel-ativo pagina-secundaria" data-painel="favoritos">
     <div class="painel-conteudo">
-        <div class="painel-cabecalho-favoritos">
-            <h2>Favoritos</h2>
-            <p>Livros que você salvou para ver depois.</p>
-        </div>
-
         <?php if (empty($favoritos)): ?>
             <p class="painel-vazio">Você ainda não favoritou nenhum livro.</p>
         <?php else: ?>
@@ -46,7 +67,7 @@ if (!isset($favoritos)) {
                                         <div class="livro-cartao">
                                             <span class="livro-tag tag-favorito">Favorito</span>
                                             <div class="livro-capa">
-                                                <img src="<?= base_url('uploads/livros/' . esc($item['capa'])) ?>" alt="<?= esc($item['titulo']) ?>">
+                                                <img src="<?= esc($item['capa']) ?>" alt="<?= esc($item['titulo']) ?>">
                                             </div>
                                             <div class="livro-info">
                                                 <span class="livro-titulo"><?= esc($item['titulo']) ?></span>

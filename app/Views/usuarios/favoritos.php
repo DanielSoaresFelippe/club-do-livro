@@ -28,7 +28,7 @@ if (!isset($favoritos)) {
 
 <header class="header-favoritos">
     <div class="header-favoritos-conteudo">
-        <h2>Favoritos</h2>
+        <h2><i class="fa-solid fa-heart"></i>Favoritos<i class="fa-solid fa-heart"></i></h2>
         <span class="eyebrow" style="color: var(--ink);">seus livros guardadinhos</span>
         <p style="color: var(--ink)">Aqueles livros que você separou pra ler com calma, um dia desses.</p>
     </div>

@@ -588,10 +588,11 @@ section {
 }
 
 .painel-pasta[data-painel="favoritos"] {
-    background-image: url('../img/fundoFavoritos.png');
-    background-size: 70% 70%;
+    background-image: url('../img/fundoFavoritos2.png');
+    background-size: 100% 100%;
     background-repeat: no-repeat;
     background-color: #fff;
+    margin-top: -35px;
 }
 
 .painel-pasta[data-painel="favoritos"] {
@@ -1250,21 +1251,23 @@ footer {
     line-height: 0;
     background: transparent;
     margin-top: -75px;
+    z-index: 1;
 }
 
 .onda-abelha svg {
     width: 100%;
-    height: 100%;
+    height: 150px;
     display: block;
+    z-index: 1;
 }
 
 .onda-preenchimento {
-    fill: #fff;
+    fill: transparent;
 }
 
 .onda-linha {
     fill: none;
-    stroke: var(--pink-deep);
+    stroke: #fff6a1;
     stroke-width: 3;
     stroke-dasharray: 7 9;
 }

@@ -1,18 +1,18 @@
 <?php
 if (!isset($favoritos)) {
     $favoritos = [
-        ['id_livro' => 1, 'titulo' => 'O Sol Entre as Páginas', 'autor' => 'Marina Aguiar', 'capa' => base_url('assets/img/heart.jpg')],
-        ['id_livro' => 2, 'titulo' => 'Cartas Para Ninguém', 'autor' => 'Théo Bastos', 'capa' => base_url('assets/img/heart.jpg')],
-        ['id_livro' => 3, 'titulo' => 'A Menina do Vento Sul', 'autor' => 'Iracema Coutinho', 'capa' => base_url('assets/img/heart.jpg')],
-        ['id_livro' => 4, 'titulo' => 'Fragmentos de Uma Cidade', 'autor' => 'Rui Sampaio', 'capa' => base_url('assets/img/heart.jpg')],
-        ['id_livro' => 5, 'titulo' => 'O Último Verão em Ipanema', 'autor' => 'Clarice Novaes', 'capa' => base_url('assets/img/heart.jpg')],
-        ['id_livro' => 6, 'titulo' => 'Sob o Céu de Outubro', 'autor' => 'Vinícius Prado', 'capa' => base_url('assets/img/heart.jpg')],
-        ['id_livro' => 7, 'titulo' => 'O Sol Entre as Páginas', 'autor' => 'Marina Aguiar', 'capa' => base_url('assets/img/heart.jpg')],
-        ['id_livro' => 8, 'titulo' => 'Cartas Para Ninguém', 'autor' => 'Théo Bastos', 'capa' => base_url('assets/img/heart.jpg')],
-        ['id_livro' => 9, 'titulo' => 'A Menina do Vento Sul', 'autor' => 'Iracema Coutinho', 'capa' => base_url('assets/img/heart.jpg')],
-        ['id_livro' => 10, 'titulo' => 'Fragmentos de Uma Cidade', 'autor' => 'Rui Sampaio', 'capa' => base_url('assets/img/heart.jpg')],
-        ['id_livro' => 11, 'titulo' => 'O Último Verão em Ipanema', 'autor' => 'Clarice Novaes', 'capa' => base_url('assets/img/heart.jpg')],
-        ['id_livro' => 12, 'titulo' => 'Sob o Céu de Outubro', 'autor' => 'Vinícius Prado', 'capa' => base_url('assets/img/heart.jpg')],
+        ['id_livro' => 1, 'titulo' => 'O Sol Entre as Páginas', 'autor' => 'Marina Aguiar', 'capa' => base_url('assets/img/images.jpg')],
+        ['id_livro' => 2, 'titulo' => 'Cartas Para Ninguém', 'autor' => 'Théo Bastos', 'capa' => base_url('assets/img/verity.jpg')],
+        ['id_livro' => 3, 'titulo' => 'A Menina do Vento Sul', 'autor' => 'Iracema Coutinho', 'capa' => base_url('assets/img/images.jpg')],
+        ['id_livro' => 4, 'titulo' => 'Fragmentos de Uma Cidade', 'autor' => 'Rui Sampaio', 'capa' => base_url('assets/img/verity.jpg')],
+        ['id_livro' => 5, 'titulo' => 'O Último Verão em Ipanema', 'autor' => 'Clarice Novaes', 'capa' => base_url('assets/img/images.jpg')],
+        ['id_livro' => 6, 'titulo' => 'Sob o Céu de Outubro', 'autor' => 'Vinícius Prado', 'capa' => base_url('assets/img/images.jpg')],
+        ['id_livro' => 7, 'titulo' => 'O Sol Entre as Páginas', 'autor' => 'Marina Aguiar', 'capa' => base_url('assets/img/images.jpg')],
+        ['id_livro' => 8, 'titulo' => 'Cartas Para Ninguém', 'autor' => 'Théo Bastos', 'capa' => base_url('assets/img/verity.jpg')],
+        ['id_livro' => 9, 'titulo' => 'A Menina do Vento Sul', 'autor' => 'Iracema Coutinho', 'capa' => base_url('assets/img/images.jpg')],
+        ['id_livro' => 10, 'titulo' => 'Fragmentos de Uma Cidade', 'autor' => 'Rui Sampaio', 'capa' => base_url('assets/img/images.jpg')],
+        ['id_livro' => 11, 'titulo' => 'O Último Verão em Ipanema', 'autor' => 'Clarice Novaes', 'capa' => base_url('assets/img/images.jpg')],
+        ['id_livro' => 12, 'titulo' => 'Sob o Céu de Outubro', 'autor' => 'Vinícius Prado', 'capa' => base_url('assets/img/images.jpg')],
     ];
 }
 ?>

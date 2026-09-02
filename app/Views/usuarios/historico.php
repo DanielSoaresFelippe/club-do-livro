@@ -78,18 +78,13 @@ if (!isset($historico)) {
 
 <section class="painel-pasta painel-ativo pagina-secundaria" data-painel="historico">
     <div class="painel-conteudo">
-        <div class="painel-cabecalho">
-            <h2>Histórico de Livros</h2>
-            <p>Livros que você colocou à venda, trocou ou já trocou com outros leitores.</p>
-        </div>
-
         <?php if (empty($historico)): ?>
             <p class="painel-vazio">
                 Você ainda não tem nenhum livro no histórico.
             </p>
         <?php else: ?>
 
-            <?php $paginasHistorico = array_chunk($historico, 5); ?>
+            <?php $paginasHistorico = array_chunk($historico, 3); ?>
 
             <div class="varal-container">
                 <div class="varal-viewport">
@@ -98,36 +93,14 @@ if (!isset($historico)) {
                             <div class="varal-pagina" data-pagina="<?= $indicePagina ?>">
                                 <?php foreach ($pagina as $indiceLivro => $item): ?>
                                     <div class="roupa-livro roupa-<?= $indiceLivro + 1 ?>">
-                                        <article class="livro-cartao">
-                                            <span class="livro-tag tag-<?= esc($item['tipo']) ?>">
-                                                <?= $item['tipo'] === 'troca' ? 'Troca' : ($item['tipo'] === 'venda' ? 'Venda' : 'Troca ou venda') ?>
-                                            </span>
-
-                                            <div class="livro-capa">
-                                                <img
-                                                    src="<?= esc($item['imagem_capa'] ?? base_url('assets/img/capa-padrao.png')) ?>"
-                                                    alt="<?= esc($item['titulo']) ?>"
-                                                    loading="lazy"
-                                                >
-                                                <span class="livro-status livro-status-<?= esc($item['status']) ?>">
-                                                    <?= esc($item['status']) ?>
-                                                </span>
-                                            </div>
-
-                                            <div class="livro-info">
-                                                <strong class="livro-titulo"><?= esc($item['titulo']) ?></strong>
-                                                <span class="livro-autor"><?= esc($item['autor']) ?></span>
-
-                                                <div class="livro-meta">
-                                                    <?php if ($item['preco']): ?>
-                                                        <span class="livro-preco"><?= esc($item['preco']) ?></span>
-                                                    <?php else: ?>
-                                                        <span class="livro-preco livro-preco-troca">Somente troca</span>
-                                                    <?php endif; ?>
-                                                    <a href="#" class="btn btn-outline btn-sm">Ver</a>
-                                                </div>
-                                            </div>
-                                        </article>
+                                        <div class="capa-pendurada">
+                                            <img
+                                                src="<?= esc($item['imagem_capa'] ?? base_url('assets/img/capa-padrao.png')) ?>"
+                                                alt="<?= esc($item['titulo']) ?>"
+                                                title="<?= esc($item['titulo']) ?> — <?= esc($item['autor']) ?>"
+                                                loading="lazy"
+                                            >
+                                        </div>
                                     </div>
                                 <?php endforeach; ?>
                             </div>
@@ -137,23 +110,16 @@ if (!isset($historico)) {
 
                 <?php if (count($paginasHistorico) > 1): ?>
                     <div class="varal-navegacao">
-                        <button type="button" class="varal-seta" id="varalAnterior" disabled aria-label="Página anterior">
-                            &larr;
-                        </button>
-
+                        <button type="button" class="varal-seta" id="varalAnterior" disabled aria-label="Página anterior">&larr;</button>
                         <div class="varal-pontos" id="varalPontos">
                             <?php for ($i = 0; $i < count($paginasHistorico); $i++): ?>
                                 <span class="varal-ponto<?= $i === 0 ? ' ativo' : '' ?>"></span>
                             <?php endfor; ?>
                         </div>
-
-                        <button type="button" class="varal-seta" id="varalProximo" aria-label="Próxima página">
-                            &rarr;
-                        </button>
+                        <button type="button" class="varal-seta" id="varalProximo" aria-label="Próxima página">&rarr;</button>
                     </div>
                 <?php endif; ?>
             </div>
-
         <?php endif; ?>
     </div>
 </section>

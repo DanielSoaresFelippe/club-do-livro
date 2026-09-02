@@ -592,7 +592,6 @@ section {
     background-size: 100% 100%;
     background-repeat: no-repeat;
     background-color: #fff;
-    margin-top: -35px;
 }
 
 .painel-pasta[data-painel="favoritos"] {
@@ -663,15 +662,15 @@ section {
     display: flex;
     flex-direction: column;
     width: 100%;
-    height: 100%;
     transition: transform 0.7s cubic-bezier(0.65, 0, 0.35, 1);
     will-change: transform;
 }
 
 .favoritos-pagina {
-    flex: 0 0 100%;
-    min-width: 100%;
-    height: 100%;
+    flex: 0 0 500px;
+    width: 100%;
+    height: 500px;
+    min-height: 500px;
     position: relative;
 }
 
@@ -710,9 +709,9 @@ section {
     z-index: 10 !important;
 }
 
-.pilha-capa-0 { top: 10px;  left: 20px;  transform: rotate(-8deg); z-index: 2; }
-.pilha-capa-1 { top: 0px;   left: 200px; transform: rotate(3deg);  z-index: 3; }
-.pilha-capa-2 { top: 20px;  left: 400px; transform: rotate(9deg);  z-index: 2; }
+.pilha-capa-0 { top: 25px;  left: 20px;  transform: rotate(-8deg); z-index: 2; }
+.pilha-capa-1 { top: 15px;   left: 200px; transform: rotate(3deg);  z-index: 3; }
+.pilha-capa-2 { top: 30px;  left: 400px; transform: rotate(9deg);  z-index: 2; }
 .pilha-capa-3 { top: 220px; left: 60px;  transform: rotate(-5deg); z-index: 1; }
 .pilha-capa-4 { top: 230px; left: 240px; transform: rotate(4deg);  z-index: 4; }
 .pilha-capa-5 { top: 210px; left: 420px; transform: rotate(-7deg); z-index: 1; }
@@ -724,16 +723,26 @@ section {
 .pilha-capa-4:hover { transform: translateY(-8px) scale(1.05) rotate(4deg); }
 
 @media (max-width: 768px) {
-    .favoritos-pilha {
-        transform: translate(-50%, -50%) scale(0.72);
+    .favoritos-viewport {
         height: 340px;
+    }
+
+    .favoritos-pagina {
+        flex-basis: 340px;
+        height: 340px;
+        min-height: 340px;
     }
 }
 
 @media (max-width: 480px) {
-    .favoritos-pilha {
-        transform: translate(-50%, -50%) scale(0.5);
-        height: 240px;
+    .favoritos-viewport {
+        height: 260px;
+    }
+
+    .favoritos-pagina {
+        flex-basis: 260px;
+        height: 260px;
+        min-height: 260px;
     }
 }
 
@@ -744,6 +753,26 @@ section {
     align-items: center;
     gap: 18px;
     margin-top: 4px;
+}
+
+.capa-pendurada {
+    width: 250px;
+    aspect-ratio: 3 / 4;
+    margin-top: -50px;
+    border-radius: 4px;
+    overflow: hidden;
+    transition: transform .3s ease, box-shadow .3s ease;
+}
+
+.capa-pendurada img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.roupa-livro:hover .capa-pendurada {
+    transform: translateY(-4px);
 }
 
 .painel-conteudo {
@@ -1043,13 +1072,12 @@ footer {
     transform-origin: top center;
     animation: balancarRoupa 3.2s ease-in-out infinite;
     z-index: 5;
+    cursor: pointer;
 }
 
-.roupa-1 { top: 30.3%; left: 25.9%; }
-.roupa-2 { top: 32.3%; left: 47.1%; }
-.roupa-3 { top: 32.1%; left: 71%;   }
-.roupa-4 { top: 78%; left: 32.2%; }
-.roupa-5 { top: 79%; left: 67.8%; }
+.roupa-1 { top: 52.3%; left: 15.9%; }
+.roupa-2 { top: 52.5%; left: 49.1%; }
+.roupa-3 { top: 52.5%; left: 82%;   }
 
 .roupa-livro:nth-child(2n) { animation-delay: -0.6s; }
 .roupa-livro:nth-child(3n) { animation-delay: -1.2s; }
@@ -1200,6 +1228,8 @@ footer {
     display: flex;
     align-items: center;
     gap: 18px;
+    margin-top: -92px;
+    z-index: 10;
 }
 
 .varal-seta {
@@ -1268,7 +1298,10 @@ footer {
 
 .header-favoritos-conteudo p {
     font-family: var(--font-comic);
-    font-size: 1.3rem;
+    font-size: 1.7rem;
+    letter-spacing: 1.5px;
+    color: #fff2a1;
+    -webkit-text-stroke: 0.9px var(--ink);
 }
 
 .onda-abelha {
@@ -1299,12 +1332,44 @@ footer {
     stroke-dasharray: 7 9;
 }
 
-/* imagens decorativas do header de favoritos */
 .header-decor {
     position: absolute;
     pointer-events: none;
     z-index: 4;
     animation: flutuarSuave 4s ease-in-out infinite;
+}
+
+.sticker-decor {
+    position: absolute;
+    pointer-events: none;
+    z-index: 1;
+    animation: flutuarSuave 4s ease-in-out infinite;
+}
+
+.sticker-pilha {
+    left: clamp(10px, 3vw, 40px);
+    top: clamp(100px, 5vw, 100px);
+    width: 250px;
+    transform: rotate(-5deg);
+    transform-origin: center;
+    animation: flutuarPilha 4s ease-in-out infinite;
+}
+
+@keyframes flutuarPilha {
+    0%, 100% {
+        transform: translateY(0) rotate(-5deg);
+    }
+
+    50% {
+        transform: translateY(-8px) rotate(-2deg);
+    }
+}
+
+.sticker-pato {
+    right: clamp(10px, 4vw, 50px);
+    bottom: -25px;
+    width: 300px;
+    animation-delay: -1.5s;
 }
 
 .header-livros-star {
@@ -1555,6 +1620,8 @@ footer {
 
     .flor-footer-esquerda { left: 12px; }
     .flor-footer-direita { right: 12px; }
+
+    .sticker-decor { display: none; }
 }
 
 @media (max-width: 480px) {

@@ -33,10 +33,12 @@ if (!isset($favoritos)) {
 <?= $this->include('partials/navbar') ?>
 
 <header class="header-favoritos">
+    <img src="<?= base_url('assets/img/hipotese.png') ?>" alt="" class="sticker-decor sticker-pilha">
+    <img src="<?= base_url('assets/img/pato.png') ?>" alt="" class="sticker-decor sticker-pato">
+
     <div class="header-favoritos-conteudo">
-        <span class="eyebrow" style="color: var(--ink);"><i class="fa-regular fa-star"></i>seus livros guardadinhos<i class="fa-regular fa-star"></i></span>
         <h2><i class="fa-solid fa-heart"></i>Favoritos<i class="fa-solid fa-heart"></i></h2>
-        <p style="color: var(--ink)">Aqueles livros que você separou pra ler com calma, um dia desses.</p>
+        <p>Seus livros favoritos na sua cestinha, esperando para serem lidos.</p>
     </div>
 </header>
 
@@ -116,10 +118,15 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         function atualizar() {
-            trilha.style.transform = `translateY(-${paginaAtual * 100}%)`;
+            const viewport = document.querySelector('.favoritos-viewport');
+            const alturaPagina = viewport.clientHeight;
+
+            trilha.style.transform = `translateY(-${paginaAtual * alturaPagina}px)`;
+
             pontosContainer.querySelectorAll('.varal-ponto').forEach((p, i) => {
                 p.classList.toggle('ativo', i === paginaAtual);
             });
+
             setaAnterior.disabled = paginaAtual === 0;
             setaProxima.disabled = paginaAtual === paginas.length - 1;
         }

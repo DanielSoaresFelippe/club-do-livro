@@ -2,14 +2,16 @@
 if (!isset($historico)) {
     $historico = [
         [
+            'id_livro'    => 1,
             'titulo'      => 'A Menina que Roubava Livros',
             'autor'       => 'Markus Zusak',
-            'tipo'        => 'troca',      
-            'status'      => 'disponivel', 
+            'tipo'        => 'troca',
+            'status'      => 'disponivel',
             'preco'       => null,
             'imagem_capa' => 'https://placehold.co/300x420/e59fc2/2a2313?text=A+Menina',
         ],
         [
+            'id_livro'    => 2,
             'titulo'      => 'O Nome do Vento',
             'autor'       => 'Patrick Rothfuss',
             'tipo'        => 'venda',
@@ -18,6 +20,7 @@ if (!isset($historico)) {
             'imagem_capa' => 'https://placehold.co/300x420/c7c364/2a2313?text=Nome+do+Vento',
         ],
         [
+            'id_livro'    => 3,
             'titulo'      => 'Duna',
             'autor'       => 'Frank Herbert',
             'tipo'        => 'ambos',
@@ -26,6 +29,7 @@ if (!isset($historico)) {
             'imagem_capa' => 'https://placehold.co/300x420/8f8c3a/fbf3e2?text=Duna',
         ],
         [
+            'id_livro'    => 4,
             'titulo'      => 'Homem-Aranha: De Volta ao Lar',
             'autor'       => 'Marvel Comics',
             'tipo'        => 'venda',
@@ -34,6 +38,7 @@ if (!isset($historico)) {
             'imagem_capa' => 'https://placehold.co/300x420/f3cadd/2a2313?text=Homem-Aranha',
         ],
         [
+            'id_livro'    => 5,
             'titulo'      => 'Orgulho e Preconceito',
             'autor'       => 'Jane Austen',
             'tipo'        => 'troca',
@@ -42,6 +47,7 @@ if (!isset($historico)) {
             'imagem_capa' => 'https://placehold.co/300x420/ecb8d3/2a2313?text=Orgulho',
         ],
         [
+            'id_livro'    => 6,
             'titulo'      => '1984',
             'autor'       => 'George Orwell',
             'tipo'        => 'ambos',
@@ -50,6 +56,7 @@ if (!isset($historico)) {
             'imagem_capa' => 'https://placehold.co/300x420/4d4c26/fbf3e2?text=1984',
         ],
         [
+            'id_livro'    => 7,
             'titulo'      => 'X-Men: Dias de um Futuro Esquecido',
             'autor'       => 'Marvel Comics',
             'tipo'        => 'venda',
@@ -93,14 +100,14 @@ if (!isset($historico)) {
                             <div class="varal-pagina" data-pagina="<?= $indicePagina ?>">
                                 <?php foreach ($pagina as $indiceLivro => $item): ?>
                                     <div class="roupa-livro roupa-<?= $indiceLivro + 1 ?>">
-                                        <div class="capa-pendurada">
+                                        <a href="<?= base_url('livro/detalhes/' . esc($item['id_livro'], 'url')) ?>" class="capa-pendurada">
                                             <img
                                                 src="<?= esc($item['imagem_capa'] ?? base_url('assets/img/capa-padrao.png')) ?>"
                                                 alt="<?= esc($item['titulo']) ?>"
                                                 title="<?= esc($item['titulo']) ?> — <?= esc($item['autor']) ?>"
                                                 loading="lazy"
                                             >
-                                        </div>
+                                        </a>
                                     </div>
                                 <?php endforeach; ?>
                             </div>

@@ -591,6 +591,7 @@
 
         if (data.success) {
           closeAuth();
+          window.location.href = "<?= base_url('usuarios/perfil')?>"
         } else {
           console.log(data.errors);
         }

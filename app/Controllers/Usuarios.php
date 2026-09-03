@@ -63,9 +63,17 @@ class Usuarios extends BaseController
             'ativo'       => 1,
         ]);
 
+        session()->set([
+            'usuario_id'     => $id,
+            'usuario_nome'   => $this->request->getPost('nome'),
+            'usuario_tipo'   => $this->request->getPost('tipo'),
+            'usuario_logado' => true,
+        ]);
+
         return $this->response->setJSON([
-            'success' => true,
-            'usuario' => [
+            'success'  => true,
+            'redirect' => base_url('usuarios/perfil'),
+            'usuario'  => [
                 'id'    => $id,
                 'nome'  => $this->request->getPost('nome'),
                 'tipo'  => $this->request->getPost('tipo'),

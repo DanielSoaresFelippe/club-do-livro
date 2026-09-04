@@ -6,6 +6,11 @@ use App\Models\UsuarioModel;
 
 class Usuarios extends BaseController
 {
+    protected function getUsuarioLogado(): ?int
+    {
+        return session()->get('usuario_id');
+    }
+
     public function cadastrar()
     {
         $usuarioModel = new UsuarioModel();
@@ -24,6 +29,9 @@ class Usuarios extends BaseController
             'tipo' => [
                 'required' => 'Selecione se você quer ler ou vender/doar livros.',
                 'in_list'  => 'Opção de cadastro inválida.',
+            ],
+            'email' => [
+                'is_unique' => 'Este e-mail já está cadastrado.',
             ],
         ])) {
             return $this->response->setStatusCode(422)->setJSON([
@@ -72,7 +80,7 @@ class Usuarios extends BaseController
 
         return $this->response->setJSON([
             'success'  => true,
-            'redirect' => base_url('usuarios/perfil'),
+            'redirect' => base_url('livro/'),
             'usuario'  => [
                 'id'    => $id,
                 'nome'  => $this->request->getPost('nome'),
@@ -117,7 +125,7 @@ class Usuarios extends BaseController
 
         return $this->response->setJSON([
             'sucess'   => true,
-            'redirect' => base_url('usuarios/perfil'),
+            'redirect' => base_url('livro/'),
         ]);
     }
 
@@ -267,21 +275,31 @@ class Usuarios extends BaseController
         ]);
     }
  
-    public function historico()
+     public function historico()
     {
-        if (!session()->get('usuario_logado')) {
-            return redirect()->to(base_url('/'));
+        $idUsuario = $this->getUsuarioLogado();
+        if (!$idUsuario) {
+            return redirect()->to(base_url('login'));
         }
- 
-        return view('usuarios/historico');
+
+        $historicoModel = new \App\Models\HistoricoModel();
+
+        return view('usuarios/historico', [
+            'historico' => $historicoModel->listarDoUsuario($idUsuario),
+        ]);
     }
- 
+
     public function favoritos()
     {
-        if (!session()->get('usuario_logado')) {
-            return redirect()->to(base_url('/'));
+        $idUsuario = $this->getUsuarioLogado();
+        if (!$idUsuario) {
+            return redirect()->to(base_url('login'));
         }
- 
-        return view('usuarios/favoritos');
+
+        $favoritoModel = new \App\Models\FavoritosModel();
+
+        return view('usuarios/favoritos', [
+            'favoritos' => $favoritoModel->listarDoUsuario($idUsuario),
+        ]);
     }
 }

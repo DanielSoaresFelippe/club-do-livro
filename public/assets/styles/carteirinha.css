@@ -1590,3 +1590,385 @@ footer {
         padding-right: 34px;
     }
 }
+
+.livro-hero {
+    min-height: 80vh;
+    background-image: url('../img/fundoHeaderLivro.png');
+    background-size: 100% 100%;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 0 60px;
+    position: relative;
+    overflow: hidden;
+}
+
+.livro-hero::before {
+    content: "";
+    position: absolute;
+    width: clamp(280px, 38vw, 350px);
+    height: clamp(280px, 38vw, 350px);
+    background-image: url('../img/readTime.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    left: 47%;
+    top: 10%;
+    z-index: 4;
+    pointer-events: none;
+    transform: rotate(-6deg);
+    animation: estrelaSticker1 4s ease-in-out infinite;
+}
+
+.livro-hero::after {
+    content: "";
+    position: absolute;
+    width: clamp(200px, 20vw, 300px);
+    height: clamp(200px, 20vw, 300px);
+    background-image: url('../img/maisumcap.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    left: 65%;
+    top: 37%;
+    z-index: 4;
+    pointer-events: none;
+    transform: rotate(5deg);
+    animation: estrelaSticker2 4.5s ease-in-out infinite;
+}
+
+
+@keyframes estrelaSticker1 {
+    0%, 100% {
+        transform: rotate(-6deg) translateY(0);
+    }
+
+    50% {
+        transform: rotate(-3deg) translateY(-8px);
+    }
+}
+
+@keyframes estrelaSticker2 {
+    0%, 100% {
+        transform: rotate(5deg) translateY(0);
+    }
+
+    50% {
+        transform: rotate(2deg) translateY(-7px);
+    }
+}
+
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .livro-hero::before {
+        width: 150px;
+        height: 150px;
+        left: 55%;
+        top: 22%;
+    }
+
+    .livro-hero::after {
+        width: 140px;
+        height: 140px;
+        left: 65%;
+        top: 45%;
+    }
+}
+
+@media (max-width: 480px) {
+    .livro-hero::before {
+        width: 110px;
+        height: 110px;
+        left: 54%;
+        top: 24%;
+    }
+
+    .livro-hero::after {
+        width: 105px;
+        height: 105px;
+        left: 65%;
+        top: 45%;
+    }
+}
+
+.livro-hero__overlay {
+    max-width: 640px;
+    margin: 0 auto;
+}
+
+.livro-hero__overlay h1 {
+    font-family: var(--font-comic);
+    font-weight: lighter;
+    font-size: 4.5rem;
+    color: var(--cream);
+    -webkit-text-stroke: 1.5px var(--ink);
+    margin-top: -300px;
+    position: relative;
+    z-index: 10;
+}
+
+.livro-filtros {
+    margin: 30px auto;
+    padding: 0 20px;
+    margin-left: 240px;
+}
+
+.livro-filtros__form {
+    display: flex;
+    align-items: flex-end;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.livro-filtros__form .campo {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.livro-filtros__form select {
+    padding: 10px 14px;
+    border: 2px solid var(--ink);
+    border-radius: 10px;
+    font-size: 1rem;
+    background: var(--white);
+}
+
+.livro-filtros__form .campo label {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+.livro-filtros__form button {
+    padding: 10px 18px;
+    height: 45px;
+    font-size: 1rem;
+    font-weight: 600;
+    background: #f9b6ca;
+    color: #fff;
+    border: 2px solid var(--ink);
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.livro-filtros__limpar {
+    align-self: center;
+    color: #666;
+    text-decoration: underline;
+    font-size: 0.9rem;
+}
+
+.livro-grid {
+    max-width: 150vh;
+    margin: 0 auto 60px;
+    padding: 0 20px;
+}
+
+.livro-grid__lista {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    margin-bottom: 100px;
+}
+
+.livro-grid__vazio {
+    text-align: center;
+    color: #888;
+    padding: 60px 0;
+}
+
+.livro-card {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+}
+
+.livro-card__capa {
+    position: relative;
+    aspect-ratio: 3 / 4;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.livro-card__capa img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.livro-card__badge {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    font-size: 0.7rem;
+    padding: 3px 8px;
+    border-radius: 4px;
+    color: #fff;
+    text-transform: uppercase;
+}
+
+.livro-card__badge--venda { background: #d64f7a; }
+.livro-card__badge--troca { background: #4f9dd6; }
+.livro-card__badge--ambos { background: #9a4fd6; }
+
+.livro-card__info {
+    margin-top: 10px;
+}
+
+.livro-card__genero {
+    font-size: 0.75rem;
+    color: #999;
+    text-transform: uppercase;
+}
+
+.livro-card__info h3 {
+    font-size: 0.95rem;
+    margin: 4px 0 2px;
+}
+
+.livro-card__autor {
+    font-size: 0.85rem;
+    color: #666;
+    margin: 0 0 6px;
+}
+
+.livro-card__preco {
+    font-weight: 700;
+}
+
+.onda-livro {
+    position: relative;
+    width: 100%;
+    height: clamp(80px, 10vw, 110px);
+    line-height: 0;
+    background: transparent;
+    margin-top: -110px;
+}
+
+.onda-livro svg {
+    width: 100%;
+    height: 150px;
+    display: block;
+    z-index: 1;
+}
+
+.onda-livro__preenchimento {
+    fill: var(--cream);
+}
+
+.livro-paginacao {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 35px;
+    padding: 0 20px;
+}
+
+.livro-paginacao__seta {
+    width: 42px;
+    height: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: var(--white);
+    color: var(--ink);
+
+    border: 2px solid var(--ink);
+
+    font-size: 15px;
+
+    box-shadow: 4px 4px 0 var(--ink);
+
+    transition:
+        transform .2s ease,
+        box-shadow .2s ease,
+        background .2s ease;
+}
+
+.livro-paginacao__seta:hover {
+    background: #f9b6ca;
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0 var(--ink);
+}
+
+.livro-paginacao__seta--desabilitada {
+    opacity: .35;
+    cursor: default;
+    pointer-events: none;
+    box-shadow: 2px 2px 0 rgba(42, 35, 19, .4);
+}
+
+.livro-paginacao__info {
+    min-width: 150px;
+    padding: 9px 18px;
+    text-align: center;
+    background: #f9b6ca;
+    border: 2px solid var(--ink);
+    border-radius: 999px;
+    color: var(--ink);
+    font-family: var(--font-script);
+    font-size: 1.15rem;
+    font-weight: bold;
+    box-shadow: 4px 4px 0 var(--ink);
+    transition: transform .2s ease;
+}
+
+.livro-paginacao__info:hover {
+    transform: translateY(-2px);
+}
+
+@media (max-width: 600px) {
+
+    .livro-paginacao {
+        gap: 10px;
+        margin-top: 28px;
+        padding: 0 20px;
+    }
+
+    .livro-paginacao__seta {
+        width: 38px;
+        height: 38px;
+        font-size: 13px;
+    }
+
+    .livro-paginacao__info {
+        min-width: 125px;
+        padding: 8px 12px;
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 1200px) {
+    .livro-grid__lista {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+@media (max-width: 900px) {
+    .livro-grid__lista {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .livro-grid__lista {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 400px) {
+    .livro-grid__lista {
+        grid-template-columns: 1fr;
+    }
+}

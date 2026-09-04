@@ -67,18 +67,22 @@
               <div class="auth-photo-preview" id="cadastroFotoPreview"><i class="fa-solid fa-images"></i></div>
               <label class="auth-photo-label" for="cadastroFoto">Adicionar foto</label>
               <input type="file" id="cadastroFoto" name="foto_perfil" accept="image/*">
+              <span class="auth-erro-campo" data-erro="foto_perfil"></span>
             </div>
             <div class="auth-field">
               <label for="cadastroNome">Nome</label>
               <input type="text" id="cadastroNome" name="nome" placeholder="Seu nome" required>
+              <span class="auth-erro-campo" data-erro="nome"></span>
             </div>
             <div class="auth-field">
               <label for="cadastroEmail">E-mail</label>
               <input type="email" id="cadastroEmail" name="email" placeholder="voce@email.com" required>
+              <span class="auth-erro-campo" data-erro="email"></span>
             </div>
             <div class="auth-field">
               <label for="cadastroTelefone">Telefone</label>
               <input type="tel" id="cadastroTelefone" name="telefone" placeholder="(00) 00000-0000">
+              <span class="auth-erro-campo" data-erro="telefone"></span>
             </div>
             <div class="auth-field">
               <label for="cadastroTipo">Você quer</label>
@@ -87,6 +91,7 @@
                 <option value="cliente">Ler — quero encontrar e pegar livros</option>
                 <option value="colaborador">Vender/Doar — quero disponibilizar meus livros</option>
               </select>
+              <span class="auth-erro-campo" data-erro="tipo"></span>
             </div>
             <div class="auth-field">
               <label for="cadastroSenha">Senha</label>
@@ -94,6 +99,7 @@
                 <input type="password" id="cadastroSenha" name="senha" placeholder="Crie uma senha" required>
                 <button type="button" class="auth-password-toggle" data-target="cadastroSenha" aria-label="Mostrar senha"><i class="fa-solid fa-eye"></i></button>
               </div>
+              <span class="auth-erro-campo" data-erro="senha"></span>
               <ul class="auth-password-rules" id="cadastroSenhaRules">
                 <li data-rule="length">Mín. 8 caracteres</li>
                 <li data-rule="upper">1 letra maiúscula</li>
@@ -185,109 +191,41 @@
     </div>
 
     <div class="books-grid">
-      <article class="book-card opacity-reveal">
-        <span class="book-tag tag-troca">Troca</span>
-        <div class="book-cover"></div>
-        <div class="book-info">
-          <h3>A Menina que Roubava Livros</h3>
-          <p class="book-author">Markus Zusak</p>
-          <div class="book-meta">
-            <span class="book-price only-troca">Somente troca</span>
-            <a href="#" class="btn btn-outline">Ver</a>
-          </div>
-        </div>
-      </article>
-
-      <article class="book-card opacity-reveal">
-        <span class="book-tag tag-venda">Venda</span>
-        <div class="book-cover"></div>
-        <div class="book-info">
-          <h3>O Nome do Vento</h3>
-          <p class="book-author">Patrick Rothfuss</p>
-          <div class="book-meta">
-            <span class="book-price">R$ 32,00</span>
-            <a href="#" class="btn btn-outline">Ver</a>
-          </div>
-        </div>
-      </article>
-
-      <article class="book-card opacity-reveal">
-        <span class="book-tag tag-ambos">Troca ou venda</span>
-        <div class="book-cover"></div>
-        <div class="book-info">
-          <h3>Duna</h3>
-          <p class="book-author">Frank Herbert</p>
-          <div class="book-meta">
-            <span class="book-price">R$ 28,00</span>
-            <a href="#" class="btn btn-outline">Ver</a>
-          </div>
-        </div>
-      </article>
-
-      <article class="book-card opacity-reveal">
-        <span class="book-tag tag-venda">Venda</span>
-        <div class="book-cover"></div>
-        <div class="book-info">
-          <h3>Homem-Aranha: De Volta ao Lar</h3>
-          <p class="book-author">Marvel Comics</p>
-          <div class="book-meta">
-            <span class="book-price">R$ 18,00</span>
-            <a href="#" class="btn btn-outline">Ver</a>
-          </div>
-        </div>
-      </article>
-
-      <article class="book-card opacity-reveal">
-        <span class="book-tag tag-troca">Troca</span>
-        <div class="book-cover"></div>
-        <div class="book-info">
-          <h3>Orgulho e Preconceito</h3>
-          <p class="book-author">Jane Austen</p>
-          <div class="book-meta">
-            <span class="book-price only-troca">Somente troca</span>
-            <a href="#" class="btn btn-outline">Ver</a>
-          </div>
-        </div>
-      </article>
-
-      <article class="book-card opacity-reveal">
-        <span class="book-tag tag-ambos">Troca ou venda</span>
-        <div class="book-cover"></div>
-        <div class="book-info">
-          <h3>1984</h3>
-          <p class="book-author">George Orwell</p>
-          <div class="book-meta">
-            <span class="book-price">R$ 22,00</span>
-            <a href="#" class="btn btn-outline">Ver</a>
-          </div>
-        </div>
-      </article>
-
-      <article class="book-card opacity-reveal">
-        <span class="book-tag tag-venda">Venda</span>
-        <div class="book-cover"></div>
-        <div class="book-info">
-          <h3>X-Men: Dias de um Futuro Esquecido</h3>
-          <p class="book-author">Marvel Comics</p>
-          <div class="book-meta">
-            <span class="book-price">R$ 15,00</span>
-            <a href="#" class="btn btn-outline">Ver</a>
-          </div>
-        </div>
-      </article>
-
-      <article class="book-card opacity-reveal">
-        <span class="book-tag tag-troca">Troca</span>
-        <div class="book-cover"></div>
-        <div class="book-info">
-          <h3>O Guia do Mochileiro das Galáxias</h3>
-          <p class="book-author">Douglas Adams</p>
-          <div class="book-meta">
-            <span class="book-price only-troca">Somente troca</span>
-            <a href="#" class="btn btn-outline">Ver</a>
-          </div>
-        </div>
-      </article>
+      <?php $totalPlaceholders = 8 - count($livros); ?>
+      <?php if (!empty($livros)): ?>
+        <?php foreach ($livros as $livro): ?>
+          <?php
+            $tipo = $livro['tipo_transacao'] ?? 'venda';
+            $tagClass = 'tag-' . $tipo;
+            $tagLabel = match ($tipo) {
+                'troca' => 'Troca',
+                'venda' => 'Venda',
+                default => 'Troca ou venda',
+            };
+          ?>
+          <article class="book-card opacity-reveal">
+            <span class="book-tag <?= esc($tagClass) ?>"><?= esc($tagLabel) ?></span>
+            <div class="book-cover" style="background-image: url('<?= $livro['imagem_capa'] ?>'); background-size: 100% 100%; background-repeat: no-repeat;"></div>
+            <div class="book-info">
+              <h3><?= esc($livro['titulo']) ?></h3>
+              <p class="book-author"><?= esc($livro['autor']) ?></p>
+              <div class="book-meta">
+                <?php if ($tipo === 'troca'): ?>
+                  <span class="book-price only-troca">Somente troca</span>
+                <?php else: ?>
+                  <span class="book-price">R$ <?= number_format((float) $livro['preco'], 2, ',', '.') ?></span>
+                <?php endif; ?>
+                <a href="<?= base_url('livro/detalhes/' . $livro['id_livro']) ?>" class="btn btn-outline">Ver</a>
+              </div>
+            </div>
+          </article>
+        <?php endforeach; ?>
+        <?php for ($i = 0; $i < $totalPlaceholders; $i++): ?>
+          <article class="book-card book-card--empty" aria-hidden="true"></article>
+        <?php endfor; ?>
+      <?php else: ?>
+        <p style="text-align:center; width:100%;">Nenhum livro cadastrado ainda.</p>
+      <?php endif; ?>
     </div>
 
     <div class="book-cta-btn">
@@ -497,7 +435,7 @@
         if (data.sucess) {
           window.location.href = data.redirect;
         } else {
-          mostrarErroLogin(data.errors?.login || 'E-mail ou senha inválidos.');
+          mostrarErroGeral(loginForm, data.errors?.login || 'E-mail ou senha inválidos.');
         }
       } catch (err) {
         console.error(err);
@@ -506,6 +444,34 @@
         submitBtn.disabled = false;
       }
     });
+
+    function mostrarErrosCampo(form, errors) {
+      form.querySelectorAll('.auth-erro-campo').forEach((el) => (el.textContent = ''));
+
+      if (!errors) return;
+
+      Object.entries(errors).forEach(([campo, mensagem]) => {
+        const span = form.querySelector(`[data-erro="${campo}"]`);
+        if (span) {
+          span.textContent = mensagem;
+        } else {
+          mostrarErroGeral(form, mensagem);
+        }
+      });
+    }
+
+    function mostrarErroGeral(form, mensagem) {
+      let erroEl = form.querySelector('.auth-erro-geral');
+      if (!erroEl) {
+        erroEl = document.createElement('p');
+        erroEl.className = 'auth-erro-geral';
+        erroEl.style.color = '#b23b3b';
+        erroEl.style.fontSize = '13px';
+        erroEl.style.marginTop = '4px';
+        form.querySelector('.auth-submit').insertAdjacentElement('beforebegin', erroEl);
+      }
+      erroEl.textContent = mensagem;
+    }
 
     function mostrarErroLogin(mensagem) {
       let erroEl = loginForm.querySelector('.auth-erro-geral');
@@ -577,6 +543,8 @@
         return;
       }
 
+      mostrarErrosCampo(cadastroForm, null); 
+
       const formData = new FormData(cadastroForm);
       const submitBtn = cadastroForm.querySelector('.auth-submit');
       submitBtn.disabled = true;
@@ -591,12 +559,12 @@
 
         if (data.success) {
           closeAuth();
-          window.location.href = "<?= base_url('usuarios/perfil')?>"
         } else {
-          console.log(data.errors);
+          mostrarErrosCampo(cadastroForm, data.errors);
         }
       } catch (err) {
         console.error(err);
+        mostrarErroGeral(cadastroForm, 'Erro ao tentar cadastrar. Tente novamente.');
       } finally {
         submitBtn.disabled = false;
       }

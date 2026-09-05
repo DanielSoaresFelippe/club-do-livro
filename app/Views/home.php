@@ -57,9 +57,22 @@
                 <button type="button" class="auth-password-toggle" data-target="loginSenha" aria-label="Mostrar senha"><i class="fa-solid fa-eye"></i></button>
               </div>
             </div>
-            <a href="#" class="auth-forgot">Esqueci minha senha</a>
+            <a href="#" class="auth-forgot" id="forgotPasswordLink">Esqueci minha senha</a>
             <button type="submit" class="btn btn-primary auth-submit">Entrar</button>
             <p class="auth-hint">Ainda não tem conta? <button type="button" data-auth-tab="cadastro">Cadastre-se</button></p>
+          </form>
+
+          <form class="auth-form" id="forgotForm">
+            <div class="auth-field">
+              <label for="forgotEmail">E-mail cadastrado</label>
+              <input type="email" id="forgotEmail" placeholder="voce@email.com" required>
+            </div>
+            <p class="auth-hint" id="forgotMessage">Enviaremos um link para você criar uma nova senha.</p>
+            <button type="submit" class="btn btn-primary auth-submit" id="forgotSubmit">
+              <span class="forgot-submit-label">Enviar link</span>
+              <span class="forgot-submit-loading" aria-hidden="true"><i class="fa-solid fa-spinner"></i> Enviando...</span>
+            </button>
+            <p class="auth-hint"><button type="button" id="backToLogin">Voltar para o login</button></p>
           </form>
 
           <form class="auth-form" id="cadastroForm" enctype="multipart/form-data">
@@ -425,6 +438,9 @@
     const authClose = document.getElementById('authClose');
     const loginForm = document.getElementById('loginForm');
     const cadastroForm = document.getElementById('cadastroForm');
+    const forgotForm = document.getElementById('forgotForm');
+    const forgotPasswordLink = document.getElementById('forgotPasswordLink');
+    const backToLogin = document.getElementById('backToLogin');
 
     function openAuth(mode) {
       authOverlay.classList.add('is-open');
@@ -448,7 +464,22 @@
 
       loginForm.classList.toggle('is-active', !isCadastro);
       cadastroForm.classList.toggle('is-active', isCadastro);
+      forgotForm.classList.remove('is-active');
     }
+
+    forgotPasswordLink.addEventListener('click', (event) => {
+      event.preventDefault();
+      authTitle.textContent = 'Recuperar senha';
+      authSwitch.style.display = 'none';
+      loginForm.classList.remove('is-active');
+      cadastroForm.classList.remove('is-active');
+      forgotForm.classList.add('is-active');
+    });
+
+    backToLogin.addEventListener('click', () => {
+      authSwitch.style.display = '';
+      setAuthMode('login');
+    });
 
     document.querySelectorAll('[data-auth-open]').forEach((el) => {
       el.addEventListener('click', (event) => {
@@ -504,6 +535,38 @@
         mostrarErroLogin('Erro ao tentar entrar. Tente novamente.');
       } finally {
         submitBtn.disabled = false;
+      }
+    });
+
+    forgotForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const submitBtn = forgotForm.querySelector('.auth-submit');
+      const message = document.getElementById('forgotMessage');
+      const submitLabel = submitBtn.querySelector('.forgot-submit-label');
+      const submitLoading = submitBtn.querySelector('.forgot-submit-loading');
+      submitBtn.disabled = true;
+      submitBtn.classList.add('is-loading');
+      message.classList.remove('is-success', 'is-error');
+      submitLabel.setAttribute('aria-hidden', 'true');
+      submitLoading.setAttribute('aria-hidden', 'false');
+      try {
+        const formData = new FormData();
+        formData.append('email', document.getElementById('forgotEmail').value);
+        const resp = await fetch('<?= base_url('usuarios/recuperar-senha') ?>', { method: 'POST', body: formData });
+        const data = await resp.json();
+        message.textContent = data.message || data.errors?.geral || data.errors?.email || 'Não foi possível enviar o link.';
+        message.classList.add(resp.ok && data.success ? 'is-success' : 'is-error');
+        if (resp.ok && data.success) {
+          document.getElementById('forgotEmail').value = '';
+        }
+      } catch (err) {
+        message.textContent = 'Erro ao solicitar a recuperação. Tente novamente.';
+        message.classList.add('is-error');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.classList.remove('is-loading');
+        submitLabel.setAttribute('aria-hidden', 'false');
+        submitLoading.setAttribute('aria-hidden', 'true');
       }
     });
 

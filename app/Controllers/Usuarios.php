@@ -147,7 +147,11 @@ class Usuarios extends BaseController
             $emailService->setFrom((string) env('email.fromEmail'), (string) env('email.fromName', 'Clube do Livro'));
             $emailService->setTo($usuario['email']);
             $emailService->setSubject('Redefinição de senha - Clube do Livro');
-            $emailService->setMessage("Olá, {$usuario['nome']}!\n\nAcesse o link abaixo para criar uma nova senha. Ele expira em 30 minutos e só pode ser usado uma vez:\n\n" . base_url('usuarios/redefinir?token=' . urlencode($token)) . "\n\nSe você não solicitou essa alteração, ignore este e-mail.");
+            $emailService->setMailType('html');
+            $emailService->setMessage(view('emails/redefinicao_senha', [
+                'nome' => $usuario['nome'],
+                'link' => base_url('usuarios/redefinir?token=' . urlencode($token)),
+            ]));
 
             if (! $emailService->send()) {
                 log_message('error', 'Falha ao enviar recuperação de senha: ' . $emailService->printDebugger(['headers']));

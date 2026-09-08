@@ -132,3 +132,11 @@ CREATE INDEX idx_livros_genero       ON livros(id_genero);
 CREATE INDEX idx_propostas_status    ON propostas(status);
 CREATE INDEX idx_propostas_prazo     ON propostas(prazo_limite);
 CREATE INDEX idx_mensagens_conversa  ON mensagens(id_conversa);
+
+ALTER TABLE historico_transacoes
+DROP FOREIGN KEY fk_historico_livro;
+
+ALTER TABLE historico_transacoes
+ADD CONSTRAINT fk_historico_livro
+FOREIGN KEY (id_livro) REFERENCES livros(id_livro)
+ON DELETE CASCADE;

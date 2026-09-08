@@ -101,6 +101,8 @@ class Livro extends BaseController
 
     public function meusLivros()
     {
+        helper('form_helper');
+
         $idUsuario = $this->getUsuarioLogado();
 
         if (!$idUsuario) {
@@ -114,6 +116,8 @@ class Livro extends BaseController
 
     public function novo()
     {
+        helper('form_helper');
+
         if (!$this->getUsuarioLogado()) {
             return redirect()->to(base_url('login'));
         }
@@ -166,6 +170,8 @@ class Livro extends BaseController
 
     public function editar($id = null)
     {
+        helper('form_helper');
+        
         $idUsuario = $this->getUsuarioLogado();
 
         if (!$idUsuario) {

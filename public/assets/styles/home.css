@@ -655,12 +655,51 @@ section {
     flex-shrink: 0;
 }
 
+.forgot-submit-loading {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.forgot-submit-loading i {
+    animation: forgotSpinner .8s linear infinite;
+}
+
+.auth-submit.is-loading .forgot-submit-label {
+    display: none;
+}
+
+.auth-submit.is-loading .forgot-submit-loading {
+    display: inline-flex;
+}
+
+.auth-submit:disabled {
+    cursor: wait;
+    opacity: .8;
+    transform: none;
+}
+
+@keyframes forgotSpinner {
+    to { transform: rotate(360deg); }
+}
+
 .auth-hint {
     text-align: center;
     font-size: 14px;
     color: var(--ink-soft);
     margin-top: clamp(6px, 2vh, 18px);
     flex-shrink: 0;
+}
+
+#forgotMessage.is-success {
+    color: var(--green-deep);
+    font-weight: 600;
+}
+
+#forgotMessage.is-error {
+    color: var(--red-pow);
+    font-weight: 600;
 }
 
 .auth-hint button {

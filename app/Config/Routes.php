@@ -8,6 +8,9 @@ $routes->post('/logout', 'Home::logout');
 
 $routes->post('cadastro', 'Usuarios::cadastrar');
 $routes->post('usuarios/login', 'Usuarios::login');
+$routes->post('usuarios/recuperar-senha', 'Usuarios::solicitarRecuperacao');
+$routes->get('usuarios/redefinir', 'Usuarios::redefinirSenha');
+$routes->post('usuarios/redefinir', 'Usuarios::salvarNovaSenha');
 $routes->get('usuarios/logout', 'Usuarios::logout');
  
 $routes->get('usuarios/perfil', 'Usuarios::perfil');

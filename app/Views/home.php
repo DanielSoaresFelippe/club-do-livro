@@ -12,23 +12,7 @@
 </head>
 <body>
 
-  <div class="nav-wrap">
-    <nav class="navbar" id="navbar">
-      <a href="#top" class="nav-logo">
-        Clube do Livro
-      </a>
-      <ul class="nav-links">
-        <li><a href="#categorias">Categorias</a></li>
-        <li><a href="#recentes">Agora na estante</a></li>
-        <li><a href="#como-funciona">Como funciona</a></li>
-      </ul>
-      <div class="nav-actions">
-        <a href="#" class="login-link" data-auth-open="login">Login</a>
-        <a href="#" class="btn btn-primary" data-auth-open="cadastro">Cadastar</a>
-      </div>
-      <button class="nav-toggle" aria-label="Abrir menu">☰</button>
-    </nav>
-  </div>
+  <?= $this->include('partials/navbar') ?>
 
   <div class="auth-overlay" id="authOverlay">
     <div class="auth-modal">
@@ -80,18 +64,22 @@
               <div class="auth-photo-preview" id="cadastroFotoPreview"><i class="fa-solid fa-images"></i></div>
               <label class="auth-photo-label" for="cadastroFoto">Adicionar foto</label>
               <input type="file" id="cadastroFoto" name="foto_perfil" accept="image/*">
+              <span class="auth-erro-campo" data-erro="foto_perfil"></span>
             </div>
             <div class="auth-field">
               <label for="cadastroNome">Nome</label>
               <input type="text" id="cadastroNome" name="nome" placeholder="Seu nome" required>
+              <span class="auth-erro-campo" data-erro="nome"></span>
             </div>
             <div class="auth-field">
               <label for="cadastroEmail">E-mail</label>
               <input type="email" id="cadastroEmail" name="email" placeholder="voce@email.com" required>
+              <span class="auth-erro-campo" data-erro="email"></span>
             </div>
             <div class="auth-field">
               <label for="cadastroTelefone">Telefone</label>
               <input type="tel" id="cadastroTelefone" name="telefone" placeholder="(00) 00000-0000">
+              <span class="auth-erro-campo" data-erro="telefone"></span>
             </div>
             <div class="auth-field">
               <label for="cadastroTipo">Você quer</label>
@@ -100,6 +88,7 @@
                 <option value="cliente">Ler — quero encontrar e pegar livros</option>
                 <option value="colaborador">Vender/Doar — quero disponibilizar meus livros</option>
               </select>
+              <span class="auth-erro-campo" data-erro="tipo"></span>
             </div>
             <div class="auth-field">
               <label for="cadastroSenha">Senha</label>
@@ -107,6 +96,7 @@
                 <input type="password" id="cadastroSenha" name="senha" placeholder="Crie uma senha" required>
                 <button type="button" class="auth-password-toggle" data-target="cadastroSenha" aria-label="Mostrar senha"><i class="fa-solid fa-eye"></i></button>
               </div>
+              <span class="auth-erro-campo" data-erro="senha"></span>
               <ul class="auth-password-rules" id="cadastroSenhaRules">
                 <li data-rule="length">Mín. 8 caracteres</li>
                 <li data-rule="upper">1 letra maiúscula</li>
@@ -146,51 +136,93 @@
   </header>
 
   <section class="themes-section" id="categorias">
-    <div class="section-head">
-      <span class="eyebrow">explore por tema</span>
-      <h2>Encontre pelo seu gênero favorito</h2>
-    </div>
-
-    <div class="themes-grid">
-      <article class="theme-card romance opacity-reveal">
-        <div class="theme-body">
-          <h2 style="color: var(--pink-deep); -webkit-text-stroke: 1.5px var(--ink); font-size: 50px; letter-spacing: 2px;">Romance</h2>
-          <p>Histórias de amor pra fazer o coração disparar a cada capítulo.</p>
-          <a href="#" class="btn btn-outline btn-sm theme" style="background-color: #faecdb; color: #2a2313;">Ver todos</a>
-        </div>
-      </article>
-
-      <article class="theme-card gibis opacity-reveal">
-        <div class="theme-body">
-          <h2 style="color: var(--red-pow); -webkit-text-stroke: 1.5px var(--ink); font-size: 50px; letter-spacing: 2px;">Gibis</h2>
-          <p>Super-heróis, vilões e universos inteiros em cada quadrinho.</p>
-          <a href="#" class="btn btn-outline btn-sm theme" style="background-color: #faecdb; color: #2a2313;">Ver todos</a>
-        </div>
-      </article>
-
-      <article class="theme-card fantasia opacity-reveal">
-        <div class="theme-body">
-          <h2 style="color: #ee8b09; -webkit-text-stroke: 1.5px var(--ink); font-size: 50px; letter-spacing: 2px;">Fantasia</h2>
-          <p>Mundos mágicos, criaturas lendárias e aventuras épicas.</p>
-          <a href="#" class="btn btn-outline btn-sm theme" style="background-color: #faecdb; color: #2a2313;">Ver todos</a>
-        </div>
-      </article>
-
-      <article class="theme-card manga opacity-reveal">
-        <div class="theme-body">
-          <h2 style="color: var(--olive); -webkit-text-stroke: 1.5px var(--ink); font-size: 50px; letter-spacing: 2px;">Mangá</h2>
-          <p>Traços marcantes e histórias direto do Japão pra sua estante.</p>
-          <a href="#" class="btn btn-outline btn-sm theme" style="background-color: #faecdb; color: #2a2313;">Ver todos</a>
-        </div>
-      </article>
-    </div>
-
-    <div class="book-cta-btn">
-      <span class="mas">Ver todos</span>
-      <button id="workThemes" type="button" name="Hover">Ver todos</button>
-    </div>
+      <div class="section-head">
+          <span class="eyebrow">explore por tema</span>
+          <h2>Encontre pelo seu gênero favorito</h2>
+      </div>
+      <div class="themes-grid">
+          <article class="theme-card romance opacity-reveal">
+              <div class="theme-body">
+                  <h2 style="color: var(--pink-deep); -webkit-text-stroke: 1.5px var(--ink); font-size: 50px; letter-spacing: 2px;">
+                      Romance
+                  </h2>
+                  <p>
+                      Histórias de amor pra fazer o coração disparar a cada capítulo.
+                  </p>
+                  <a
+                      href="<?= base_url('livro?genero=1') ?>"
+                      class="btn btn-outline btn-sm theme"
+                      style="background-color: #faecdb; color: #2a2313;"
+                  >
+                      Ver todos
+                  </a>
+              </div>
+          </article>
+          <article class="theme-card gibis opacity-reveal">
+              <div class="theme-body">
+                  <h2 style="color: var(--red-pow); -webkit-text-stroke: 1.5px var(--ink); font-size: 50px; letter-spacing: 2px;">
+                      Gibis
+                  </h2>
+                  <p>
+                      Super-heróis, vilões e universos inteiros em cada quadrinho.
+                  </p>
+                  <a
+                      href="<?= base_url('livro?genero=3') ?>"
+                      class="btn btn-outline btn-sm theme"
+                      style="background-color: #faecdb; color: #2a2313;"
+                  >
+                      Ver todos
+                  </a>
+              </div>
+          </article>
+          <article class="theme-card fantasia opacity-reveal">
+              <div class="theme-body">
+                  <h2 style="color: #ee8b09; -webkit-text-stroke: 1.5px var(--ink); font-size: 50px; letter-spacing: 2px;">
+                      Fantasia
+                  </h2>
+                  <p>
+                      Mundos mágicos, criaturas lendárias e aventuras épicas.
+                  </p>
+                  <a
+                      href="<?= base_url('livro?genero=6') ?>"
+                      class="btn btn-outline btn-sm theme"
+                      style="background-color: #faecdb; color: #2a2313;"
+                  >
+                      Ver todos
+                  </a>
+              </div>
+          </article>
+          <article class="theme-card manga opacity-reveal">
+              <div class="theme-body">
+                  <h2 style="color: var(--olive); -webkit-text-stroke: 1.5px var(--ink); font-size: 50px; letter-spacing: 2px;">
+                      Mangá
+                  </h2>
+                  <p>
+                      Traços marcantes e histórias direto do Japão pra sua estante.
+                  </p>
+                  <a
+                      href="<?= base_url('livro?genero=4') ?>"
+                      class="btn btn-outline btn-sm theme"
+                      style="background-color: #faecdb; color: #2a2313;"
+                  >
+                      Ver todos
+                  </a>
+              </div>
+          </article>
+      </div>
+      <div class="book-cta-btn">
+          <span class="mas">Ver todos</span>
+          <button
+              id="workThemes"
+              type="button"
+              name="Hover"
+              onclick="window.location.href='<?= base_url('livro') ?>'"
+          >
+              Ver todos
+          </button>
+      </div>
   </section>
-
+  
   <section class="recent-books-section" id="recentes">
     <div class="section-head" style="margin-bottom: 60px; margin-top: -50px;">
       <span class="eyebrow" style="font-size: 2rem;">novidades</span>
@@ -198,109 +230,41 @@
     </div>
 
     <div class="books-grid">
-      <article class="book-card opacity-reveal">
-        <span class="book-tag tag-troca">Troca</span>
-        <div class="book-cover"></div>
-        <div class="book-info">
-          <h3>A Menina que Roubava Livros</h3>
-          <p class="book-author">Markus Zusak</p>
-          <div class="book-meta">
-            <span class="book-price only-troca">Somente troca</span>
-            <a href="#" class="btn btn-outline">Ver</a>
-          </div>
-        </div>
-      </article>
-
-      <article class="book-card opacity-reveal">
-        <span class="book-tag tag-venda">Venda</span>
-        <div class="book-cover"></div>
-        <div class="book-info">
-          <h3>O Nome do Vento</h3>
-          <p class="book-author">Patrick Rothfuss</p>
-          <div class="book-meta">
-            <span class="book-price">R$ 32,00</span>
-            <a href="#" class="btn btn-outline">Ver</a>
-          </div>
-        </div>
-      </article>
-
-      <article class="book-card opacity-reveal">
-        <span class="book-tag tag-ambos">Troca ou venda</span>
-        <div class="book-cover"></div>
-        <div class="book-info">
-          <h3>Duna</h3>
-          <p class="book-author">Frank Herbert</p>
-          <div class="book-meta">
-            <span class="book-price">R$ 28,00</span>
-            <a href="#" class="btn btn-outline">Ver</a>
-          </div>
-        </div>
-      </article>
-
-      <article class="book-card opacity-reveal">
-        <span class="book-tag tag-venda">Venda</span>
-        <div class="book-cover"></div>
-        <div class="book-info">
-          <h3>Homem-Aranha: De Volta ao Lar</h3>
-          <p class="book-author">Marvel Comics</p>
-          <div class="book-meta">
-            <span class="book-price">R$ 18,00</span>
-            <a href="#" class="btn btn-outline">Ver</a>
-          </div>
-        </div>
-      </article>
-
-      <article class="book-card opacity-reveal">
-        <span class="book-tag tag-troca">Troca</span>
-        <div class="book-cover"></div>
-        <div class="book-info">
-          <h3>Orgulho e Preconceito</h3>
-          <p class="book-author">Jane Austen</p>
-          <div class="book-meta">
-            <span class="book-price only-troca">Somente troca</span>
-            <a href="#" class="btn btn-outline">Ver</a>
-          </div>
-        </div>
-      </article>
-
-      <article class="book-card opacity-reveal">
-        <span class="book-tag tag-ambos">Troca ou venda</span>
-        <div class="book-cover"></div>
-        <div class="book-info">
-          <h3>1984</h3>
-          <p class="book-author">George Orwell</p>
-          <div class="book-meta">
-            <span class="book-price">R$ 22,00</span>
-            <a href="#" class="btn btn-outline">Ver</a>
-          </div>
-        </div>
-      </article>
-
-      <article class="book-card opacity-reveal">
-        <span class="book-tag tag-venda">Venda</span>
-        <div class="book-cover"></div>
-        <div class="book-info">
-          <h3>X-Men: Dias de um Futuro Esquecido</h3>
-          <p class="book-author">Marvel Comics</p>
-          <div class="book-meta">
-            <span class="book-price">R$ 15,00</span>
-            <a href="#" class="btn btn-outline">Ver</a>
-          </div>
-        </div>
-      </article>
-
-      <article class="book-card opacity-reveal">
-        <span class="book-tag tag-troca">Troca</span>
-        <div class="book-cover"></div>
-        <div class="book-info">
-          <h3>O Guia do Mochileiro das Galáxias</h3>
-          <p class="book-author">Douglas Adams</p>
-          <div class="book-meta">
-            <span class="book-price only-troca">Somente troca</span>
-            <a href="#" class="btn btn-outline">Ver</a>
-          </div>
-        </div>
-      </article>
+      <?php $totalPlaceholders = 8 - count($livros); ?>
+      <?php if (!empty($livros)): ?>
+        <?php foreach ($livros as $livro): ?>
+          <?php
+            $tipo = $livro['tipo_transacao'] ?? 'venda';
+            $tagClass = 'tag-' . $tipo;
+            $tagLabel = match ($tipo) {
+                'troca' => 'Troca',
+                'venda' => 'Venda',
+                default => 'Troca ou venda',
+            };
+          ?>
+          <article class="book-card opacity-reveal">
+            <span class="book-tag <?= esc($tagClass) ?>"><?= esc($tagLabel) ?></span>
+            <div class="book-cover" style="background-image: url('<?= $livro['imagem_capa'] ?>'); background-size: 100% 100%; background-repeat: no-repeat;"></div>
+            <div class="book-info">
+              <h3><?= esc($livro['titulo']) ?></h3>
+              <p class="book-author"><?= esc($livro['autor']) ?></p>
+              <div class="book-meta">
+                <?php if ($tipo === 'troca'): ?>
+                  <span class="book-price only-troca">Somente troca</span>
+                <?php else: ?>
+                  <span class="book-price">R$ <?= number_format((float) $livro['preco'], 2, ',', '.') ?></span>
+                <?php endif; ?>
+                <a href="<?= base_url('livro/detalhes/' . $livro['id_livro']) ?>" class="btn btn-outline">Ver</a>
+              </div>
+            </div>
+          </article>
+        <?php endforeach; ?>
+        <?php for ($i = 0; $i < $totalPlaceholders; $i++): ?>
+          <article class="book-card book-card--empty" aria-hidden="true"></article>
+        <?php endfor; ?>
+      <?php else: ?>
+        <p style="text-align:center; width:100%;">Nenhum livro cadastrado ainda.</p>
+      <?php endif; ?>
     </div>
 
     <div class="book-cta-btn">
@@ -354,7 +318,9 @@
     </div>
     <div class="buttons">
       <button class="blob-btn">
-        Trocar / Vender
+        <a href="<?= base_url('livro') ?>">
+          Trocar / Vender
+        </a>
         <span class="blob-btn__inner">
           <span class="blob-btn__blobs">
             <span class="blob-btn__blob"></span>
@@ -417,13 +383,6 @@
       });
     }, { threshold: 0.15 });
     revealEls.forEach((el) => revealObserver.observe(el));
-
-    const toggle = document.querySelector('.nav-toggle');
-    const links = document.querySelector('.nav-links');
-
-    toggle.addEventListener('click', function () {
-        links.classList.toggle('nav-open');
-    });
 
     document.getElementById('workThemes').addEventListener('click', () => {
       window.location.href = '#';
@@ -528,7 +487,7 @@
         if (data.sucess) {
           window.location.href = data.redirect;
         } else {
-          mostrarErroLogin(data.errors?.login || 'E-mail ou senha inválidos.');
+          mostrarErroGeral(loginForm, data.errors?.login || 'E-mail ou senha inválidos.');
         }
       } catch (err) {
         console.error(err);
@@ -538,37 +497,33 @@
       }
     });
 
-    forgotForm.addEventListener('submit', async (event) => {
-      event.preventDefault();
-      const submitBtn = forgotForm.querySelector('.auth-submit');
-      const message = document.getElementById('forgotMessage');
-      const submitLabel = submitBtn.querySelector('.forgot-submit-label');
-      const submitLoading = submitBtn.querySelector('.forgot-submit-loading');
-      submitBtn.disabled = true;
-      submitBtn.classList.add('is-loading');
-      message.classList.remove('is-success', 'is-error');
-      submitLabel.setAttribute('aria-hidden', 'true');
-      submitLoading.setAttribute('aria-hidden', 'false');
-      try {
-        const formData = new FormData();
-        formData.append('email', document.getElementById('forgotEmail').value);
-        const resp = await fetch('<?= base_url('usuarios/recuperar-senha') ?>', { method: 'POST', body: formData });
-        const data = await resp.json();
-        message.textContent = data.message || data.errors?.geral || data.errors?.email || 'Não foi possível enviar o link.';
-        message.classList.add(resp.ok && data.success ? 'is-success' : 'is-error');
-        if (resp.ok && data.success) {
-          document.getElementById('forgotEmail').value = '';
+    function mostrarErrosCampo(form, errors) {
+      form.querySelectorAll('.auth-erro-campo').forEach((el) => (el.textContent = ''));
+
+      if (!errors) return;
+
+      Object.entries(errors).forEach(([campo, mensagem]) => {
+        const span = form.querySelector(`[data-erro="${campo}"]`);
+        if (span) {
+          span.textContent = mensagem;
+        } else {
+          mostrarErroGeral(form, mensagem);
         }
-      } catch (err) {
-        message.textContent = 'Erro ao solicitar a recuperação. Tente novamente.';
-        message.classList.add('is-error');
-      } finally {
-        submitBtn.disabled = false;
-        submitBtn.classList.remove('is-loading');
-        submitLabel.setAttribute('aria-hidden', 'false');
-        submitLoading.setAttribute('aria-hidden', 'true');
+      });
+    }
+
+    function mostrarErroGeral(form, mensagem) {
+      let erroEl = form.querySelector('.auth-erro-geral');
+      if (!erroEl) {
+        erroEl = document.createElement('p');
+        erroEl.className = 'auth-erro-geral';
+        erroEl.style.color = '#b23b3b';
+        erroEl.style.fontSize = '13px';
+        erroEl.style.marginTop = '4px';
+        form.querySelector('.auth-submit').insertAdjacentElement('beforebegin', erroEl);
       }
-    });
+      erroEl.textContent = mensagem;
+    }
 
     function mostrarErroLogin(mensagem) {
       let erroEl = loginForm.querySelector('.auth-erro-geral');
@@ -640,6 +595,8 @@
         return;
       }
 
+      mostrarErrosCampo(cadastroForm, null); 
+
       const formData = new FormData(cadastroForm);
       const submitBtn = cadastroForm.querySelector('.auth-submit');
       submitBtn.disabled = true;
@@ -654,12 +611,12 @@
 
         if (data.success) {
           closeAuth();
-          window.location.href = "<?= base_url('usuarios/perfil')?>"
         } else {
-          console.log(data.errors);
+          mostrarErrosCampo(cadastroForm, data.errors);
         }
       } catch (err) {
         console.error(err);
+        mostrarErroGeral(cadastroForm, 'Erro ao tentar cadastrar. Tente novamente.');
       } finally {
         submitBtn.disabled = false;
       }

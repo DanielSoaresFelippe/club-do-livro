@@ -1,0 +1,287 @@
+.header-banner {
+    width: 100%;
+    height: 100%;
+    background-image: url('../img/fundoCrud.png');
+    background-size: 100% 100%;
+    background-position: center;
+    position: relative;
+    border-bottom: 0.5px solid #2e2e2ea4;
+}
+
+.meus-livros {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 40px 24px 120px;
+    background-color: #e1d4f0;
+}
+
+.meus-livros__topo {
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+.meus-livros__topo h2 {
+    font-size: 55px;
+    color: #3a3a3a;
+    font-weight: bold;
+    font-weight: lighter;
+    letter-spacing: 4px;
+    margin: 0 0 4px;
+    font-family: 'Bangers', cursive;
+    -webkit-text-stroke: 1px #2e2e2e;
+}
+
+.meus-livros__topo p {
+    color: #8a8a8a;
+    margin: 0;
+    font-family: 'Bangers', cursive;
+    font-size: 25px;
+}
+
+.meus-livros__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 24px;
+}
+
+.meus-livros__vazio {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 60px 20px;
+    color: #8a8a8a;
+}
+
+.livro-card {
+    position: relative;
+    background: var(--white);
+    border: 3px solid var(--ink);
+    border-radius: 14px;
+    padding: 0 0 16px;
+    box-shadow: 7px 7px 0 var(--ink);
+    transition: transform .3s ease, box-shadow .3s ease;
+    overflow: visible;
+}
+
+.livro-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 8px 8px 0 var(--ink);
+}
+
+.livro-card__capa {
+    position: relative;
+    width: 100%;
+    height: 350px;
+    border-radius: 11px 11px 0 0;
+    overflow: hidden;
+    border: none;
+    margin-bottom: 12px;
+}
+
+.livro-card__capa img {
+    width: 100%;
+    height: 100%;
+    object-fit: 100% 100%;
+    display: block;
+}
+
+.livro-card__status {
+    position: absolute;
+    top: -12px;
+    right: 10px;
+    z-index: 5;
+    font-family: var(--font-comic);
+    font-size: 0.85rem;
+    letter-spacing: 1.5px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    border: 2px solid var(--ink);
+    color: #2e2e2e;
+    transform: rotate(4deg);
+    box-shadow: 2px 2px 0 var(--ink);
+    white-space: nowrap;
+    text-transform: uppercase;
+    font-weight: lighter;
+}
+
+.livro-card__status--venda { background: #e07a9b; }
+.livro-card__status--troca { background: #7ab8e0; }
+.livro-card__status--emprestimo { background: #7ae0a7; }
+.livro-card__status--ambos { background: rgb(255, 238, 145); }
+
+.livro-card__info {
+    padding: 14px 16px;
+}
+
+.livro-card__info h3 {
+    margin: 0 0 4px;
+    font-size: 16px;
+    color: #2e2e2e;
+}
+
+.livro-card__autor {
+    margin: 0;
+    font-size: 13px;
+    color: #777;
+}
+
+.livro-card__genero {
+    margin: 2px 0 10px;
+    font-size: 12px;
+    color: #b085c9;
+}
+
+.livro-card__acoes {
+    display: flex;
+    gap: 8px;
+}
+
+.btn-icone {
+    border: 2px solid var(--ink);
+    background: var(--white);
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    text-decoration: none;
+    color: var(--ink);
+    font-size: 13px;
+    box-shadow: 2px 2px 0 var(--ink);
+    transition: transform .2s ease, box-shadow .2s ease, background .2s ease, color .2s ease;
+}
+
+.btn-icone:hover {
+    transform: translate(1px, 1px);
+    box-shadow: 1px 1px 0 var(--ink);
+}
+
+.btn-icone--excluir:hover {
+    background: var(--red-pow);
+    color: var(--white);
+}
+.fab-bloop {
+    position: fixed;
+    right: 28px;
+    bottom: 28px;
+    width: 62px;
+    height: 62px;
+    border-radius: 50%;
+    border: none;
+    background: #c9a7e0;
+    color: #fff;
+    box-shadow: 0 6px 16px rgba(201, 167, 224, 0.55);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 500;
+    animation: bloop-idle 2.6s ease-in-out infinite;
+    transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.25s ease;
+}
+
+.fab-bloop__mais {
+    font-size: 32px;
+    line-height: 1;
+    transform: translateY(-2px);
+}
+
+.fab-bloop:hover {
+    animation: none;
+    transform: scale(1.08);
+    box-shadow: 0 8px 20px rgba(201, 167, 224, 0.65);
+}
+
+.fab-bloop:active {
+    animation: none;
+    transform: scale(0.94);
+    box-shadow: 0 3px 9px rgba(201, 167, 224, 0.45);
+}
+
+@keyframes bloop-idle {
+    0%, 100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.04);
+    }
+}
+
+.modal-livro {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-livro.aberto {
+    display: flex;
+}
+
+.modal-livro__caixa {
+    background: #fff;
+    width: 90%;
+    max-width: 440px;
+    max-height: 90vh;
+    overflow-y: auto;
+    border-radius: 16px;
+    padding: 32px 28px;
+    position: relative;
+    animation: bloop-click 0.3s ease;
+}
+
+.modal-livro__caixa h2 {
+    margin: 0 0 20px;
+    color: #3a3a3a;
+}
+
+.modal-livro__caixa label {
+    display: block;
+    margin: 14px 0 6px;
+    font-size: 13px;
+    color: #555;
+}
+
+.modal-livro__caixa input,
+.modal-livro__caixa select,
+.modal-livro__caixa textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+.modal-livro__fechar {
+    position: absolute;
+    top: 14px;
+    right: 18px;
+    border: none;
+    background: none;
+    font-size: 22px;
+    cursor: pointer;
+    color: #999;
+}
+
+.btn-salvar-livro {
+    margin-top: 22px;
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 10px;
+    background: #c9a7e0;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-salvar-livro:hover {
+    background: #b085c9;
+}

@@ -157,6 +157,15 @@ section {
 .nav-actions { margin: 0; }
 .nav-sair { color: var(--ink); }
 
+.nav-toggle {
+    display: none;
+    font-size: 1.4rem;
+    background: none;
+    color: var(--ink);
+    line-height: 1;
+    padding: 6px 8px;
+}
+
 .perfil-hero {
     position: relative;
     background: url(../img/fundoCarteirinha.jpg);
@@ -696,8 +705,8 @@ section {
 .pilha-capa {
     position: absolute;
     display: block;
-    width: 160px;
-    height: 220px;
+    width: 180px;
+    height: 235px;
     border-radius: 10px;
     overflow: hidden;
     border: 3px solid var(--ink);
@@ -1311,6 +1320,7 @@ footer {
     letter-spacing: 1.5px;
     color: #fff2a1;
     -webkit-text-stroke: 0.9px var(--ink);
+    z-index: 5;
 }
 
 .onda-abelha {
@@ -1358,7 +1368,7 @@ footer {
 .sticker-pilha {
     left: clamp(10px, 3vw, 40px);
     top: clamp(100px, 5vw, 100px);
-    width: 280px;
+    width: 320px;
     transform: rotate(-5deg);
     transform-origin: center;
     animation: flutuarPilha 4s ease-in-out infinite;
@@ -1377,7 +1387,7 @@ footer {
 .sticker-pato {
     right: clamp(10px, 4vw, 50px);
     bottom: -25px;
-    width: 300px;
+    width: 320px;
     animation-delay: -1.5s;
 }
 
@@ -1614,6 +1624,28 @@ footer {
     overflow: hidden;
 }
 
+.livro-hero__sticker {
+    position: absolute;
+    left: 50px;
+    top: 50%;
+    transform: translateY(-50%) rotate(-3deg);
+    width: 600px;
+    height: auto;
+    z-index: 3;
+    pointer-events: none;
+    animation: stickerLivroFlutuar 4s ease-in-out infinite;
+}
+
+@keyframes stickerLivroFlutuar {
+    0%, 100% {
+        transform: translateY(-50%) rotate(-3deg);
+    }
+
+    50% {
+        transform: translateY(calc(-50% - 8px)) rotate(-1deg);
+    }
+}
+
 .livro-hero::before {
     content: "";
     position: absolute;
@@ -1812,7 +1844,7 @@ footer {
     position: relative;
     aspect-ratio: 3 / 4;
     border-radius: 8px;
-    overflow: hidden;
+    overflow: visible;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
@@ -1820,22 +1852,45 @@ footer {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    border-radius: 8px;
 }
 
 .livro-card__badge {
     position: absolute;
-    top: 8px;
-    left: 8px;
-    font-size: 0.7rem;
-    padding: 3px 8px;
-    border-radius: 4px;
-    color: #fff;
-    text-transform: uppercase;
+    top: -12px;
+    right: 10px;
+    left: auto;
+
+    font-family: var(--font-comic);
+    font-size: 0.62rem;
+    letter-spacing: 0.5px;
+
+    color: var(--white);
+
+    padding: 5px 14px;
+    border-radius: 999px;
+
+    border: 2px solid var(--ink);
+
+    transform: rotate(4deg);
+
+    box-shadow: 2px 2px 0 var(--ink);
+
+    white-space: nowrap;
+    text-transform: none;
 }
 
-.livro-card__badge--venda { background: #d64f7a; }
-.livro-card__badge--troca { background: #4f9dd6; }
-.livro-card__badge--ambos { background: #9a4fd6; }
+.livro-card__badge--troca {
+    background: var(--green-mid);
+}
+
+.livro-card__badge--venda {
+    background: var(--red-pow);
+}
+
+.livro-card__badge--ambos {
+    background: var(--purple);
+}
 
 .livro-card__info {
     margin-top: 10px;
@@ -1991,5 +2046,22 @@ footer {
 @media (max-width: 400px) {
     .livro-grid__lista {
         grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .nav-toggle {
+        display: block;
+    }
+
+    .nav-links {
+        display: none;
+    }
+
+    .nav-links.aberto {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 14px;
     }
 }

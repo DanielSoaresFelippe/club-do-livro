@@ -1288,7 +1288,7 @@ section {
 }
 
 .book-cover {
-    height: clamp(110px, 16vw, 150px);
+    height: 230px;
     border-radius: 10px;
     border: 2px solid var(--ink);
     display: flex;

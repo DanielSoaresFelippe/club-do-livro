@@ -14,8 +14,9 @@
 </head>
 <body>
 <section class="livro-hero">
+    <img src="<?= base_url('assets/img/textoFundoHeader.png') ?>" alt="" class="livro-hero__sticker">
     <div class="livro-hero__overlay"></div>
-</section>
+</section>c
 
 <div class="onda-livro" aria-hidden="true">
     <svg viewBox="0 0 1200 110" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">

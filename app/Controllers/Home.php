@@ -16,4 +16,10 @@ class Home extends BaseController
             'livros' => $livros,
         ]);
     }
+
+    public function logout()
+    {
+        session()->destroy();
+        return redirect()->to(base_url());
+    }
 }

@@ -33,6 +33,15 @@
     padding: 25px 0 70px;
 }
 
+.nav-toggle {
+    display: none;
+    font-size: 1.4rem;
+    background: none;
+    color: var(--ink);
+    line-height: 1;
+    padding: 6px 8px;
+}
+
 .detalhes-voltar {
     display: inline-flex;
     align-items: center;
@@ -686,5 +695,23 @@
 
         padding-left: 18px;
         padding-right: 18px;
+    }
+}
+
+
+@media (max-width: 768px) {
+    .nav-toggle {
+        display: block;
+    }
+
+    .nav-links {
+        display: none;
+    }
+
+    .nav-links.aberto {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 14px;
     }
 }

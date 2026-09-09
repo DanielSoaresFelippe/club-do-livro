@@ -12,23 +12,7 @@
 </head>
 <body>
 
-  <div class="nav-wrap">
-    <nav class="navbar" id="navbar">
-      <a href="#top" class="nav-logo">
-        Clube do Livro
-      </a>
-      <ul class="nav-links">
-        <li><a href="#categorias">Categorias</a></li>
-        <li><a href="#recentes">Agora na estante</a></li>
-        <li><a href="#como-funciona">Como funciona</a></li>
-      </ul>
-      <div class="nav-actions">
-        <a href="#" class="login-link" data-auth-open="login">Login</a>
-        <a href="#" class="btn btn-primary" data-auth-open="cadastro">Cadastar</a>
-      </div>
-      <button class="nav-toggle" aria-label="Abrir menu">☰</button>
-    </nav>
-  </div>
+  <?= $this->include('partials/navbar') ?>
 
   <div class="auth-overlay" id="authOverlay">
     <div class="auth-modal">
@@ -139,51 +123,93 @@
   </header>
 
   <section class="themes-section" id="categorias">
-    <div class="section-head">
-      <span class="eyebrow">explore por tema</span>
-      <h2>Encontre pelo seu gênero favorito</h2>
-    </div>
-
-    <div class="themes-grid">
-      <article class="theme-card romance opacity-reveal">
-        <div class="theme-body">
-          <h2 style="color: var(--pink-deep); -webkit-text-stroke: 1.5px var(--ink); font-size: 50px; letter-spacing: 2px;">Romance</h2>
-          <p>Histórias de amor pra fazer o coração disparar a cada capítulo.</p>
-          <a href="#" class="btn btn-outline btn-sm theme" style="background-color: #faecdb; color: #2a2313;">Ver todos</a>
-        </div>
-      </article>
-
-      <article class="theme-card gibis opacity-reveal">
-        <div class="theme-body">
-          <h2 style="color: var(--red-pow); -webkit-text-stroke: 1.5px var(--ink); font-size: 50px; letter-spacing: 2px;">Gibis</h2>
-          <p>Super-heróis, vilões e universos inteiros em cada quadrinho.</p>
-          <a href="#" class="btn btn-outline btn-sm theme" style="background-color: #faecdb; color: #2a2313;">Ver todos</a>
-        </div>
-      </article>
-
-      <article class="theme-card fantasia opacity-reveal">
-        <div class="theme-body">
-          <h2 style="color: #ee8b09; -webkit-text-stroke: 1.5px var(--ink); font-size: 50px; letter-spacing: 2px;">Fantasia</h2>
-          <p>Mundos mágicos, criaturas lendárias e aventuras épicas.</p>
-          <a href="#" class="btn btn-outline btn-sm theme" style="background-color: #faecdb; color: #2a2313;">Ver todos</a>
-        </div>
-      </article>
-
-      <article class="theme-card manga opacity-reveal">
-        <div class="theme-body">
-          <h2 style="color: var(--olive); -webkit-text-stroke: 1.5px var(--ink); font-size: 50px; letter-spacing: 2px;">Mangá</h2>
-          <p>Traços marcantes e histórias direto do Japão pra sua estante.</p>
-          <a href="#" class="btn btn-outline btn-sm theme" style="background-color: #faecdb; color: #2a2313;">Ver todos</a>
-        </div>
-      </article>
-    </div>
-
-    <div class="book-cta-btn">
-      <span class="mas">Ver todos</span>
-      <button id="workThemes" type="button" name="Hover">Ver todos</button>
-    </div>
+      <div class="section-head">
+          <span class="eyebrow">explore por tema</span>
+          <h2>Encontre pelo seu gênero favorito</h2>
+      </div>
+      <div class="themes-grid">
+          <article class="theme-card romance opacity-reveal">
+              <div class="theme-body">
+                  <h2 style="color: var(--pink-deep); -webkit-text-stroke: 1.5px var(--ink); font-size: 50px; letter-spacing: 2px;">
+                      Romance
+                  </h2>
+                  <p>
+                      Histórias de amor pra fazer o coração disparar a cada capítulo.
+                  </p>
+                  <a
+                      href="<?= base_url('livro?genero=1') ?>"
+                      class="btn btn-outline btn-sm theme"
+                      style="background-color: #faecdb; color: #2a2313;"
+                  >
+                      Ver todos
+                  </a>
+              </div>
+          </article>
+          <article class="theme-card gibis opacity-reveal">
+              <div class="theme-body">
+                  <h2 style="color: var(--red-pow); -webkit-text-stroke: 1.5px var(--ink); font-size: 50px; letter-spacing: 2px;">
+                      Gibis
+                  </h2>
+                  <p>
+                      Super-heróis, vilões e universos inteiros em cada quadrinho.
+                  </p>
+                  <a
+                      href="<?= base_url('livro?genero=3') ?>"
+                      class="btn btn-outline btn-sm theme"
+                      style="background-color: #faecdb; color: #2a2313;"
+                  >
+                      Ver todos
+                  </a>
+              </div>
+          </article>
+          <article class="theme-card fantasia opacity-reveal">
+              <div class="theme-body">
+                  <h2 style="color: #ee8b09; -webkit-text-stroke: 1.5px var(--ink); font-size: 50px; letter-spacing: 2px;">
+                      Fantasia
+                  </h2>
+                  <p>
+                      Mundos mágicos, criaturas lendárias e aventuras épicas.
+                  </p>
+                  <a
+                      href="<?= base_url('livro?genero=6') ?>"
+                      class="btn btn-outline btn-sm theme"
+                      style="background-color: #faecdb; color: #2a2313;"
+                  >
+                      Ver todos
+                  </a>
+              </div>
+          </article>
+          <article class="theme-card manga opacity-reveal">
+              <div class="theme-body">
+                  <h2 style="color: var(--olive); -webkit-text-stroke: 1.5px var(--ink); font-size: 50px; letter-spacing: 2px;">
+                      Mangá
+                  </h2>
+                  <p>
+                      Traços marcantes e histórias direto do Japão pra sua estante.
+                  </p>
+                  <a
+                      href="<?= base_url('livro?genero=4') ?>"
+                      class="btn btn-outline btn-sm theme"
+                      style="background-color: #faecdb; color: #2a2313;"
+                  >
+                      Ver todos
+                  </a>
+              </div>
+          </article>
+      </div>
+      <div class="book-cta-btn">
+          <span class="mas">Ver todos</span>
+          <button
+              id="workThemes"
+              type="button"
+              name="Hover"
+              onclick="window.location.href='<?= base_url('livro') ?>'"
+          >
+              Ver todos
+          </button>
+      </div>
   </section>
-
+  
   <section class="recent-books-section" id="recentes">
     <div class="section-head" style="margin-bottom: 60px; margin-top: -50px;">
       <span class="eyebrow" style="font-size: 2rem;">novidades</span>
@@ -279,7 +305,9 @@
     </div>
     <div class="buttons">
       <button class="blob-btn">
-        Trocar / Vender
+        <a href="<?= base_url('livro') ?>">
+          Trocar / Vender
+        </a>
         <span class="blob-btn__inner">
           <span class="blob-btn__blobs">
             <span class="blob-btn__blob"></span>
@@ -342,13 +370,6 @@
       });
     }, { threshold: 0.15 });
     revealEls.forEach((el) => revealObserver.observe(el));
-
-    const toggle = document.querySelector('.nav-toggle');
-    const links = document.querySelector('.nav-links');
-
-    toggle.addEventListener('click', function () {
-        links.classList.toggle('nav-open');
-    });
 
     document.getElementById('workThemes').addEventListener('click', () => {
       window.location.href = '#';

@@ -4,6 +4,7 @@ use CodeIgniter\Router\RouteCollection;
 
 /** @var RouteCollection $routes */
 $routes->get('/', 'Home::index');
+$routes->post('/logout', 'Home::logout');
 
 $routes->post('cadastro', 'Usuarios::cadastrar');
 $routes->post('usuarios/login', 'Usuarios::login');

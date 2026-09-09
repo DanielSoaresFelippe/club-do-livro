@@ -74,7 +74,7 @@
                 <span>Favoritos</span>
             </a>
 
-            <a href="<?= base_url() ?>" class="pasta" data-pasta="site">
+            <a href="<?= base_url('/livro') ?>" class="pasta" data-pasta="site">
                 <svg viewBox="0 0 74 58" xmlns="http://www.w3.org/2000/svg">
                     <path d="M2 12 C2 8 5 6 9 6 H28 L34 12 H65 C69 12 72 15 72 19 V50 C72 54 69 56 65 56 H9 C5 56 2 54 2 50 Z" fill="#ffdf77"/>
                 </svg>

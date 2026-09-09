@@ -538,6 +538,38 @@
       erroEl.textContent = mensagem;
     }
 
+     forgotForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const submitBtn = forgotForm.querySelector('.auth-submit');
+      const message = document.getElementById('forgotMessage');
+      const submitLabel = submitBtn.querySelector('.forgot-submit-label');
+      const submitLoading = submitBtn.querySelector('.forgot-submit-loading');
+      submitBtn.disabled = true;
+      submitBtn.classList.add('is-loading');
+      message.classList.remove('is-success', 'is-error');
+      submitLabel.setAttribute('aria-hidden', 'true');
+      submitLoading.setAttribute('aria-hidden', 'false');
+      try {
+        const formData = new FormData();
+        formData.append('email', document.getElementById('forgotEmail').value);
+        const resp = await fetch('<?= base_url('usuarios/recuperar-senha') ?>', { method: 'POST', body: formData });
+        const data = await resp.json();
+        message.textContent = data.message || data.errors?.geral || data.errors?.email || 'Não foi possível enviar o link.';
+        message.classList.add(resp.ok && data.success ? 'is-success' : 'is-error');
+        if (resp.ok && data.success) {
+          document.getElementById('forgotEmail').value = '';
+        }
+      } catch (err) {
+        message.textContent = 'Erro ao solicitar a recuperação. Tente novamente.';
+        message.classList.add('is-error');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.classList.remove('is-loading');
+        submitLabel.setAttribute('aria-hidden', 'false');
+        submitLoading.setAttribute('aria-hidden', 'true');
+      }
+    });
+
     function limparErrosLogin() {
       const erroEl = loginForm.querySelector('.auth-erro-geral');
       if (erroEl) erroEl.textContent = '';

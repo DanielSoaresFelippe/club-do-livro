@@ -26,7 +26,7 @@ $routes->get('livro/novo',               'Livro::novo');
 $routes->post('livro/salvar',            'Livro::salvar');
 $routes->get('livro/editar/(:num)',      'Livro::editar/$1');
 $routes->post('livro/atualizar/(:num)',  'Livro::atualizar/$1');
-$routes->post('livro/excluir/(:num)',    'Livro::excluir/$1');
+$routes->match(['get', 'post'], 'livro/excluir/(:num)', 'Livro::excluir/$1');
 
 $routes->get('livro_meus', 'Livro::meusLivros');
 $routes->get('novo', 'Livro::novo');

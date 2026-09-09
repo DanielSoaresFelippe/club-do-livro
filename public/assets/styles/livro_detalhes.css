@@ -63,10 +63,9 @@
     align-items: center;
 }
 
-
-/* =========================================================
-   TEXTO
-========================================================= */
+.detalhes-tags {
+    color: #000000;
+}
 
 .detalhes-hero-texto {
     min-width: 0;
@@ -408,37 +407,23 @@
 
 .fundo-ondulado-livros {
     position: absolute;
-
     inset: 0;
-
     width: 100%;
     height: 100%;
-
     object-fit: fill;
-
     pointer-events: none;
-
     z-index: 0;
 }
 
 .recomendado-card img {
     position: relative;
-
     z-index: 1;
-
     width: 100%;
-
     aspect-ratio: 3 / 4;
-
     object-fit: cover;
-
     border-radius: 9px;
-
     background: #fff;
-
-    box-shadow:
-        0 11px 21px rgba(74, 41, 34, 0.16);
-
+    box-shadow: 0 11px 21px rgba(74, 41, 34, 0.16);
     transition: 0.2s ease;
 }
 
@@ -456,36 +441,119 @@
 
 .recomendado-titulo {
     font-family: 'Poppins', sans-serif;
-
     font-size: 0.85rem;
     font-weight: 600;
-
     color: #fff;
-
     text-align: center;
 }
-
-
-/* =========================================================
-   NENHUM RESULTADO
-========================================================= */
 
 .recomendados-vazio {
     grid-column: 1 / -1;
-
     text-align: center;
-
     font-family: 'Poppins', sans-serif;
-
     color: #fff;
-
     padding: 20px 0;
 }
 
+.detalhes-confirmar-exclusao {
+    margin-top: 25px;
+    padding: 24px;
+    background: #fff8f8;
+    border: 3px solid var(--ink);
+    border-radius: 14px;
+    box-shadow: 7px 7px 0 var(--ink);
+    text-align: center;
+}
 
-/* =========================================================
-   RESPONSIVIDADE
-========================================================= */
+.detalhes-confirmar-exclusao p {
+    margin: 0 0 22px;
+    color: #3d3319;
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+.detalhes-confirmar-exclusao p strong {
+    color: #8f1725;
+}
+
+.detalhes-confirmar-exclusao__acoes {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+}
+
+.btn-secundario {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 130px;
+    height: 44px;
+    padding: 0 20px;
+
+    background: var(--white);
+    color: var(--ink);
+    border: 2px solid var(--ink);
+    border-radius: 10px;
+    box-shadow: 4px 4px 0 var(--ink);
+
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+
+    cursor: pointer;
+    transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+}
+
+.btn-secundario:hover {
+    background: var(--cream-dark);
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0 var(--ink);
+}
+
+.btn-perigo {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 160px;
+    height: 44px;
+    padding: 0 20px;
+
+    background: var(--red-pow);
+    color: var(--white);
+    border: 2px solid var(--ink);
+    border-radius: 10px;
+    box-shadow: 4px 4px 0 var(--ink);
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+    transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+}
+
+.btn-perigo:hover {
+    background: #b23b3b;
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0 var(--ink);
+}
+
+.btn-perigo:active,
+.btn-secundario:active {
+    transform: translate(4px, 4px);
+    box-shadow: 0 0 0 var(--ink);
+}
+
+@media (max-width: 500px) {
+    .detalhes-confirmar-exclusao__acoes {
+        flex-direction: column;
+    }
+
+    .btn-secundario,
+    .btn-perigo {
+        width: 100%;
+    }
+}
 
 @media (max-width: 1100px) {
 

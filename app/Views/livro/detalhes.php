@@ -157,6 +157,24 @@ sort($generosDisponiveis);
             </div>
         </div>
 
+        <?php if (!empty($confirmarExclusao)): ?>
+            <div class="detalhes-confirmar-exclusao">
+                <p>Deseja realmente excluir <strong><?= esc($livro['titulo']) ?></strong>? Essa ação não pode ser desfeita.</p>
+
+                <div class="detalhes-confirmar-exclusao__acoes">
+                    <a href="<?= site_url('livro/detalhes/' . $livro['id_livro']) ?>" class="btn-secundario">
+                        Cancelar
+                    </a>
+
+                    <form action="<?= site_url('livro/excluir/' . $livro['id_livro']) ?>" method="post" style="display:inline;">
+                        <button type="submit" class="btn-perigo">
+                            Sim, excluir livro
+                        </button>
+                    </form>
+                </div>
+            </div>
+        <?php endif; ?>
+
         <div class="detalhes-recomendados">
             <div class="detalhes-recomendados-cabecalho">
 

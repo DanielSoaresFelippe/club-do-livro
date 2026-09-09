@@ -153,9 +153,9 @@ class Livro extends BaseController
         }
 
         $arquivoCapa = $this->processarUploadCapa();
-        if ($arquivoCapa !== false) {
-            $dados['imagem_capa'] = $arquivoCapa;
-        }
+        $dados['imagem_capa'] = $arquivoCapa !== false
+            ? $arquivoCapa
+            : base_url('assets/img/capa-padrao.png');
 
         $idLivro = $this->livroModel->insert($dados);
 
@@ -237,6 +237,8 @@ class Livro extends BaseController
             if (!empty($livro['imagem_capa'])) {
                 $this->removerArquivoCapa($livro['imagem_capa']);
             }
+        } elseif (empty($livro['imagem_capa'])) {
+            $dados['imagem_capa'] = base_url('assets/img/capa-padrao.png');
         }
 
         $this->livroModel->update((int) $id, $dados);
@@ -253,16 +255,51 @@ class Livro extends BaseController
             return redirect()->to(base_url('login'));
         }
 
-        $livro = $this->livroModel->find((int) $id);
+        $livro = $this->livroModel->buscarComGenero((int) $id);
+
+        $recomendados = $this->livroModel
+            ->select('livros.*, generos.nome AS genero')
+            ->join('generos', 'generos.id_genero = livros.id_genero')
+            ->where('livros.id_genero', $livro['id_genero'])
+            ->where('livros.id_livro !=', $livro['id_livro'])
+            ->where('livros.status', 'disponivel')
+            ->orderBy('livros.data_cadastro', 'DESC')
+            ->findAll(4);
+
+        if (empty($recomendados)) {
+            $recomendados = $this->livroModel
+                ->select('livros.*, generos.nome AS genero')
+                ->join('generos', 'generos.id_genero = livros.id_genero')
+                ->where('livros.id_livro !=', $livro['id_livro'])
+                ->where('livros.status', 'disponivel')
+                ->orderBy('livros.data_cadastro', 'DESC')
+                ->findAll(4);
+        }
+
+        $recomendados = array_map(fn ($item) => [
+            'id_livro' => $item['id_livro'],
+            'titulo'   => $item['titulo'],
+            'autor'    => $item['autor'],
+            'genero'   => $item['genero'],
+            'capa'     => $item['imagem_capa'] ?? base_url('assets/img/capa-padrao.png'),
+        ], $recomendados);
 
         if (!$livro || (int) $livro['id_usuario'] !== $idUsuario) {
-            return redirect()->to(base_url('livro/meus-livros'))
+            return redirect()->to(base_url('livro_meus'))
                 ->with('erro', 'Você não tem permissão para excluir este livro.');
         }
 
         if ($livro['status'] === 'reservado') {
-            return redirect()->to(base_url('livro/meus-livros'))
+            return redirect()->to(base_url('livro/detalhes/' . $id))
                 ->with('erro', 'Não é possível excluir um livro reservado — cancele a proposta primeiro.');
+        }
+
+        if (strtolower($this->request->getMethod()) === 'get') {
+            return view('livro/detalhes', [
+                'livro'             => $livro,
+                'recomendados'      => $recomendados,
+                'confirmarExclusao' => true,
+            ]);
         }
 
         if (!empty($livro['imagem_capa'])) {
@@ -271,7 +308,7 @@ class Livro extends BaseController
 
         $this->livroModel->delete((int) $id);
 
-        return redirect()->to(base_url('livro/meus-livros'))
+        return redirect()->to(base_url('livro_meus'))
             ->with('sucesso', 'Livro removido.');
     }
 

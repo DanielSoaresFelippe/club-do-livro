@@ -43,13 +43,12 @@
                             <a href="<?= site_url('livro/editar/' . $livro['id_livro']) ?>" class="btn-icone" title="Editar">
                                 <i class="fa-solid fa-pen-to-square"></i>
                             </a>
-                            <button type="button" class="btn-icone btn-icone--excluir" title="Excluir"
-                                data-id="<?= esc($livro['id_livro']) ?>">
+
+                            <a href="<?= site_url('livro/excluir/' . $livro['id_livro']) ?>" class="btn-icone btn-icone--excluir" title="Excluir">
                                 <i class="fa-solid fa-trash-can"></i>
-                            </button>
+                            </a>
                         </div>
                     </div>
-
                 </div>
             <?php endforeach; ?>
 
@@ -69,36 +68,5 @@
 <a href="<?= base_url('/novo') ?>" id="btnAdicionarLivro" class="fab-bloop" title="Adicionar novo livro">
     <span class="fab-bloop__mais">+</span>
 </a>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        document.querySelectorAll('.btn-icone--excluir').forEach(function (btn) {
-            btn.addEventListener('click', function () {
-                const idLivro = btn.dataset.id;
-
-                if (!confirm('Deseja realmente excluir este livro?')) return;
-
-                fetch(`${window.location.origin}/livro/excluir/${idLivro}`, {
-                    method: 'POST',
-                    headers: {
-                        'X-Requested-With': 'XMLHttpRequest'
-                    }
-                })
-                .then(res => res.json())
-                .then(data => {
-                    if (data.sucesso) {
-                        window.location.reload();
-                    } else {
-                        alert('Não foi possível excluir o livro.');
-                    }
-                })
-                .catch(error => {
-                    console.error('Erro ao excluir:', error);
-                    alert('Ocorreu um erro ao excluir o livro.');
-                });
-            });
-        });
-    });
-</script>
 
 <?= $this->include('partials/footer') ?>

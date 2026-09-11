@@ -8,13 +8,10 @@
 </header>
 
 <main class="livro-form-page">
-
-    <div class="livro-form-page__voltar">
-        <a href="<?= site_url('livro/meus-livros') ?>">&larr; Voltar para meus livros</a>
-    </div>
-
-    <div class="folha-formulario">
-
+    <div class="folha-formulario">     
+        <div class="livro-form-page__voltar">
+            <a href="<?= site_url('livro/meus-livros') ?>">&larr; Voltar para meus livros</a>
+        </div>
         <h2><?= isset($livro) ? 'Editar livro' : 'Adicionar novo livro' ?></h2>
 
         <?php if (session('errors')): ?>

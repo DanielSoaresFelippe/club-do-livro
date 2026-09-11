@@ -209,12 +209,6 @@ sort($generosDisponiveis);
             </div>
 
             <div class="detalhes-recomendados-grid" id="gradeRecomendados">
-                <img 
-                    src="<?= base_url('assets/img/png.png') ?>" 
-                    class="fundo-ondulado-livros"
-                    aria-hidden="true"
-                >
-
                 <?php foreach ($recomendados as $item): ?>
                     <a
                         href="<?= base_url('livro/detalhes/' . esc($item['id_livro'], 'url')) ?>"

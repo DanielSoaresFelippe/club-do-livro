@@ -1851,7 +1851,7 @@ footer {
 .livro-card__capa img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: fill;
     border-radius: 8px;
 }
 

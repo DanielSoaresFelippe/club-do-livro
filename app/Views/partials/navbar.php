@@ -27,7 +27,7 @@
         <?php if ($usuarioLogado): ?>
 
             <div class="nav-links" id="navLinks">
-                <?php if (!$carteirinha): ?>
+                <?php if ($usuarioLogado && session()->get('usuario_id')): ?>
                     <a href="<?= base_url('usuarios/perfil') ?>">Visualizar Carteirinha</a>
                 <?php endif; ?>
                 <a href="javascript:void(0)" class="js-abrir-perfil">Alterar Perfil</a>

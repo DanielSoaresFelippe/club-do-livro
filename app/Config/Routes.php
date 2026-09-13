@@ -13,13 +13,13 @@ $routes->get('usuarios/redefinir', 'Usuarios::redefinirSenha');
 $routes->post('usuarios/redefinir', 'Usuarios::salvarNovaSenha');
 $routes->get('usuarios/logout', 'Usuarios::logout');
  
-$routes->get('usuarios/perfil', 'Usuarios::perfil');
-$routes->get('usuarios/dados-perfil', 'Usuarios::dadosPerfil');
-$routes->post('usuarios/atualizar-perfil', 'Usuarios::atualizarPerfil');
+$routes->get('usuarios/perfil', 'Usuarios::perfil', ['filter' => 'auth']);
+$routes->get('usuarios/dados-perfil', 'Usuarios::dadosPerfil', ['filter' => 'auth']);
+$routes->post('usuarios/atualizar-perfil', 'Usuarios::atualizarPerfil', ['filter' => 'auth']);
 $routes->post('usuarios/logout', 'Usuarios::logout');
  
-$routes->get('usuarios/historico', 'Usuarios::historico');
-$routes->get('usuarios/favoritos', 'Usuarios::favoritos');
+$routes->get('usuarios/historico', 'Usuarios::historico', ['filter' => 'auth']);
+$routes->get('usuarios/favoritos', 'Usuarios::favoritos', ['filter' => 'auth']);
 
 $routes->get('livro/detalhes/(:num)', 'Livro::detalhes/$1');
 

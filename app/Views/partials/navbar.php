@@ -31,7 +31,6 @@
                     <a href="<?= base_url('usuarios/perfil') ?>">Visualizar Carteirinha</a>
                 <?php endif; ?>
                 <a href="javascript:void(0)" class="js-abrir-perfil">Alterar Perfil</a>
-                <a href="<?= base_url('usuarios/historico') ?>">Visualizar Histórico</a>
                 <a href="<?= base_url('usuarios/favoritos') ?>">Visualizar Favoritos</a>
             </div>
 

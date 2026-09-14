@@ -671,6 +671,11 @@
 
       cadastroTelefone.value = valor;
     });
+
+    <?php if (session()->getFlashdata('abrirModalLogin')): ?>
+      openAuth('login');
+      mostrarErroGeral(loginForm, <?= json_encode(session()->getFlashdata('erro')) ?>);
+    <?php endif; ?>
   </script>
 </body>
 </html>

@@ -66,11 +66,18 @@ class LivroModel extends Model
         return $erros;
     }
 
-    public function buscarComGenero(int $idLivro): ?array
+    public function buscarComGenero(int $id)
     {
-        return $this->select('livros.*, generos.nome AS genero')
+        return $this->select('
+                livros.*,
+                generos.nome AS genero,
+                usuarios.nome     AS dono_nome,
+                usuarios.email    AS dono_email,
+                usuarios.telefone AS dono_telefone
+            ')
             ->join('generos', 'generos.id_genero = livros.id_genero')
-            ->where('livros.id_livro', $idLivro)
+            ->join('usuarios', 'usuarios.id_usuario = livros.id_usuario')
+            ->where('livros.id_livro', $id)
             ->first();
     }
 

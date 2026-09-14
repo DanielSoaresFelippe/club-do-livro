@@ -36,7 +36,7 @@ $capa = esc($livro['imagem_capa'] ?? base_url('assets/img/capa-padrao.png'));
          width="100%"
          cellspacing="0"
          cellpadding="0"
-         style="background-color:#fbf3e2;">
+         style="background-color:#fbf3e2; padding-bottom: 50px;">
 
     <tr>
       <td align="center" style="padding:32px 16px;">
@@ -47,7 +47,7 @@ $capa = esc($livro['imagem_capa'] ?? base_url('assets/img/capa-padrao.png'));
                cellpadding="0"
                border="0"
                style="
-                 max-width:120vh;
+                 max-width:150vh;
                  background-color:#fffdfb;
                  border:3px solid #3d2b34;
                  border-radius:22px;
@@ -56,7 +56,7 @@ $capa = esc($livro['imagem_capa'] ?? base_url('assets/img/capa-padrao.png'));
                ">
 
           <tr>
-            <td width="40%"
+            <td width="45%"
                 valign="top"
                 style="
                 padding:0;
@@ -165,7 +165,7 @@ $capa = esc($livro['imagem_capa'] ?? base_url('assets/img/capa-padrao.png'));
                      cellpadding="0"
                      border="0">
                 <tr>
-                  <td style="padding:40px 32px 32px;">
+                  <td style="padding:50px 32px 32px;">
                     <table role="presentation"
                            width="100%"
                            cellspacing="0"

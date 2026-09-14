@@ -69,4 +69,7 @@
     <span class="fab-bloop__mais">+</span>
 </a>
 
+<?= $this->include('partials/modal_perfil') ?>
+<?= $this->include('partials/modal_perfil_script') ?>
+
 <?= $this->include('partials/footer') ?>

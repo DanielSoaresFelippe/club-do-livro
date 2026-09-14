@@ -246,12 +246,11 @@ sort($generosDisponiveis);
 </section>
 
 <?= $this->include('partials/modal_perfil') ?>
+<?= $this->include('partials/modal_perfil_script') ?>
 
 <?= $this->include('partials/modal_contato') ?>
 
 <?= $this->include('partials/footer') ?>
-
-<?= $this->include('partials/modal_perfil_script') ?>
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {

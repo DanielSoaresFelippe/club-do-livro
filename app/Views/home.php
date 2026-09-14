@@ -343,7 +343,7 @@
     </svg>
   </section>
 
-  <div class="footer-wave">
+  <div class="footer-wave-home">
     <svg 
         viewBox="0 0 1440 120" 
         preserveAspectRatio="none"
@@ -361,8 +361,8 @@
       </svg>
   </div>
 
-  <footer>
-    <div class="footer-bottom">
+  <footer-home>
+    <div class="footer-bottom-home">
       <span>© 2026 Clube do Livro. Daniel S., Daniel Q., Gleicekelly, Silmara, Thaise</span>
     </div>
   </footer>

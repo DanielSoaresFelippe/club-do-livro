@@ -269,7 +269,7 @@
 
     <div class="book-cta-btn">
       <span class="mas">Ver todos</span>
-      <button id="workBooks" type="button" name="Hover">Ver todos</button>
+      <button id="workBooks" type="button" name="Hover" onclick="window.location.href='<?= base_url('livro') ?>'">Ver todos</button>
     </div>
   </section>
 

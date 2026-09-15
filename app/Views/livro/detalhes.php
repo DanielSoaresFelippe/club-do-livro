@@ -101,6 +101,12 @@ sort($generosDisponiveis);
                     </div>
                 <?php endif; ?>
 
+                <?php if (!empty($livro['localizacao'])): ?>
+                    <p class="detalhes-localizacao">
+                        <i class="fa-solid fa-location-dot"></i> <?= esc($livro['localizacao']) ?>
+                    </p>
+                <?php endif; ?>
+
                 <?php if ($livro['status'] === 'disponivel'): ?>
                     <div class="detalhes-precos">
                         <?php if ($livro['tipo_transacao'] !== 'troca' && !empty($livro['preco'])): ?>

@@ -30,6 +30,16 @@ class Livro extends BaseController
     {
         $tipoTransacao = $this->request->getGet('tipo_transacao');
         $idGenero      = $this->request->getGet('genero');
+        $localizacao   = $this->request->getGet('localizacao');
+        $busca         = trim((string) $this->request->getGet('busca'));
+
+        $localizacoes = (new LivroModel())
+            ->distinct()
+            ->select('localizacao')
+            ->where('localizacao IS NOT NULL')
+            ->where('localizacao !=', '')
+            ->orderBy('localizacao', 'ASC')
+            ->findAll();
 
         $livroModel = $this->livroModel;
         $livroModel->select('livros.*, generos.nome AS genero')
@@ -44,15 +54,29 @@ class Livro extends BaseController
             $livroModel->where('livros.id_genero', (int) $idGenero);
         }
 
+        if ($localizacao) {
+            $livroModel->where('livros.localizacao', $localizacao);
+        }
+
+        if ($busca !== '') {
+            $livroModel->groupStart()
+                ->like('livros.titulo', $busca)
+                ->orLike('livros.autor', $busca)
+                ->groupEnd();
+        }
+        
         $livros = $livroModel->paginate(8, 'livros');
         $pager  = $livroModel->pager;
 
         return view('livro/index', [
-            'livros'            => $livros,
-            'pager'             => $pager,
-            'generos'           => $this->generoModel->findAll(),
-            'tipoSelecionado'   => $tipoTransacao,
-            'generoSelecionado' => $idGenero,
+            'livros'                 => $livros,
+            'pager'                  => $pager,
+            'generos'                => $this->generoModel->findAll(),
+            'localizacoes'           => $localizacoes,
+            'tipoSelecionado'        => $tipoTransacao,
+            'generoSelecionado'      => $idGenero,
+            'localizacaoSelecionada' => $localizacao,
+            'buscaSelecionada'       => $busca,
         ]);
     }
 
@@ -330,6 +354,8 @@ class Livro extends BaseController
             'estado_conservacao' => $this->request->getPost('estado_conservacao'),
             'tipo_transacao'     => $this->request->getPost('tipo_transacao'),
             'preco'              => $this->request->getPost('preco') !== '' ? $this->request->getPost('preco') : null,
+            'cep'                => trim((string) $this->request->getPost('cep')),
+            'localizacao'        => trim((string) $this->request->getPost('localizacao')),
         ];
     }
 

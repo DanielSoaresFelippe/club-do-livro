@@ -109,15 +109,15 @@
 
 .detalhes-descricao {
     font-family: 'Poppins', sans-serif;
-
     font-size: 0.95rem;
     line-height: 1.75;
-
     color: #000000;
-
     max-width: 500px;
+}
 
+.detalhes-localizacao {
     margin-bottom: 28px;
+    color: #000000 !important;
 }
 
 .detalhes-precos {

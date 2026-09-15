@@ -140,3 +140,7 @@ ALTER TABLE historico_transacoes
 ADD CONSTRAINT fk_historico_livro
 FOREIGN KEY (id_livro) REFERENCES livros(id_livro)
 ON DELETE CASCADE;
+
+ALTER TABLE livros
+  ADD COLUMN cep VARCHAR(9) NULL AFTER status,
+  ADD COLUMN localizacao VARCHAR(150) NULL AFTER cep;

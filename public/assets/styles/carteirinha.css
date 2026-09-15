@@ -1374,6 +1374,34 @@ footer {
     animation: flutuarPilha 4s ease-in-out infinite;
 }
 
+.livro-filtros__form input[type="text"] {
+    padding: 10px 14px;
+    border: 2px solid var(--ink);
+    border-radius: 10px;
+    font-size: 1rem;
+    background: var(--white);
+    box-shadow: 4px 4px 0 var(--ink);
+    min-width: 180px;
+}
+
+.livro-card__localizacao {
+    font-size: 0.78rem;
+    color: #7a7a6a;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin: 2px 0 6px;
+}
+
+.detalhes-localizacao {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+    margin-top: 10px;
+}
+
 @keyframes flutuarPilha {
     0%, 100% {
         transform: translateY(0) rotate(-5deg);

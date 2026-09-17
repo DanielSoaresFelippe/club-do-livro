@@ -35,16 +35,14 @@ class FavoritosModel extends Model
 
     public function alternar(int $idUsuario, int $idLivro): bool
     {
-        $existente = $this->where('id_usuario', $idUsuario)
-            ->where('id_livro', $idLivro)
-            ->first();
+        $jaFavoritado = $this->estaFavoritado($idUsuario, $idLivro);
 
-        if ($existente) {
-            $this->delete($existente['id_favorito']);
+        if ($jaFavoritado) {
+            $this->db->query('CALL sp_remover_favorito(?, ?)', [$idUsuario, $idLivro]);
             return false;
         }
 
-        $this->insert(['id_usuario' => $idUsuario, 'id_livro' => $idLivro]);
+        $this->db->query('CALL sp_adicionar_favorito(?, ?)', [$idUsuario, $idLivro]);
         return true;
     }
 }

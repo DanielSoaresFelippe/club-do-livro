@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Models\FavoritosModel;
 use App\Models\LivroModel;
 use App\Models\GeneroModel;
 use App\Models\UsuarioModel;
@@ -11,6 +12,7 @@ class Livro extends BaseController
     protected LivroModel $livroModel;
     protected GeneroModel $generoModel;
     protected UsuarioModel $usuarioModel;
+    protected FavoritosModel $favoritosModel;
 
     protected string $pastaUploads = 'assets/uploads/livros';
 
@@ -19,6 +21,7 @@ class Livro extends BaseController
         $this->livroModel  = new LivroModel();
         $this->generoModel = new GeneroModel();
         $this->usuarioModel = new UsuarioModel();
+        $this->favoritosModel = new FavoritosModel();
     }
 
     protected function getUsuarioLogado(): ?int
@@ -88,6 +91,7 @@ class Livro extends BaseController
 
         $idUsuario = $this->getUsuarioLogado();
         $usuarioInteressado = $this->usuarioModel->find($idUsuario);
+        $favoritado = $idUsuario ? $this->favoritosModel->estaFavoritado($idUsuario, (int) $id) : false;
         $livro = $this->livroModel->buscarComGenero((int) $id);
 
         if (!$livro) {
@@ -126,6 +130,7 @@ class Livro extends BaseController
             'livro'        => $livro,
             'recomendados' => $recomendados,
             'interessado'  => $usuarioInteressado,
+            'favoritado'   => $favoritado,
         ]);
     }
 

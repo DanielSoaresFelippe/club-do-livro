@@ -1,9 +1,13 @@
 <?= $this->include('partials/navbar') ?>
 
 <header class="header-banner">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bitcount+Prop+Double+Ink:wght@100..900&family=Fleur+De+Leah&family=Pixelify+Sans:wght@400..700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="<?= assetUrl('assets/styles/livro_form.css') ?>">
     <link rel="stylesheet" href="<?= assetUrl('assets/styles/home.css') ?>">
     <link rel="stylesheet" href="<?= assetUrl('assets/styles/carteirinha.css') ?>">
+    <link href="https://fonts.googleapis.com/css2?family=Bitcount+Prop+Double+Ink:wght@100..900&family=Fleur+De+Leah&family=Pixelify+Sans:wght@400..700&family=Puppies+Play&display=swap" rel="stylesheet">
     <div class="header-banner__overlay"></div>
 </header>
 

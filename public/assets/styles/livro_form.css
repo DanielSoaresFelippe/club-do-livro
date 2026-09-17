@@ -5,7 +5,6 @@
     align-items: center;
     justify-content: flex-start;
     padding: 60px 25px 150px;
-    background-color: #e4ecd8;
     background-image: url('../img/fundoNovo.png');
     background-size: 100% 100%;
     background-position: top center;
@@ -19,7 +18,7 @@
 }
 
 .livro-form-page__voltar a {
-    color: #4c6b3f;
+    color: #a94b64;
     text-decoration: none;
     font-weight: bolder;
     font-size: 1.15rem;
@@ -43,11 +42,11 @@
 
 .folha-formulario h2 {
     text-align: center;
-    font-family: 'Bangers', cursive;
-    color: #e4ecd8;
-    -webkit-text-stroke: 1.5px #4c6b3f;
-    font-size: clamp(2.8rem, 6vw, 4.2rem);
-    font-weight: lighter;
+    font-family: 'Puppies Play', cursive;
+    color: #e894a8;
+    -webkit-text-stroke: 0.2px #a94b64;
+    font-size: 8rem;
+    font-weight: bolder;
     letter-spacing: 2px;
     margin: 0 0 28px;
 }
@@ -111,7 +110,7 @@
 
 .folha-formulario label {
     font-family: 'Kalam', cursive;
-    color: #4c6b3f;
+    color: #a94b64;
     margin-bottom: 5px;
     font-size: 1rem;
     font-weight: 600;
@@ -125,7 +124,7 @@
     box-sizing: border-box;
     background: rgba(255, 255, 255, 0.25);
     border: none;
-    border-bottom: 2px dashed #a3c293;
+    border-bottom: 2px dashed #cf4a3d;
     padding: 5px 6px;
     font-family: 'Poppins', sans-serif;
     font-size: 1rem;
@@ -153,7 +152,7 @@
     box-sizing: border-box;
     height: 110px;
     background: rgba(255, 255, 255, 0.4);
-    border: 2px dashed #a3c293;
+    border: 2px dashed #cf4a3d;
     border-radius: 9px;
     padding: 10px;
     font-family: 'Poppins', sans-serif;
@@ -176,13 +175,13 @@
 .form-livro__grupo input[type="file"] {
     width: 100%;
     box-sizing: border-box;
-    border: 2px dashed #a3c293;
+    border: 2px dashed #cf4a3d;
     border-radius: 10px;
     padding: 9px;
     background: rgba(255, 255, 255, 0.4);
     font-family: 'Poppins', sans-serif;
     font-size: 0.8rem;
-    color: #4c6b3f;
+    color: #a94b64;
 }
 
 
@@ -212,7 +211,7 @@
     margin-top: 8px;
     padding: 8px 10px;
     background: rgba(255, 255, 255, 0.4);
-    border: 2px dashed #a3c293;
+    border: 2px dashed #cf4a3d;
     border-radius: 10px;
 }
 
@@ -226,7 +225,7 @@
 
     border-radius: 5px;
 
-    border: 1px solid #a3c293;
+    border: 1px solid #cf4a3d;
 }
 
 
@@ -235,7 +234,7 @@
     font-size: 0.78rem;
     line-height: 1.4;
 
-    color: #5c6b47;
+    color: #a94b64;
 }
 
 .btn-salvar-livro {

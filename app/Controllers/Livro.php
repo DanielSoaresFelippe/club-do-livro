@@ -4,11 +4,13 @@ namespace App\Controllers;
 
 use App\Models\LivroModel;
 use App\Models\GeneroModel;
+use App\Models\UsuarioModel;
 
 class Livro extends BaseController
 {
     protected LivroModel $livroModel;
     protected GeneroModel $generoModel;
+    protected UsuarioModel $usuarioModel;
 
     protected string $pastaUploads = 'assets/uploads/livros';
 
@@ -16,6 +18,7 @@ class Livro extends BaseController
     {
         $this->livroModel  = new LivroModel();
         $this->generoModel = new GeneroModel();
+        $this->usuarioModel = new UsuarioModel();
     }
 
     protected function getUsuarioLogado(): ?int
@@ -27,6 +30,16 @@ class Livro extends BaseController
     {
         $tipoTransacao = $this->request->getGet('tipo_transacao');
         $idGenero      = $this->request->getGet('genero');
+        $localizacao   = $this->request->getGet('localizacao');
+        $busca         = trim((string) $this->request->getGet('busca'));
+
+        $localizacoes = (new LivroModel())
+            ->distinct()
+            ->select('localizacao')
+            ->where('localizacao IS NOT NULL')
+            ->where('localizacao !=', '')
+            ->orderBy('localizacao', 'ASC')
+            ->findAll();
 
         $livroModel = $this->livroModel;
         $livroModel->select('livros.*, generos.nome AS genero')
@@ -41,15 +54,29 @@ class Livro extends BaseController
             $livroModel->where('livros.id_genero', (int) $idGenero);
         }
 
+        if ($localizacao) {
+            $livroModel->where('livros.localizacao', $localizacao);
+        }
+
+        if ($busca !== '') {
+            $livroModel->groupStart()
+                ->like('livros.titulo', $busca)
+                ->orLike('livros.autor', $busca)
+                ->groupEnd();
+        }
+        
         $livros = $livroModel->paginate(8, 'livros');
         $pager  = $livroModel->pager;
 
         return view('livro/index', [
-            'livros'            => $livros,
-            'pager'             => $pager,
-            'generos'           => $this->generoModel->findAll(),
-            'tipoSelecionado'   => $tipoTransacao,
-            'generoSelecionado' => $idGenero,
+            'livros'                 => $livros,
+            'pager'                  => $pager,
+            'generos'                => $this->generoModel->findAll(),
+            'localizacoes'           => $localizacoes,
+            'tipoSelecionado'        => $tipoTransacao,
+            'generoSelecionado'      => $idGenero,
+            'localizacaoSelecionada' => $localizacao,
+            'buscaSelecionada'       => $busca,
         ]);
     }
 
@@ -59,6 +86,8 @@ class Livro extends BaseController
             return redirect()->to(base_url('livro/nao-encontrado'));
         }
 
+        $idUsuario = $this->getUsuarioLogado();
+        $usuarioInteressado = $this->usuarioModel->find($idUsuario);
         $livro = $this->livroModel->buscarComGenero((int) $id);
 
         if (!$livro) {
@@ -96,6 +125,7 @@ class Livro extends BaseController
         return view('livro/detalhes', [
             'livro'        => $livro,
             'recomendados' => $recomendados,
+            'interessado'  => $usuarioInteressado,
         ]);
     }
 
@@ -324,6 +354,8 @@ class Livro extends BaseController
             'estado_conservacao' => $this->request->getPost('estado_conservacao'),
             'tipo_transacao'     => $this->request->getPost('tipo_transacao'),
             'preco'              => $this->request->getPost('preco') !== '' ? $this->request->getPost('preco') : null,
+            'cep'                => trim((string) $this->request->getPost('cep')),
+            'localizacao'        => trim((string) $this->request->getPost('localizacao')),
         ];
     }
 
@@ -356,5 +388,59 @@ class Livro extends BaseController
         if (is_file($caminho)) {
             unlink($caminho);
         }
+    }
+
+    public function enviarInteresse($id = null)
+    {
+        $idUsuario = $this->getUsuarioLogado();
+
+        if (!$idUsuario) {
+            return redirect()->to(base_url('/'))
+                ->with('erro', 'Faça login para demonstrar interesse.')
+                ->with('abrirModalLogin', true);
+        }
+
+        $livro = $this->livroModel->buscarComGenero((int) $id);
+
+        if (!$livro || empty($livro['dono_email'])) {
+            return redirect()->to(base_url('livro/detalhes/' . $id))
+                ->with('erro', 'Não foi possível enviar o interesse.');
+        }
+
+        if ((int) $livro['id_usuario'] === $idUsuario) {
+            return redirect()->to(base_url('livro/detalhes/' . $id))
+                ->with('erro', 'Você não pode demonstrar interesse no seu próprio livro.');
+        }
+
+        if (strtolower($this->request->getMethod()) === 'get') {
+            return view('livro/formulario_interesse', [
+                'livro' => $livro,
+            ]);
+        }
+
+        $usuario = $this->usuarioModel->find($idUsuario);
+        $mensagemPersonalizada = trim((string) $this->request->getPost('mensagem'));
+
+        $corpo = view('emails/interesse_livro', [
+            'nomeDono'        => $livro['dono_nome'] ?? '',
+            'nomeInteressado' => $usuario['nome'] ?? 'um leitor',
+            'tituloLivro'     => $livro['titulo'],
+            'mensagem'        => $mensagemPersonalizada,
+            'link'            => base_url('livro/detalhes/' . $livro['id_livro']),
+        ], ['debug' => false]);
+
+        $email = \Config\Services::email();
+        $email->setTo($livro['dono_email']);
+        $email->setSubject('Interesse no livro: ' . $livro['titulo']);
+        $email->setMailType('html');
+        $email->setMessage($corpo);
+
+        if ($email->send()) {
+            return redirect()->to(base_url('livro/detalhes/' . $id))
+                ->with('sucesso', 'Seu interesse foi enviado ao dono do livro!');
+        }
+
+        return redirect()->to(base_url('livro/detalhes/' . $id))
+            ->with('erro', 'Não foi possível enviar o interesse. Tente novamente.');
     }
 }

@@ -269,7 +269,7 @@
 
     <div class="book-cta-btn">
       <span class="mas">Ver todos</span>
-      <button id="workBooks" type="button" name="Hover">Ver todos</button>
+      <button id="workBooks" type="button" name="Hover" onclick="window.location.href='<?= base_url('livro') ?>'">Ver todos</button>
     </div>
   </section>
 
@@ -343,7 +343,7 @@
     </svg>
   </section>
 
-  <div class="footer-wave">
+  <div class="footer-wave-home">
     <svg 
         viewBox="0 0 1440 120" 
         preserveAspectRatio="none"
@@ -361,8 +361,8 @@
       </svg>
   </div>
 
-  <footer>
-    <div class="footer-bottom">
+  <footer-home>
+    <div class="footer-bottom-home">
       <span>© 2026 Clube do Livro. Daniel S., Daniel Q., Gleicekelly, Silmara, Thaise</span>
     </div>
   </footer>
@@ -671,6 +671,11 @@
 
       cadastroTelefone.value = valor;
     });
+
+    <?php if (session()->getFlashdata('abrirModalLogin')): ?>
+      openAuth('login');
+      mostrarErroGeral(loginForm, <?= json_encode(session()->getFlashdata('erro')) ?>);
+    <?php endif; ?>
   </script>
 </body>
 </html>

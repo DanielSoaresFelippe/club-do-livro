@@ -60,7 +60,7 @@
                 <span>Meu Perfil</span>
             </button>
 
-            <a href="<?= base_url('usuarios/historico') ?>" class="pasta" data-pasta="historico">
+            <a href="<?= base_url('livro/meus-livros') ?>" class="pasta" data-pasta="historico">
                 <svg viewBox="0 0 74 58" xmlns="http://www.w3.org/2000/svg">
                     <path d="M2 12 C2 8 5 6 9 6 H28 L34 12 H65 C69 12 72 15 72 19 V50 C72 54 69 56 65 56 H9 C5 56 2 54 2 50 Z" fill="#8fb84a"/>
                 </svg>

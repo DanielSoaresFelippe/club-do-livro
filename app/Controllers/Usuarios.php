@@ -78,13 +78,19 @@ class Usuarios extends BaseController
             'usuario_logado' => true,
         ]);
 
+        $tipo = $this->request->getPost('tipo');
+
+        $redirect = $tipo === 'colaborador'
+        ? base_url('livro/meus-livros')
+        : base_url('livro/');
+
         return $this->response->setJSON([
             'success'  => true,
-            'redirect' => base_url('livro/'),
+            'redirect' => $redirect,
             'usuario'  => [
                 'id'    => $id,
                 'nome'  => $this->request->getPost('nome'),
-                'tipo'  => $this->request->getPost('tipo'),
+                'tipo'  => $tipo,
                 'foto'  => $nomeFoto ? base_url('uploads/perfil/' . $nomeFoto) : null,
             ],
         ]);
@@ -123,9 +129,13 @@ class Usuarios extends BaseController
             'usuario_logado' => true,
         ]);
 
+        $redirect = $usuario['tipo'] === 'colaborador'
+        ? base_url('livro/meus-livros')
+        : base_url('livro/');
+
         return $this->response->setJSON([
             'sucess'   => true,
-            'redirect' => base_url('livro/'),
+            'redirect' => $redirect,
         ]);
     }
 

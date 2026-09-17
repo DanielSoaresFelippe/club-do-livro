@@ -2,6 +2,8 @@
     $usuarioLogado = (bool) session()->get('usuario_logado');
     $uri = service('uri');
     $carteirinha = $uri->getPath() == '/index.php/usuarios/perfil';
+    $usuarioTipo   = session()->get('usuario_tipo');
+    $ehColaborador = $usuarioTipo === 'colaborador';
 ?>
 
 <head>
@@ -27,11 +29,14 @@
         <?php if ($usuarioLogado): ?>
 
             <div class="nav-links" id="navLinks">
-                <?php if ($usuarioLogado && session()->get('usuario_id')): ?>
+                <?php if ($ehColaborador): ?>
+                    <a href="<?= base_url('usuarios/perfil') ?>">Visualizar Carteirinha</a>
+                    <a href="<?= base_url('livro/meus-livros') ?>">Meus Livros</a>
+                <?php else: ?>
                     <a href="<?= base_url('usuarios/perfil') ?>">Visualizar Carteirinha</a>
                 <?php endif; ?>
+                <a href="<?= base_url('livro') ?>">Ver Catálogo</a>
                 <a href="javascript:void(0)" class="js-abrir-perfil">Alterar Perfil</a>
-                <a href="<?= base_url('usuarios/historico') ?>">Visualizar Histórico</a>
                 <a href="<?= base_url('usuarios/favoritos') ?>">Visualizar Favoritos</a>
             </div>
 

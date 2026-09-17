@@ -16,7 +16,7 @@
 <section class="livro-hero">
     <img src="<?= base_url('assets/img/textoFundoHeader.png') ?>" alt="" class="livro-hero__sticker">
     <div class="livro-hero__overlay"></div>
-</section>c
+</section>
 
 <div class="onda-livro" aria-hidden="true">
     <svg viewBox="0 0 1200 110" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
@@ -27,6 +27,13 @@
 
 <section class="livro-filtros">
     <form method="get" action="<?= base_url('livro') ?>" class="livro-filtros__form">
+        <div class="campo">
+            <label for="busca">Buscar</label>
+            <input type="text" name="busca" id="busca"
+                placeholder="Título ou autor..."
+                value="<?= esc($buscaSelecionada ?? '') ?>">
+        </div>
+
         <div class="campo">
             <label for="tipo_transacao">Tipo</label>
             <select name="tipo_transacao" id="tipo_transacao">
@@ -50,9 +57,22 @@
             </select>
         </div>
 
+        <div class="campo">
+            <label for="localizacao">Localização</label>
+            <select name="localizacao" id="localizacao">
+                <option value="">Todas as localizações</option>
+                <?php foreach ($localizacoes as $loc): ?>
+                    <option value="<?= esc($loc['localizacao']) ?>"
+                        <?= $localizacaoSelecionada === $loc['localizacao'] ? 'selected' : '' ?>>
+                        <?= esc($loc['localizacao']) ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+
         <button type="submit">Filtrar</button>
 
-        <?php if ($generoSelecionado || $tipoSelecionado): ?>
+        <?php if ($generoSelecionado || $tipoSelecionado || $localizacaoSelecionada || $buscaSelecionada): ?>
             <a href="<?= base_url('livro') ?>" class="livro-filtros__limpar">Limpar filtros</a>
         <?php endif; ?>
     </form>
@@ -83,6 +103,12 @@
                         <h3><?= esc($livro['titulo']) ?></h3>
                         <p class="livro-card__autor"><?= esc($livro['autor']) ?></p>
 
+                        <?php if (!empty($livro['localizacao'])): ?>
+                            <p class="livro-card__localizacao">
+                                <i class="fa-solid fa-location-dot"></i> <?= esc($livro['localizacao']) ?>
+                            </p>
+                        <?php endif; ?>
+                        
                         <?php if (in_array($livro['tipo_transacao'], ['venda', 'ambos'], true) && $livro['preco']): ?>
                             <span class="livro-card__preco">
                                 R$ <?= number_format((float) $livro['preco'], 2, ',', '.') ?>
@@ -132,3 +158,5 @@
 </body>
 </html>
 <?= $this->include('partials/footer') ?>
+<?= $this->include('partials/modal_perfil') ?>
+<?= $this->include('partials/modal_perfil_script') ?>

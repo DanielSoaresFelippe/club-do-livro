@@ -2,6 +2,7 @@
 if (!isset($livro)) {
     $livro = [
         'id_livro'    => 0,
+        'id_usuario'  => 0,
         'titulo'      => 'Livro não encontrado',
         'autor'       => '',
         'genero'      => '',
@@ -12,6 +13,9 @@ if (!isset($livro)) {
         'descricao'   => '',
         'imagem_capa' => base_url('assets/img/capa-padrao.png'),
         'galeria'     => [],
+        'dono_nome'      => '',
+        'dono_email'     => '',
+        'dono_telefone'  => '',
     ];
 }
 
@@ -28,17 +32,6 @@ $rotulosStatus = [
 ];
 
 $galeria = !empty($livro['galeria']) ? $livro['galeria'] : [$livro['imagem_capa']];
-
-if (!isset($recomendados)) {
-    $recomendados = [
-        ['id_livro' => 101, 'titulo' => 'O Manifesto Comunista', 'autor' => 'Karl Marx', 'genero' => 'Ensaio', 'capa' => base_url('assets/img/images.jpg')],
-        ['id_livro' => 102, 'titulo' => 'Orgulho e Preconceito', 'autor' => 'Jane Austen', 'genero' => 'Romance', 'capa' => base_url('assets/img/verity.jpg')],
-        ['id_livro' => 103, 'titulo' => 'Surely You\'re Joking', 'autor' => 'Richard Feynman', 'genero' => 'Biografia', 'capa' => base_url('assets/img/images.jpg')],
-        ['id_livro' => 104, 'titulo' => 'Poemas de Sofia', 'autor' => 'Sofia Andrade', 'genero' => 'Poesia', 'capa' => base_url('assets/img/verity.jpg')],
-        ['id_livro' => 105, 'titulo' => 'Duna', 'autor' => 'Frank Herbert', 'genero' => 'Ficção científica', 'capa' => base_url('assets/img/images.jpg')],
-        ['id_livro' => 106, 'titulo' => 'O Hobbit', 'autor' => 'J.R.R. Tolkien', 'genero' => 'Fantasia', 'capa' => base_url('assets/img/verity.jpg')],
-    ];
-}
 
 $generosDisponiveis = [];
 foreach ($recomendados as $item) {
@@ -68,9 +61,21 @@ sort($generosDisponiveis);
 <section class="painel-pasta painel-ativo pagina-secundaria" data-painel="livro-detalhes">
     <div class="painel-conteudo">
 
-        <a href="javascript:history.back()" class="detalhes-voltar">
+       <a href="javascript:history.back()" class="detalhes-voltar">
             <i class="fa-solid fa-arrow-left"></i> Voltar
         </a>
+
+        <?php if (session()->getFlashdata('sucesso')): ?>
+            <p class="detalhes-sucesso-aviso">
+                <?= esc(session()->getFlashdata('sucesso')) ?>
+            </p>
+        <?php endif; ?>
+
+        <?php if (session()->getFlashdata('erro')): ?>
+            <p class="detalhes-erro-aviso">
+                <?= esc(session()->getFlashdata('erro')) ?>
+            </p>
+        <?php endif; ?>
 
         <div class="detalhes-hero">
             <div class="detalhes-hero-texto">
@@ -96,6 +101,12 @@ sort($generosDisponiveis);
                     </div>
                 <?php endif; ?>
 
+                <?php if (!empty($livro['localizacao'])): ?>
+                    <p class="detalhes-localizacao">
+                        <i class="fa-solid fa-location-dot"></i> <?= esc($livro['localizacao']) ?>
+                    </p>
+                <?php endif; ?>
+
                 <?php if ($livro['status'] === 'disponivel'): ?>
                     <div class="detalhes-precos">
                         <?php if ($livro['tipo_transacao'] !== 'troca' && !empty($livro['preco'])): ?>
@@ -112,18 +123,20 @@ sort($generosDisponiveis);
                         <?php endif; ?>
                     </div>
 
-                    <button type="button" class="blob-btn detalhes-btn-chat">
-                        <span class="blob-btn__text">Conversar com o dono</span>
+                    <?php if ((int) session()->get('usuario_id') !== (int) $livro['id_usuario']): ?>
+                        <button type="button" class="blob-btn detalhes-btn-chat" id="btnConversarDono">
+                            <span class="blob-btn__text">Conversar com o dono</span>
 
-                        <span class="blob-btn__inner">
-                            <span class="blob-btn__blobs">
-                                <span class="blob-btn__blob"></span>
-                                <span class="blob-btn__blob"></span>
-                                <span class="blob-btn__blob"></span>
-                                <span class="blob-btn__blob"></span>
+                            <span class="blob-btn__inner">
+                                <span class="blob-btn__blobs">
+                                    <span class="blob-btn__blob"></span>
+                                    <span class="blob-btn__blob"></span>
+                                    <span class="blob-btn__blob"></span>
+                                    <span class="blob-btn__blob"></span>
+                                </span>
                             </span>
-                        </span>
-                    </button>
+                        </button>
+                    <?php endif; ?>
                     <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
                         <defs>
                             <filter id="goo">
@@ -239,10 +252,11 @@ sort($generosDisponiveis);
 </section>
 
 <?= $this->include('partials/modal_perfil') ?>
+<?= $this->include('partials/modal_perfil_script') ?>
+
+<?= $this->include('partials/modal_contato') ?>
 
 <?= $this->include('partials/footer') ?>
-
-<?= $this->include('partials/modal_perfil_script') ?>
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
@@ -268,6 +282,30 @@ document.addEventListener('DOMContentLoaded', () => {
             card.classList.add('is-ativo');
         });
     });
+
+    const btnConversar = document.getElementById('btnConversarDono');
+    const modalContato = document.getElementById('modalContato');
+    const fecharContato = document.getElementById('fecharModalContato');
+
+    if (btnConversar && modalContato) {
+        btnConversar.addEventListener('click', () => {
+            modalContato.classList.add('aberto');
+        });
+    }
+
+    if (fecharContato && modalContato) {
+        fecharContato.addEventListener('click', () => {
+            modalContato.classList.remove('aberto');
+        });
+    }
+
+    if (modalContato) {
+        modalContato.addEventListener('click', (e) => {
+            if (e.target === modalContato) {
+                modalContato.classList.remove('aberto');
+            }
+        });
+    }
 
     const filtroGenero = document.getElementById('filtroGenero');
     if (filtroGenero) {

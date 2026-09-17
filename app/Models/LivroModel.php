@@ -25,6 +25,8 @@ class LivroModel extends Model
         'tipo_transacao',
         'preco',
         'status',
+        'cep',
+        'localizacao',
     ];
 
     protected $validationRules = [
@@ -39,6 +41,8 @@ class LivroModel extends Model
         'tipo_transacao'     => 'required|in_list[venda,troca,ambos]',
         'preco'              => 'permit_empty|decimal',
         'status'             => 'permit_empty|in_list[disponivel,reservado,indisponivel]',
+        'cep'                => 'required|regex_match[/^\d{5}-?\d{3}$/]',
+        'localizacao'        => 'required|max_length[150]',
     ];
 
     protected $validationMessages = [
@@ -47,6 +51,12 @@ class LivroModel extends Model
         ],
         'preco' => [
             'decimal' => 'Informe um preço válido, ex: 25.90',
+        ],
+        'cep' => [
+            'regex_match' => 'Informe um CEP válido, ex: 36880-000',
+        ],
+        'localizacao' => [
+            'required' => 'Informe a localização onde o livro será vendido/trocado.',
         ],
     ];
 
@@ -66,11 +76,18 @@ class LivroModel extends Model
         return $erros;
     }
 
-    public function buscarComGenero(int $idLivro): ?array
+    public function buscarComGenero(int $id)
     {
-        return $this->select('livros.*, generos.nome AS genero')
+        return $this->select('
+                livros.*,
+                generos.nome AS genero,
+                usuarios.nome     AS dono_nome,
+                usuarios.email    AS dono_email,
+                usuarios.telefone AS dono_telefone
+            ')
             ->join('generos', 'generos.id_genero = livros.id_genero')
-            ->where('livros.id_livro', $idLivro)
+            ->join('usuarios', 'usuarios.id_usuario = livros.id_usuario')
+            ->where('livros.id_livro', $id)
             ->first();
     }
 

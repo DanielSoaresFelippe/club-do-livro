@@ -114,6 +114,22 @@
                     value="<?= old('preco', $livro['preco'] ?? '') ?>">
             </div>
 
+            <div class="form-livro__linha">
+                <div class="form-livro__grupo">
+                    <label for="cep">CEP</label>
+                    <input type="text" name="cep" id="cep" maxlength="9"
+                        placeholder="00000-000"
+                        value="<?= old('cep', $livro['cep'] ?? '') ?>" required>
+                    <span id="cepStatus" class="form-livro__cep-status"></span>
+                </div>
+                <div class="form-livro__grupo">
+                    <label for="localizacao">Localização (cidade/UF)</label>
+                    <input type="text" name="localizacao" id="localizacao"
+                        placeholder="Ex: Muriaé - MG"
+                        value="<?= old('localizacao', $livro['localizacao'] ?? '') ?>" required>
+                </div>
+            </div>
+
             <div class="form-livro__grupo">
                 <label for="descricao">Descrição</label>
                 <textarea name="descricao" id="descricao" rows="4"><?= old('descricao', $livro['descricao'] ?? '') ?></textarea>
@@ -153,6 +169,45 @@
 
         tipoSelect.addEventListener('change', alternarPreco);
         alternarPreco();
+
+        const cepInput = document.getElementById('cep');
+        const localizacaoInput = document.getElementById('localizacao');
+        const cepStatus = document.getElementById('cepStatus');
+
+        cepInput.addEventListener('input', function () {
+            let valor = cepInput.value.replace(/\D/g, '').slice(0, 8);
+            if (valor.length > 5) {
+                valor = valor.slice(0, 5) + '-' + valor.slice(5);
+            }
+            cepInput.value = valor;
+        });
+
+        cepInput.addEventListener('blur', function () {
+            const cepLimpo = cepInput.value.replace(/\D/g, '');
+
+            if (cepLimpo.length !== 8) {
+                return;
+            }
+
+            cepStatus.textContent = 'Buscando endereço...';
+
+            fetch('https://viacep.com.br/ws/' + cepLimpo + '/json/')
+                .then(function (resposta) {
+                    return resposta.json();
+                })
+                .then(function (dados) {
+                    if (dados.erro) {
+                        cepStatus.textContent = 'CEP não encontrado.';
+                        return;
+                    }
+
+                    localizacaoInput.value = dados.localidade + ' - ' + dados.uf;
+                    cepStatus.textContent = '';
+                })
+                .catch(function () {
+                    cepStatus.textContent = 'Não foi possível buscar o CEP agora.';
+                });
+        });
     });
 </script>
 

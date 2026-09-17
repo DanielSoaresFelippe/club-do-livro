@@ -578,6 +578,64 @@
     font-weight: 600;
 }
 
+.detalhes-hero-capa {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: start;
+    min-width: 0;
+    gap: 12px;
+}
+
+.btn-favoritar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    border: 2px solid #000000;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: transform 0.15s ease, background 0.2s ease;
+}
+
+.btn-favoritar i {
+    font-size: 1.1rem;
+    color: #f4d4d6;
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.btn-favoritar.favoritado i {
+    color: #a51d2d;
+}
+
+.btn-favoritar:hover {
+    transform: scale(1.08);
+}
+
+.btn-favoritar:active {
+    transform: scale(0.92);
+}
+
+@keyframes pulsarCoracao {
+    0% {
+        transform: scale(1);
+    }
+
+    40% {
+        transform: scale(1.35);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+.btn-favoritar.favoritado i {
+    animation: pulsarCoracao 0.35s ease;
+}
+
 @media (max-width: 500px) {
     .detalhes-confirmar-exclusao__acoes {
         flex-direction: column;

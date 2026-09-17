@@ -144,3 +144,31 @@ ON DELETE CASCADE;
 ALTER TABLE livros
   ADD COLUMN cep VARCHAR(9) NULL AFTER status,
   ADD COLUMN localizacao VARCHAR(150) NULL AFTER cep;
+
+-- procedure para adicionar e deletar os favoritos
+DELIMITER $$
+
+CREATE PROCEDURE sp_adicionar_favorito (
+    IN p_id_usuario INT,
+    IN p_id_livro   INT
+)
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1 FROM favoritos
+        WHERE id_usuario = p_id_usuario AND id_livro = p_id_livro
+    ) THEN
+        INSERT INTO favoritos (id_usuario, id_livro)
+        VALUES (p_id_usuario, p_id_livro);
+    END IF;
+END$$
+
+CREATE PROCEDURE sp_remover_favorito (
+    IN p_id_usuario INT,
+    IN p_id_livro   INT
+)
+BEGIN
+    DELETE FROM favoritos
+    WHERE id_usuario = p_id_usuario AND id_livro = p_id_livro;
+END$$
+
+DELIMITER ;

@@ -167,6 +167,15 @@ sort($generosDisponiveis);
                         <?php endforeach; ?>
                     </div>
                 <?php endif; ?>
+
+                <button
+                    type="button"
+                    class="btn-favoritar<?= $favoritado ? ' favoritado' : '' ?>"
+                    data-id-livro="<?= esc($livro['id_livro']) ?>"
+                    aria-label="Favoritar livro"
+                >
+                    <i class="fa-solid fa-heart"></i>
+                </button>
             </div>
         </div>
 
@@ -332,6 +341,37 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+
+const btnFavoritar = document.querySelector('.btn-favoritar');
+
+if (btnFavoritar) {
+    btnFavoritar.addEventListener('click', async () => {
+        const idLivro = btnFavoritar.dataset.idLivro;
+
+        try {
+            const resposta = await fetch(`<?= base_url('livro/favoritar') ?>/${idLivro}`, {
+                method: 'POST',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRF-TOKEN': '<?= csrf_hash() ?>' 
+                }
+            });
+
+            if (resposta.status === 401) {
+                window.location.href = '<?= base_url('login') ?>';
+                return;
+            }
+
+            const dados = await resposta.json();
+
+            if (dados.sucesso) {
+                btnFavoritar.classList.toggle('favoritado', dados.favoritado);
+            }
+        } catch (erro) {
+            console.error('Erro ao favoritar:', erro);
+        }
+    });
+}
 </script>
 
 </body>

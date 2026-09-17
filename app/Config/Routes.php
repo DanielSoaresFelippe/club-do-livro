@@ -25,6 +25,8 @@ $routes->get('livro/detalhes/(:num)', 'Livro::detalhes/$1');
 
 $routes->get('livro',                    'Livro::index');
 $routes->get('livro/detalhes/(:num)',    'Livro::detalhes/$1');
+$routes->get('favoritos', 'Favoritos::index');
+$routes->post('livro/favoritar/(:num)', 'Favoritos::alternar/$1');
 
 // Área exclusiva de colaboradores (cadastrar/gerenciar livros)
 $routes->get('livro/meus-livros',        'Livro::meusLivros',  ['filter' => ['auth', 'colaborador']]);

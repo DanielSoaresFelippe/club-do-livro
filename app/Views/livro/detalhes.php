@@ -58,12 +58,10 @@ sort($generosDisponiveis);
 
 <?= $this->include('partials/navbar') ?>
 
+<header class="header-detalhes-livro"></header>
+
 <section class="painel-pasta painel-ativo pagina-secundaria" data-painel="livro-detalhes">
     <div class="painel-conteudo">
-
-       <a href="javascript:history.back()" class="detalhes-voltar">
-            <i class="fa-solid fa-arrow-left"></i> Voltar
-        </a>
 
         <?php if (session()->getFlashdata('sucesso')): ?>
             <p class="detalhes-sucesso-aviso">

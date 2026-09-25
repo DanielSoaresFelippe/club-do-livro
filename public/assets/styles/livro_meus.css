@@ -5,14 +5,14 @@
     background-size: 100% 100%;
     background-position: center;
     position: relative;
-    border-bottom: 0.5px solid #2e2e2ea4;
 }
 
 .meus-livros {
     max-width: 100%;
     margin: 0 auto;
     padding: 40px 24px 120px;
-    background-color: #e1d4f0;
+    background-image: url(../img/fundoLivrosMeus.png);
+    background-size: 100% 100%;
 }
 
 .meus-livros__topo {
@@ -20,28 +20,19 @@
     margin-bottom: 32px;
 }
 
-.meus-livros__topo h2 {
-    font-size: 55px;
-    color: #3a3a3a;
-    font-weight: bold;
-    font-weight: lighter;
-    letter-spacing: 4px;
-    margin: 0 0 4px;
-    font-family: 'Bangers', cursive;
-    -webkit-text-stroke: 1px #2e2e2e;
-}
-
 .meus-livros__topo p {
     color: #8a8a8a;
-    margin: 0;
+    margin: 30;
     font-family: 'Bangers', cursive;
     font-size: 25px;
 }
 
 .meus-livros__grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 24px;
+    padding-left: 100px;
+    padding-right: 100px;
 }
 
 .meus-livros__vazio {
@@ -169,7 +160,7 @@
     height: 62px;
     border-radius: 50%;
     border: none;
-    background: #c9a7e0;
+    background: #cc5912;
     color: #fff;
     box-shadow: 0 6px 16px rgba(201, 167, 224, 0.55);
     cursor: pointer;
@@ -190,13 +181,13 @@
 .fab-bloop:hover {
     animation: none;
     transform: scale(1.08);
-    box-shadow: 0 8px 20px rgba(201, 167, 224, 0.65);
+    box-shadow: 0 8px 20px #eb9a68;
 }
 
 .fab-bloop:active {
     animation: none;
     transform: scale(0.94);
-    box-shadow: 0 3px 9px rgba(201, 167, 224, 0.45);
+    box-shadow: 0 3px 9px rgba(224, 195, 167, 0.45);
 }
 
 @keyframes bloop-idle {

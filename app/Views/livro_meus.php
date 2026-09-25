@@ -14,7 +14,6 @@
 <main class="meus-livros">
 
     <div class="meus-livros__topo">
-        <h2>Meus Livros</h2>
         <p><?= count($livros ?? []) ?> livro(s) cadastrado(s)</p>
     </div>
 

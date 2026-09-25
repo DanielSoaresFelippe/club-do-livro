@@ -14,7 +14,6 @@
 </head>
 <body>
 <section class="livro-hero">
-    <img src="<?= base_url('assets/img/textoFundoHeader.png') ?>" alt="" class="livro-hero__sticker">
     <div class="livro-hero__overlay"></div>
 </section>
 

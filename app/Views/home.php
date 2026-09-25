@@ -318,9 +318,15 @@
     </div>
     <div class="buttons">
       <button class="blob-btn">
-        <a href="<?= base_url('livro') ?>">
-          Trocar / Vender
-        </a>
+        <?php if($usuario): ?>
+          <a href="<?= base_url('livro/meus-livros') ?>">
+            Trocar / Vender
+          </a>
+        <?php else: ?>
+          <a href="#" class="login-link" data-auth-open="login">
+            Trocar / Vender
+          </a>
+        <?php endif; ?>
         <span class="blob-btn__inner">
           <span class="blob-btn__blobs">
             <span class="blob-btn__blob"></span>

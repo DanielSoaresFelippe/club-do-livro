@@ -12,8 +12,11 @@ class Home extends BaseController
 
         $livros = $livroModel->orderBy('id_livro', 'DESC')->findAll(8);
 
+        $usuario = session()->get('usuario_id');
+
         return view('home', [
             'livros' => $livros,
+            'usuario' => $usuario,
         ]);
     }
 

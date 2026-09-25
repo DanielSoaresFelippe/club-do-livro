@@ -1652,7 +1652,7 @@ footer {
     overflow: hidden;
 }
 
-.livro-hero__sticker {
+/* .livro-hero__sticker {
     position: absolute;
     left: 50px;
     top: 50%;
@@ -1727,7 +1727,7 @@ footer {
     50% {
         transform: rotate(2deg) translateY(-7px);
     }
-}
+} */
 
 
 /* Responsividade */

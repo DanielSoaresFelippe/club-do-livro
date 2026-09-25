@@ -319,6 +319,8 @@ class Livro extends BaseController
             'capa'     => $item['imagem_capa'] ?? base_url('assets/img/capa-padrao.png'),
         ], $recomendados);
 
+        $favoritado = $idUsuario ? $this->favoritosModel->estaFavoritado($idUsuario, (int) $id) : false;
+
         if (!$livro || (int) $livro['id_usuario'] !== $idUsuario) {
             return redirect()->to(base_url('livro_meus'))
                 ->with('erro', 'Você não tem permissão para excluir este livro.');
@@ -334,6 +336,7 @@ class Livro extends BaseController
                 'livro'             => $livro,
                 'recomendados'      => $recomendados,
                 'confirmarExclusao' => true,
+                'favoritado'        => $favoritado,
             ]);
         }
 

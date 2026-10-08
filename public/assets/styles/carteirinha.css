@@ -1639,9 +1639,9 @@ footer {
 }
 
 .livro-hero {
-    min-height: 80vh;
+    min-height: 90vh;
     background-image: url('../img/fundoHeaderLivro.png');
-    background-size: 100% 100%;
+    background-size: 100% auto;
     background-position: center;
     display: flex;
     align-items: center;
@@ -1761,11 +1761,6 @@ footer {
         left: 65%;
         top: 45%;
     }
-}
-
-.livro-hero__overlay {
-    max-width: 640px;
-    margin: 0 auto;
 }
 
 .livro-hero__overlay h1 {

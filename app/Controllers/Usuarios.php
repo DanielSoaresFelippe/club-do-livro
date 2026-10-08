@@ -159,6 +159,7 @@ class Usuarios extends BaseController
                 'usuario_id' => $usuario['id_usuario'],
                 'chave' => hash('sha256', $token),
                 'statusRegistro' => 1,
+                'created_at'     => date('Y-m-d H:i:s'),
             ]);
 
             $emailService = service('email');

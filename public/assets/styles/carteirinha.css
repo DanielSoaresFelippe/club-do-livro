@@ -51,6 +51,15 @@ body {
     line-height: 1.5;
 }
 
+.body-index {
+    font-family: var(--font-body);
+    color: var(--ink);
+    background: #fff;
+    width: 100%;
+    overflow-x: hidden;
+    line-height: 1.5;
+}
+
 img, svg { display: block; max-width: 100%; height: auto; }
 a { text-decoration: none; color: inherit; }
 button { font-family: inherit; cursor: pointer; border: none; background: none; }
@@ -1641,7 +1650,7 @@ footer {
 .livro-hero {
     min-height: 90vh;
     background-image: url('../img/fundoHeaderLivro.png');
-    background-size: 100% auto;
+    background-size: 100% 100%;
     background-position: center;
     display: flex;
     align-items: center;

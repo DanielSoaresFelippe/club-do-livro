@@ -12,17 +12,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
     <link rel="stylesheet" href="<?= assetUrl('assets/styles/carteirinha.css') ?>">
 </head>
-<body>
+<body class="body-index">
 <section class="livro-hero">
     <div class="livro-hero__overlay"></div>
 </section>
-
-<div class="onda-livro" aria-hidden="true">
-    <svg viewBox="0 0 1200 110" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-        <path class="onda-livro__preenchimento"
-              d="M0,60 C 100,15 200,105 300,60 C 400,15 500,105 600,60 C 700,15 800,105 900,60 C 1000,15 1100,105 1200,60 L1200,110 L0,110 Z" />
-    </svg>
-</div>
 
 <section class="livro-filtros">
     <form method="get" action="<?= base_url('livro') ?>" class="livro-filtros__form">

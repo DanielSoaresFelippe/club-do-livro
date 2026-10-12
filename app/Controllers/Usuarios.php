@@ -130,8 +130,8 @@ class Usuarios extends BaseController
         ]);
 
         $redirect = $usuario['tipo'] === 'colaborador'
-        ? base_url('livro/meus-livros')
-        : base_url('livro/');
+        ? base_url('usuarios/perfil')
+        : base_url('usuarios/perfil');
 
         return $this->response->setJSON([
             'sucess'   => true,

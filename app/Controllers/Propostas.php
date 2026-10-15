@@ -87,10 +87,14 @@ class Propostas extends BaseController
                 ->with('abrirModalProposta', true);
         }
 
-        if (!$this->propostaModel->registrarLance($dados, $idsLivrosOferecidos)) {
+        $idProposta = $this->propostaModel->registrarLance($dados, $idsLivrosOferecidos);
+
+        if (!$idProposta) {
             return redirect()->to($urlLivro)->withInput()
                 ->with('erro', 'Não foi possível registrar sua proposta. Tente novamente.');
         }
+
+        service('notificacaoNegociacao')->novaProposta($idProposta);
 
         return redirect()->to($urlLivro)
             ->with('sucesso', 'Proposta enviada! O dono do livro tem ' . PropostaModel::DIAS_PRAZO . ' dias para responder.');
@@ -177,7 +181,16 @@ class Propostas extends BaseController
 
     public function aceitar($idProposta = null)
     {
+        // Quem tinha proposta pendente no mesmo livro é recusado automaticamente ao aceitar esta
+        $concorrentes = $this->propostaModel->idsPendentesConcorrentes((int) $idProposta);
+
         $erro = $this->propostaModel->aceitar((int) $idProposta, (int) session()->get('usuario_id'));
+
+        if ($erro === null) {
+            foreach ($concorrentes as $idConcorrente) {
+                service('notificacaoNegociacao')->propostaRecusada($idConcorrente, true);
+            }
+        }
 
         return redirect()->to(base_url('propostas/' . (int) $idProposta))
             ->with($erro ? 'erro' : 'sucesso', $erro ?? 'Proposta aceita! O livro foi reservado — combinem a entrega pelos contatos abaixo.');
@@ -187,6 +200,10 @@ class Propostas extends BaseController
     {
         $erro = $this->propostaModel->recusar((int) $idProposta, (int) session()->get('usuario_id'));
 
+        if ($erro === null) {
+            service('notificacaoNegociacao')->propostaRecusada((int) $idProposta);
+        }
+
         return redirect()->to(base_url('propostas/' . (int) $idProposta))
             ->with($erro ? 'erro' : 'sucesso', $erro ?? 'Proposta recusada.');
     }
@@ -194,6 +211,10 @@ class Propostas extends BaseController
     public function cancelar($idProposta = null)
     {
         $erro = $this->propostaModel->cancelar((int) $idProposta, (int) session()->get('usuario_id'));
+
+        if ($erro === null) {
+            service('notificacaoNegociacao')->propostaCancelada((int) $idProposta);
+        }
 
         return redirect()->to(base_url('propostas/' . (int) $idProposta))
             ->with($erro ? 'erro' : 'sucesso', $erro ?? 'Proposta cancelada.');

@@ -23,7 +23,7 @@ async function abrirModalPerfil() {
         document.getElementById('perfilTelefone').value = mascararTelefone(dados.usuario.telefone ?? '');
         document.getElementById('perfilTipo').value = dados.usuario.tipo ?? 'cliente';
         document.getElementById('perfilSenha').value = '';
-        modalFotoPreview.src = dados.usuario.foto_url ?? (urlBase + 'assets/img/avatar-padrao.png');
+        modalFotoPreview.src = dados.usuario.foto_url;
 
         modalPerfil.classList.add('aberto');
     } catch (erro) {

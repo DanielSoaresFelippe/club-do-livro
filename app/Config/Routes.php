@@ -39,3 +39,17 @@ $routes->match(['get', 'post'], 'livro/excluir/(:num)', 'Livro::excluir/$1', ['f
 $routes->get('livro_meus', 'Livro::meusLivros', ['filter' => ['auth', 'colaborador']]);
 $routes->get('novo', 'Livro::novo', ['filter' => ['auth', 'colaborador']]);
 $routes->match(['get', 'post'], 'livro/enviarInteresse/(:num)', 'Livro::enviarInteresse/$1');
+
+// Propostas / lances (dinheiro ou troca)
+$routes->get('livro/proposta/(:num)',  'Propostas::abrir/$1');
+$routes->post('livro/proposta/(:num)', 'Propostas::criar/$1', ['filter' => 'auth']);
+
+// Painel de negociação (Minhas propostas)
+$routes->group('propostas', ['filter' => 'auth'], static function ($routes) {
+    $routes->get('/',                       'Propostas::index');
+    $routes->get('(:num)',                  'Propostas::ver/$1');
+    $routes->post('(:num)/aceitar',         'Propostas::aceitar/$1');
+    $routes->post('(:num)/recusar',         'Propostas::recusar/$1');
+    $routes->post('(:num)/contraproposta',  'Propostas::contrapropor/$1');
+    $routes->post('(:num)/cancelar',        'Propostas::cancelar/$1');
+});

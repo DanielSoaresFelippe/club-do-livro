@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Models\FavoritosModel;
 use App\Models\LivroModel;
 use App\Models\GeneroModel;
+use App\Models\PropostaModel;
 use App\Models\UsuarioModel;
 
 class Livro extends BaseController
@@ -126,11 +127,26 @@ class Livro extends BaseController
             'capa'     => $item['imagem_capa'] ?? base_url('assets/img/capa-padrao.png'),
         ], $recomendados);
 
+        $ehDono = $idUsuario && (int) $livro['id_usuario'] === (int) $idUsuario;
+        $propostaPendente = false;
+        $livrosParaTroca  = [];
+
+        if ($idUsuario && !$ehDono) {
+            $propostaPendente = (new PropostaModel())->existePendente((int) $livro['id_livro'], (int) $idUsuario);
+
+            if ($livro['tipo_transacao'] !== 'venda') {
+                $livrosParaTroca = $this->livroModel->listarDisponiveisParaTroca((int) $idUsuario);
+            }
+        }
+
         return view('livro/detalhes', [
-            'livro'        => $livro,
-            'recomendados' => $recomendados,
-            'interessado'  => $usuarioInteressado,
-            'favoritado'   => $favoritado,
+            'livro'            => $livro,
+            'recomendados'     => $recomendados,
+            'interessado'      => $usuarioInteressado,
+            'favoritado'       => $favoritado,
+            'ehDono'           => $ehDono,
+            'propostaPendente' => $propostaPendente,
+            'livrosParaTroca'  => $livrosParaTroca,
         ]);
     }
 
@@ -177,14 +193,9 @@ class Livro extends BaseController
         $dados['id_usuario'] = $idUsuario;
         $dados['status']     = 'disponivel';
 
-        if (!$this->livroModel->validate($dados)) {
-            return redirect()->back()->withInput()
-                ->with('errors', $this->livroModel->errors());
-        }
-
-        $errosNegocio = $this->livroModel->validarRegrasNegocio($dados);
-        if (!empty($errosNegocio)) {
-            return redirect()->back()->withInput()->with('errors', $errosNegocio);
+        $erros = $this->validarFormulario($dados);
+        if (!empty($erros)) {
+            return redirect()->back()->withInput()->with('errors', $erros);
         }
 
         $arquivoCapa = $this->processarUploadCapa();
@@ -255,14 +266,9 @@ class Livro extends BaseController
 
         $dados = $this->dadosDoFormulario();
 
-        if (!$this->livroModel->validate(array_merge($dados, ['id_usuario' => $idUsuario]))) {
-            return redirect()->back()->withInput()
-                ->with('errors', $this->livroModel->errors());
-        }
-
-        $errosNegocio = $this->livroModel->validarRegrasNegocio($dados);
-        if (!empty($errosNegocio)) {
-            return redirect()->back()->withInput()->with('errors', $errosNegocio);
+        $erros = $this->validarFormulario(array_merge($dados, ['id_usuario' => $idUsuario]));
+        if (!empty($erros)) {
+            return redirect()->back()->withInput()->with('errors', $erros);
         }
 
         $arquivoCapa = $this->processarUploadCapa();
@@ -361,10 +367,58 @@ class Livro extends BaseController
             'descricao'          => trim((string) $this->request->getPost('descricao')) ?: null,
             'estado_conservacao' => $this->request->getPost('estado_conservacao'),
             'tipo_transacao'     => $this->request->getPost('tipo_transacao'),
-            'preco'              => $this->request->getPost('preco') !== '' ? $this->request->getPost('preco') : null,
+            'preco'              => $this->request->getPost('tipo_transacao') !== 'troca' && $this->request->getPost('preco') !== ''
+                ? $this->request->getPost('preco')
+                : null,
             'cep'                => trim((string) $this->request->getPost('cep')),
-            'localizacao'        => trim((string) $this->request->getPost('localizacao')),
+            'bairro'             => trim((string) $this->request->getPost('bairro')) ?: null,
+            'cidade'             => trim((string) $this->request->getPost('cidade')),
+            'estado'             => strtoupper(trim((string) $this->request->getPost('estado'))),
         ];
+    }
+
+    /**
+     * Junta os erros do Model, das regras de negócio e da capa enviada.
+     */
+    protected function validarFormulario(array $dados): array
+    {
+        $erros = $this->livroModel->validate($dados) ? [] : $this->livroModel->errors();
+
+        return array_merge(
+            $erros,
+            $this->livroModel->validarRegrasNegocio($dados),
+            $this->validarCapa()
+        );
+    }
+
+    /**
+     * A capa é opcional (sem ela usamos a capa padrão), mas se vier precisa ser uma imagem válida.
+     */
+    protected function validarCapa(): array
+    {
+        $arquivo = $this->request->getFile('imagem_capa');
+
+        if ($arquivo === null || $arquivo->getError() === UPLOAD_ERR_NO_FILE) {
+            return [];
+        }
+
+        $regras = [
+            'imagem_capa' => [
+                'label'  => 'Capa do livro',
+                'rules'  => 'is_image[imagem_capa]'
+                    . '|mime_in[imagem_capa,image/jpeg,image/png,image/webp]'
+                    . '|ext_in[imagem_capa,jpg,jpeg,png,webp]'
+                    . '|max_size[imagem_capa,2048]',
+                'errors' => [
+                    'is_image' => 'A capa precisa ser uma imagem.',
+                    'mime_in'  => 'A capa deve ser JPG, PNG ou WEBP.',
+                    'ext_in'   => 'A capa deve ser JPG, PNG ou WEBP.',
+                    'max_size' => 'A capa deve ter no máximo 2 MB.',
+                ],
+            ],
+        ];
+
+        return $this->validate($regras) ? [] : $this->validator->getErrors();
     }
 
     protected function processarUploadCapa()
@@ -375,7 +429,7 @@ class Livro extends BaseController
             return false;
         }
 
-        if (!in_array($arquivo->getClientMimeType(), ['image/jpeg', 'image/png', 'image/webp'], true)) {
+        if (!in_array($arquivo->getMimeType(), ['image/jpeg', 'image/png', 'image/webp'], true)) {
             return false;
         }
 

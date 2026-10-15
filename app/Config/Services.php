@@ -29,4 +29,16 @@ class Services extends BaseService
      *     return new \CodeIgniter\Example();
      * }
      */
+
+    /**
+     * E-mails transacionais da negociação (nova proposta, cancelamento, recusa).
+     */
+    public static function notificacaoNegociacao(bool $getShared = true): \App\Services\NotificacaoNegociacao
+    {
+        if ($getShared) {
+            return static::getSharedInstance('notificacaoNegociacao');
+        }
+
+        return new \App\Services\NotificacaoNegociacao();
+    }
 }

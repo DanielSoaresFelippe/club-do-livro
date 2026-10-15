@@ -9,7 +9,7 @@ class UsuarioModel extends Model
     protected $table            = 'usuarios';
     protected $primaryKey       = 'id_usuario';
     protected $useAutoIncrement = true;
-    protected $returnType       = 'array';
+    protected $returnType       = \App\Entities\Usuario::class;
     protected $useTimestamps    = false;
 
     protected $allowedFields = [

@@ -359,6 +359,29 @@ class PropostaModel extends Model
     }
 
     /**
+     * Outras propostas pendentes para o mesmo livro (serão recusadas se esta for aceita).
+     *
+     * @return int[]
+     */
+    public function idsPendentesConcorrentes(int $idProposta): array
+    {
+        $proposta = $this->find($idProposta);
+
+        if (!$proposta) {
+            return [];
+        }
+
+        return array_map('intval', array_column(
+            $this->select('id_proposta')
+                ->where('id_livro', (int) $proposta['id_livro'])
+                ->where('status', 'pendente')
+                ->where('id_proposta !=', $idProposta)
+                ->findAll(),
+            'id_proposta'
+        ));
+    }
+
+    /**
      * Aceita a oferta: o livro negociado (e os livros da troca) ficam reservados
      * e as demais propostas pendentes para esse livro são recusadas.
      *

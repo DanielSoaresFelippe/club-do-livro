@@ -155,6 +155,105 @@ class LivroModel extends Model
         return $builder->orderBy('livros.data_cadastro', 'DESC')->findAll();
     }
 
+    /**
+     * Palavras que o FULLTEXT do InnoDB ignora: menores que innodb_ft_min_token_size (3)
+     * e a lista padrão de stopwords (INFORMATION_SCHEMA.INNODB_FT_DEFAULT_STOPWORD).
+     */
+    protected const STOPWORDS_FULLTEXT = [
+        'about', 'are', 'com', 'for', 'from', 'how', 'that', 'the', 'this',
+        'was', 'what', 'when', 'where', 'who', 'will', 'with', 'und', 'www',
+    ];
+
+    /**
+     * Catálogo com filtros e busca. Devolve o próprio Model (para encadear paginate()).
+     *
+     * A busca usa o índice FULLTEXT de título/autor (MATCH ... AGAINST em modo booleano,
+     * com prefixo: "hob" encontra "Hobbit") e também procura no nome do gênero.
+     * Termos que o FULLTEXT ignora (curtos ou stopwords) caem num LIKE.
+     */
+    public function buscarCatalogo(array $filtros): self
+    {
+        $this->select('livros.*, generos.nome AS genero')
+            ->join('generos', 'generos.id_genero = livros.id_genero');
+
+        if (!empty($filtros['tipo_transacao']) && in_array($filtros['tipo_transacao'], ['venda', 'troca', 'ambos'], true)) {
+            $this->where('livros.tipo_transacao', $filtros['tipo_transacao']);
+        }
+
+        if (!empty($filtros['genero'])) {
+            $this->where('livros.id_genero', (int) $filtros['genero']);
+        }
+
+        if (!empty($filtros['localizacao'])) {
+            $this->where('livros.localizacao', $filtros['localizacao']);
+        }
+
+        $busca = trim((string) ($filtros['busca'] ?? ''));
+
+        if ($busca !== '') {
+            $consultaFullText = $this->montarConsultaFullText($busca);
+            $match = 'MATCH(livros.titulo, livros.autor) AGAINST (' . $this->db->escape($consultaFullText) . ' IN BOOLEAN MODE)';
+
+            // Gêneros cujo nome bate com a busca (tabela pequena: LIKE é barato aqui)
+            $idsGenero = array_column(
+                $this->db->table('generos')->select('id_genero')->like('nome', $busca)->get()->getResultArray(),
+                'id_genero'
+            );
+
+            if ($consultaFullText === '') {
+                // Só termos curtos / stopwords: o FULLTEXT não ajuda, fica o LIKE
+                $this->groupStart()
+                    ->like('livros.titulo', $busca)
+                    ->orLike('livros.autor', $busca);
+                if ($idsGenero !== []) {
+                    $this->orWhereIn('livros.id_genero', $idsGenero);
+                }
+                $this->groupEnd();
+            } elseif ($idsGenero === []) {
+                // Caso comum: só o MATCH, que usa o índice FULLTEXT diretamente
+                $this->where($match, null, false);
+            } else {
+                // Um OR entre MATCH e outra coluna faz o MySQL abandonar o índice FULLTEXT.
+                // Por isso os ids do texto vêm de uma consulta própria (indexada) e o OR
+                // fica entre duas colunas indexadas (PK e id_genero).
+                $idsTexto = array_column(
+                    $this->db->table('livros')->select('id_livro')->where($match, null, false)->get()->getResultArray(),
+                    'id_livro'
+                );
+
+                $this->groupStart()
+                    ->whereIn('livros.id_genero', $idsGenero);
+                if ($idsTexto !== []) {
+                    $this->orWhereIn('livros.id_livro', $idsTexto);
+                }
+                $this->groupEnd();
+            }
+
+            if ($consultaFullText !== '') {
+                $this->orderBy($match, 'DESC', false);
+            }
+        }
+
+        return $this->orderBy('livros.id_livro', 'DESC');
+    }
+
+    /**
+     * "senhor dos anéis" -> "+senhor* +anéis*" (todas as palavras, aceitando prefixo).
+     * Remove operadores do modo booleano digitados pelo usuário.
+     */
+    protected function montarConsultaFullText(string $busca): string
+    {
+        $limpa = preg_replace('/[+\-<>()~*"@]+/u', ' ', mb_strtolower($busca));
+        $palavras = preg_split('/\s+/u', trim($limpa), -1, PREG_SPLIT_NO_EMPTY);
+
+        $palavras = array_filter(
+            $palavras,
+            fn ($p) => mb_strlen($p) >= 3 && !in_array($p, self::STOPWORDS_FULLTEXT, true)
+        );
+
+        return implode(' ', array_map(fn ($p) => '+' . $p . '*', $palavras));
+    }
+
     public function pertenceAoUsuario(int $idLivro, int $idUsuario): bool
     {
         return (bool) $this->where('id_livro', $idLivro)

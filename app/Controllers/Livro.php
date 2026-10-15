@@ -17,6 +17,8 @@ class Livro extends BaseController
 
     protected string $pastaUploads = 'assets/uploads/livros';
 
+    protected const LIVROS_POR_PAGINA = 20;
+
     public function __construct()
     {
         $this->livroModel  = new LivroModel();
@@ -37,6 +39,24 @@ class Livro extends BaseController
         $localizacao   = $this->request->getGet('localizacao');
         $busca         = trim((string) $this->request->getGet('busca'));
 
+        $livros = $this->livroModel
+            ->buscarCatalogo([
+                'tipo_transacao' => $tipoTransacao,
+                'genero'         => $idGenero,
+                'localizacao'    => $localizacao,
+                'busca'          => $busca,
+            ])
+            ->paginate(self::LIVROS_POR_PAGINA, 'livros');
+        $pager = $this->livroModel->pager;
+
+        // Busca dinâmica (fetch): devolve só a grade + paginação já renderizadas
+        if ($this->request->isAJAX()) {
+            return $this->response->setJSON([
+                'html'  => view('livro/_grade', ['livros' => $livros, 'pager' => $pager]),
+                'total' => $pager->getTotal('livros'),
+            ]);
+        }
+
         $localizacoes = (new LivroModel())
             ->distinct()
             ->select('localizacao')
@@ -44,33 +64,6 @@ class Livro extends BaseController
             ->where('localizacao !=', '')
             ->orderBy('localizacao', 'ASC')
             ->findAll();
-
-        $livroModel = $this->livroModel;
-        $livroModel->select('livros.*, generos.nome AS genero')
-            ->join('generos', 'generos.id_genero = livros.id_genero')
-            ->orderBy('livros.id_livro', 'DESC');
-
-        if ($tipoTransacao) {
-            $livroModel->where('livros.tipo_transacao', $tipoTransacao);
-        }
-
-        if ($idGenero) {
-            $livroModel->where('livros.id_genero', (int) $idGenero);
-        }
-
-        if ($localizacao) {
-            $livroModel->where('livros.localizacao', $localizacao);
-        }
-
-        if ($busca !== '') {
-            $livroModel->groupStart()
-                ->like('livros.titulo', $busca)
-                ->orLike('livros.autor', $busca)
-                ->groupEnd();
-        }
-        
-        $livros = $livroModel->paginate(8, 'livros');
-        $pager  = $livroModel->pager;
 
         return view('livro/index', [
             'livros'                 => $livros,
@@ -91,7 +84,7 @@ class Livro extends BaseController
         }
 
         $idUsuario = $this->getUsuarioLogado();
-        $usuarioInteressado = $this->usuarioModel->find($idUsuario);
+        $usuarioInteressado = $idUsuario ? $this->usuarioModel->find($idUsuario) : null;
         $favoritado = $idUsuario ? $this->favoritosModel->estaFavoritado($idUsuario, (int) $id) : false;
         $livro = $this->livroModel->buscarComGenero((int) $id);
 

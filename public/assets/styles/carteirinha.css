@@ -2130,3 +2130,23 @@ footer {
     line-height: 18px;
     text-align: center;
 }
+
+/* Catálogo: busca dinâmica */
+.livro-grid__total {
+    margin: 0 0 14px;
+    font-size: 0.9rem;
+    color: #756b63;
+}
+
+.livro-grid {
+    transition: opacity 0.15s ease;
+}
+
+.livro-grid.is-carregando {
+    opacity: 0.45;
+    pointer-events: none;
+}
+
+.livro-filtros__limpar[hidden] {
+    display: none;
+}

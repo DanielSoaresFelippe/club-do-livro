@@ -102,12 +102,21 @@
                     </select>
                 </div>
                 <div class="form-livro__grupo">
-                    <label for="tipo_transacao">Tipo de negociação</label>
-                    <?php $tipoAtual = old('tipo_transacao', $livro['tipo_transacao'] ?? 'venda'); ?>
+                    <label for="tipo_transacao">Forma de negociação</label>
+                    <?php
+                    $tipoAtual = old('tipo_transacao', $livro['tipo_transacao'] ?? 'ambos');
+                    $tipos = [
+                        'venda' => 'Apenas venda (dinheiro)',
+                        'troca' => 'Apenas troca',
+                        'ambos' => 'Ambos',
+                    ];
+                    ?>
                     <select name="tipo_transacao" id="tipo_transacao" required>
-                        <option value="venda" <?= $tipoAtual === 'venda' ? 'selected' : '' ?>>Venda</option>
-                        <option value="troca" <?= $tipoAtual === 'troca' ? 'selected' : '' ?>>Troca</option>
-                        <option value="emprestimo" <?= $tipoAtual === 'emprestimo' ? 'selected' : '' ?>>Empréstimo</option>
+                        <?php foreach ($tipos as $valor => $rotulo): ?>
+                            <option value="<?= $valor ?>" <?= $tipoAtual === $valor ? 'selected' : '' ?>>
+                                <?= $rotulo ?>
+                            </option>
+                        <?php endforeach; ?>
                     </select>
                 </div>
             </div>
@@ -118,21 +127,33 @@
                     value="<?= old('preco', $livro['preco'] ?? '') ?>">
             </div>
 
-            <div class="form-livro__linha">
+            <fieldset class="form-livro__endereco">
+                <legend>Onde o livro está</legend>
+
                 <div class="form-livro__grupo">
                     <label for="cep">CEP</label>
-                    <input type="text" name="cep" id="cep" maxlength="9"
-                        placeholder="00000-000"
-                        value="<?= old('cep', $livro['cep'] ?? '') ?>" required>
-                    <span id="cepStatus" class="form-livro__cep-status"></span>
+                    <input type="text" name="cep" id="cep" maxlength="9" inputmode="numeric"
+                        placeholder="00000-000" autocomplete="postal-code"
+                        value="<?= esc(old('cep', $livro['cep'] ?? '')) ?>" required>
+                    <span id="cepStatus" class="form-livro__cep-status" aria-live="polite"></span>
                 </div>
                 <div class="form-livro__grupo">
-                    <label for="localizacao">Localização (cidade/UF)</label>
-                    <input type="text" name="localizacao" id="localizacao"
-                        placeholder="Ex: Muriaé - MG"
-                        value="<?= old('localizacao', $livro['localizacao'] ?? '') ?>" required>
+                    <label for="bairro">Bairro</label>
+                    <input type="text" name="bairro" id="bairro" maxlength="100"
+                        value="<?= esc(old('bairro', $livro['bairro'] ?? '')) ?>">
                 </div>
-            </div>
+                <div class="form-livro__grupo">
+                    <label for="cidade">Cidade</label>
+                    <input type="text" name="cidade" id="cidade" maxlength="100"
+                        value="<?= esc(old('cidade', $livro['cidade'] ?? '')) ?>" required>
+                </div>
+                <div class="form-livro__grupo">
+                    <label for="estado">UF</label>
+                    <input type="text" name="estado" id="estado" maxlength="2"
+                        pattern="[A-Za-z]{2}" title="Sigla do estado com 2 letras, ex: MG"
+                        value="<?= esc(old('estado', $livro['estado'] ?? '')) ?>" required>
+                </div>
+            </fieldset>
 
             <div class="form-livro__grupo">
                 <label for="descricao">Descrição</label>
@@ -143,6 +164,8 @@
                 <label for="imagem_capa">Capa do livro</label>
                 <input type="file" name="imagem_capa" id="imagem_capa"
                     accept="image/jpeg,image/png,image/webp">
+                <span class="form-livro__dica">JPG, PNG ou WEBP, até 2 MB.</span>
+                <span id="capaStatus" class="form-livro__cep-status" aria-live="polite"></span>
 
                 <?php if (!empty($livro['imagem_capa'])): ?>
                     <div class="form-livro__capa-atual">
@@ -168,15 +191,58 @@
         const grupoPreco = document.getElementById('grupoPreco');
 
         function alternarPreco() {
-            grupoPreco.style.display = tipoSelect.value === 'venda' ? 'flex' : 'none';
+            grupoPreco.style.display = tipoSelect.value === 'troca' ? 'none' : 'flex';
         }
 
         tipoSelect.addEventListener('change', alternarPreco);
         alternarPreco();
 
         const cepInput = document.getElementById('cep');
-        const localizacaoInput = document.getElementById('localizacao');
         const cepStatus = document.getElementById('cepStatus');
+        const campos = {
+            bairro: document.getElementById('bairro'),
+            cidade: document.getElementById('cidade'),
+            estado: document.getElementById('estado'),
+        };
+        let ultimoCepBuscado = cepInput.value.replace(/\D/g, '');
+
+        function buscarCep() {
+            const cepLimpo = cepInput.value.replace(/\D/g, '');
+
+            if (cepLimpo.length !== 8 || cepLimpo === ultimoCepBuscado) {
+                return;
+            }
+
+            ultimoCepBuscado = cepLimpo;
+            cepStatus.textContent = 'Buscando endereço...';
+
+            fetch('https://viacep.com.br/ws/' + cepLimpo + '/json/')
+                .then(function (resposta) {
+                    if (!resposta.ok) {
+                        throw new Error('ViaCEP indisponível');
+                    }
+                    return resposta.json();
+                })
+                .then(function (dados) {
+                    if (cepLimpo !== cepInput.value.replace(/\D/g, '')) {
+                        return; // o usuário já digitou outro CEP
+                    }
+
+                    if (dados.erro) {
+                        cepStatus.textContent = 'CEP não encontrado. Preencha cidade e UF manualmente.';
+                        return;
+                    }
+
+                    campos.bairro.value = dados.bairro || '';
+                    campos.cidade.value = dados.localidade || '';
+                    campos.estado.value = dados.uf || '';
+                    cepStatus.textContent = dados.bairro ? '' : 'CEP geral da cidade — informe o bairro, se quiser.';
+                })
+                .catch(function () {
+                    ultimoCepBuscado = '';
+                    cepStatus.textContent = 'Não foi possível buscar o CEP agora. Preencha manualmente.';
+                });
+        }
 
         cepInput.addEventListener('input', function () {
             let valor = cepInput.value.replace(/\D/g, '').slice(0, 8);
@@ -184,33 +250,34 @@
                 valor = valor.slice(0, 5) + '-' + valor.slice(5);
             }
             cepInput.value = valor;
+            buscarCep();
         });
 
-        cepInput.addEventListener('blur', function () {
-            const cepLimpo = cepInput.value.replace(/\D/g, '');
+        cepInput.addEventListener('blur', buscarCep);
 
-            if (cepLimpo.length !== 8) {
+        campos.estado.addEventListener('input', function () {
+            campos.estado.value = campos.estado.value.replace(/[^a-z]/gi, '').toUpperCase();
+        });
+
+        const capaInput = document.getElementById('imagem_capa');
+        const capaStatus = document.getElementById('capaStatus');
+        const tiposCapa = ['image/jpeg', 'image/png', 'image/webp'];
+
+        capaInput.addEventListener('change', function () {
+            const arquivo = capaInput.files[0];
+            capaStatus.textContent = '';
+
+            if (!arquivo) {
                 return;
             }
 
-            cepStatus.textContent = 'Buscando endereço...';
-
-            fetch('https://viacep.com.br/ws/' + cepLimpo + '/json/')
-                .then(function (resposta) {
-                    return resposta.json();
-                })
-                .then(function (dados) {
-                    if (dados.erro) {
-                        cepStatus.textContent = 'CEP não encontrado.';
-                        return;
-                    }
-
-                    localizacaoInput.value = dados.localidade + ' - ' + dados.uf;
-                    cepStatus.textContent = '';
-                })
-                .catch(function () {
-                    cepStatus.textContent = 'Não foi possível buscar o CEP agora.';
-                });
+            if (!tiposCapa.includes(arquivo.type)) {
+                capaStatus.textContent = 'A capa deve ser JPG, PNG ou WEBP.';
+                capaInput.value = '';
+            } else if (arquivo.size > 2 * 1024 * 1024) {
+                capaStatus.textContent = 'A capa deve ter no máximo 2 MB.';
+                capaInput.value = '';
+            }
         });
     });
 </script>

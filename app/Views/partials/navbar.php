@@ -4,6 +4,9 @@
     $carteirinha = $uri->getPath() == '/index.php/usuarios/perfil';
     $usuarioTipo   = session()->get('usuario_tipo');
     $ehColaborador = $usuarioTipo === 'colaborador';
+
+    helper('proposta');
+    $propostasAguardando = $usuarioLogado ? propostasAguardandoResposta() : 0;
 ?>
 
 <head>
@@ -36,6 +39,12 @@
                     <a href="<?= base_url('usuarios/perfil') ?>">Visualizar Carteirinha</a>
                 <?php endif; ?>
                 <a href="<?= base_url('livro') ?>">Ver Catálogo</a>
+                <a href="<?= base_url('propostas') ?>" class="nav-propostas">
+                    Propostas
+                    <?php if ($propostasAguardando > 0): ?>
+                        <span class="nav-propostas__contador" title="Aguardando sua resposta"><?= $propostasAguardando ?></span>
+                    <?php endif; ?>
+                </a>
                 <a href="javascript:void(0)" class="js-abrir-perfil">Alterar Perfil</a>
                 <a href="<?= base_url('usuarios/favoritos') ?>">Visualizar Favoritos</a>
             </div>

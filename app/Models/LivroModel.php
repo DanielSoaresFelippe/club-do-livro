@@ -26,8 +26,14 @@ class LivroModel extends Model
         'preco',
         'status',
         'cep',
+        'bairro',
+        'cidade',
+        'estado',
         'localizacao',
     ];
+
+    protected $beforeInsert = ['montarLocalizacao'];
+    protected $beforeUpdate = ['montarLocalizacao'];
 
     protected $validationRules = [
         'id_usuario'         => 'required|integer',
@@ -42,7 +48,10 @@ class LivroModel extends Model
         'preco'              => 'permit_empty|decimal',
         'status'             => 'permit_empty|in_list[disponivel,reservado,indisponivel]',
         'cep'                => 'required|regex_match[/^\d{5}-?\d{3}$/]',
-        'localizacao'        => 'required|max_length[150]',
+        'bairro'             => 'permit_empty|max_length[100]',
+        'cidade'             => 'required|max_length[100]',
+        'estado'             => 'required|exact_length[2]|alpha',
+        'localizacao'        => 'permit_empty|max_length[150]',
     ];
 
     protected $validationMessages = [
@@ -55,12 +64,34 @@ class LivroModel extends Model
         'cep' => [
             'regex_match' => 'Informe um CEP válido, ex: 36880-000',
         ],
-        'localizacao' => [
-            'required' => 'Informe a localização onde o livro será vendido/trocado.',
+        'cidade' => [
+            'required' => 'Informe a cidade onde o livro será vendido/trocado.',
+        ],
+        'estado' => [
+            'required'     => 'Informe a UF onde o livro será vendido/trocado.',
+            'exact_length' => 'Informe a UF com 2 letras, ex: MG',
+            'alpha'        => 'Informe a UF com 2 letras, ex: MG',
         ],
     ];
 
     protected $skipValidation = false;
+
+    /**
+     * Mantém `localizacao` ("Cidade - UF") em sincronia com cidade/estado,
+     * já que o filtro do catálogo continua usando essa coluna.
+     */
+    protected function montarLocalizacao(array $data): array
+    {
+        if (!empty($data['data']['estado'])) {
+            $data['data']['estado'] = strtoupper($data['data']['estado']);
+        }
+
+        if (!empty($data['data']['cidade']) && !empty($data['data']['estado'])) {
+            $data['data']['localizacao'] = $data['data']['cidade'] . ' - ' . $data['data']['estado'];
+        }
+
+        return $data;
+    }
 
 
     public function validarRegrasNegocio(array $dados): array
@@ -129,5 +160,22 @@ class LivroModel extends Model
         return (bool) $this->where('id_livro', $idLivro)
             ->where('id_usuario', $idUsuario)
             ->first();
+    }
+
+    /**
+     * Livros do usuário que ele pode oferecer numa troca.
+     */
+    public function listarDisponiveisParaTroca(int $idUsuario, array $exceto = []): array
+    {
+        $builder = $this->select('livros.id_livro, livros.titulo, livros.autor, livros.imagem_capa, generos.nome AS genero')
+            ->join('generos', 'generos.id_genero = livros.id_genero')
+            ->where('livros.id_usuario', $idUsuario)
+            ->where('livros.status', 'disponivel');
+
+        if ($exceto !== []) {
+            $builder->whereNotIn('livros.id_livro', $exceto);
+        }
+
+        return $builder->orderBy('livros.titulo', 'ASC')->findAll();
     }
 }

@@ -102,6 +102,10 @@
                         <h3><?= esc($livro['titulo']) ?></h3>
                         <p class="livro-card__autor"><?= esc($livro['autor']) ?></p>
 
+                        <?php if ((int) session()->get('usuario_id') === (int) $livro['id_usuario']): ?>
+                            <span class="livro-card__dono"><i class="fa-solid fa-user"></i> Seu livro</span>
+                        <?php endif; ?>
+
                         <?php if (!empty($livro['localizacao'])): ?>
                             <p class="livro-card__localizacao">
                                 <i class="fa-solid fa-location-dot"></i> <?= esc($livro['localizacao']) ?>

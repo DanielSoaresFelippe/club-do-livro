@@ -101,7 +101,8 @@ sort($generosDisponiveis);
 
                 <?php if (!empty($livro['localizacao'])): ?>
                     <p class="detalhes-localizacao">
-                        <i class="fa-solid fa-location-dot"></i> <?= esc($livro['localizacao']) ?>
+                        <i class="fa-solid fa-location-dot"></i>
+                        <?= esc(implode(', ', array_filter([$livro['bairro'] ?? null, $livro['localizacao']]))) ?>
                     </p>
                 <?php endif; ?>
 
@@ -121,7 +122,31 @@ sort($generosDisponiveis);
                         <?php endif; ?>
                     </div>
 
-                    <?php if ((int) session()->get('usuario_id') !== (int) $livro['id_usuario']): ?>
+                    <?php $ehDono = $ehDono ?? ((int) session()->get('usuario_id') === (int) $livro['id_usuario']); ?>
+
+                    <div class="detalhes-proposta">
+                        <?php if ($ehDono): ?>
+                            <button type="button" class="detalhes-btn-proposta" disabled aria-disabled="true">
+                                <i class="fa-solid fa-lock"></i> Fazer proposta
+                            </button>
+                            <p class="detalhes-proposta__aviso">Este livro é seu — você não pode fazer propostas nele.</p>
+                        <?php elseif (!empty($propostaPendente)): ?>
+                            <button type="button" class="detalhes-btn-proposta" disabled aria-disabled="true">
+                                <i class="fa-solid fa-hourglass-half"></i> Proposta enviada
+                            </button>
+                            <p class="detalhes-proposta__aviso">Você já tem uma proposta pendente para este livro. Aguarde a resposta do dono.</p>
+                        <?php elseif (!session()->get('usuario_id')): ?>
+                            <a href="<?= site_url('livro/proposta/' . $livro['id_livro']) ?>" class="detalhes-btn-proposta">
+                                <i class="fa-solid fa-hand-holding-dollar"></i> Entrar para fazer proposta
+                            </a>
+                        <?php else: ?>
+                            <button type="button" class="detalhes-btn-proposta" id="btnFazerProposta">
+                                <i class="fa-solid fa-hand-holding-dollar"></i> Fazer proposta
+                            </button>
+                        <?php endif; ?>
+                    </div>
+
+                    <?php if (!$ehDono): ?>
                         <button type="button" class="blob-btn detalhes-btn-chat" id="btnConversarDono">
                             <span class="blob-btn__text">Conversar com o dono</span>
 
@@ -262,6 +287,10 @@ sort($generosDisponiveis);
 <?= $this->include('partials/modal_perfil_script') ?>
 
 <?= $this->include('partials/modal_contato') ?>
+
+<?php if (session()->get('usuario_id') && empty($ehDono) && empty($propostaPendente) && $livro['status'] === 'disponivel'): ?>
+    <?= $this->include('partials/modal_proposta') ?>
+<?php endif; ?>
 
 <?= $this->include('partials/footer') ?>
 

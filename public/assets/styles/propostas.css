@@ -1,0 +1,689 @@
+/* =========================================================
+   Painel de negociação (Minhas propostas)
+   Usa os tokens de carteirinha.css (--cream, --ink, --pink...)
+   ========================================================= */
+
+.propostas {
+    width: 100%;
+    max-width: 920px;
+    margin: 0 auto;
+    padding: clamp(110px, 14vw, 140px) 16px 160px;
+    box-sizing: border-box;
+}
+
+.propostas__cabecalho h1 {
+    margin: 0;
+    font-family: var(--font-comic);
+    font-weight: normal;
+    font-size: clamp(2.2rem, 6vw, 3.2rem);
+    letter-spacing: 1.5px;
+    color: var(--ink);
+}
+
+.propostas__cabecalho p {
+    margin: 4px 0 24px;
+    color: var(--ink-soft);
+}
+
+.propostas__voltar {
+    display: inline-block;
+    margin-bottom: 18px;
+    color: #a94b64;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.propostas__voltar:hover {
+    text-decoration: underline;
+}
+
+/* Avisos */
+.propostas__aviso {
+    margin: 0 0 18px;
+    padding: 10px 14px;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    list-style-position: inside;
+}
+
+.propostas__aviso--sucesso {
+    background: #eef5e6;
+    border: 1px dashed var(--green-mid);
+    color: var(--green-deep);
+}
+
+.propostas__aviso--erro {
+    background: #fcecef;
+    border: 1px dashed #e894a8;
+    color: #a94b64;
+}
+
+/* Abas */
+.propostas__abas {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 24px;
+}
+
+.propostas__aba {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 22px;
+    border: 2px solid var(--ink);
+    border-radius: 100px;
+    background: var(--white);
+    color: var(--ink);
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 0.15s ease, box-shadow 0.15s ease;
+}
+
+.propostas__aba:hover {
+    background: var(--pink);
+}
+
+.propostas__aba.is-ativa {
+    background: var(--pink);
+    box-shadow: 4px 4px 0 var(--ink);
+}
+
+.propostas__contador {
+    min-width: 22px;
+    height: 22px;
+    padding: 0 6px;
+    box-sizing: border-box;
+    border-radius: 999px;
+    background: #a94b64;
+    color: var(--white);
+    font-size: 0.75rem;
+    line-height: 22px;
+    text-align: center;
+}
+
+.propostas__vazio {
+    padding: 22px;
+    border: 2px dashed var(--cream-dark);
+    border-radius: 14px;
+    background: var(--white);
+    text-align: center;
+    color: var(--ink-soft);
+}
+
+.propostas__vazio a {
+    color: #a94b64;
+    font-weight: 600;
+}
+
+/* Bloco de um livro (aba Recebidas) */
+.propostas__livro {
+    margin-bottom: 22px;
+    padding: 18px;
+    border: 2px solid var(--ink);
+    border-radius: 18px;
+    background: var(--white);
+    box-shadow: 5px 5px 0 var(--ink);
+}
+
+.propostas__livro-topo {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 12px;
+}
+
+.propostas__livro h2 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+}
+
+.propostas__livro h2 a,
+.negociacao h1 a {
+    color: var(--ink);
+    text-decoration: none;
+}
+
+.propostas__livro h2 a:hover,
+.negociacao h1 a:hover {
+    text-decoration: underline;
+}
+
+.propostas__capa {
+    width: 56px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 6px;
+    border: 1px solid var(--cream-dark);
+    flex: none;
+}
+
+.propostas__capa--mini {
+    width: 40px;
+    height: 58px;
+}
+
+.propostas__meta {
+    margin: 2px 0 0;
+    font-size: 0.85rem;
+    color: #756b63;
+}
+
+/* Linhas de negociação */
+.propostas__lista {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.propostas__item {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr) auto;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    border: 1px solid var(--cream-dark);
+    border-radius: 12px;
+    background: var(--cream);
+    color: var(--ink);
+    text-decoration: none;
+    transition: border-color 0.15s ease, transform 0.15s ease;
+}
+
+.propostas__lista--enviadas .propostas__item {
+    grid-template-columns: auto minmax(0, 1fr) minmax(0, 1.2fr) auto;
+}
+
+.propostas__lista--enviadas .propostas__item {
+    border: 2px solid var(--ink);
+    background: var(--white);
+}
+
+.propostas__item:hover {
+    border-color: #a94b64;
+    transform: translateX(2px);
+}
+
+.propostas__item.is-sua-vez {
+    border-color: #a94b64;
+    background: #fcecef;
+}
+
+.propostas__item-quem,
+.propostas__item-oferta {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.propostas__item-quem {
+    font-weight: 600;
+}
+
+.propostas__item-quem small {
+    display: block;
+    font-weight: 400;
+    color: #756b63;
+}
+
+.propostas__item-oferta {
+    font-size: 0.9rem;
+    white-space: nowrap;
+}
+
+.propostas__item-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: #756b63;
+}
+
+/* Tags de status */
+.propostas__tag {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 999px;
+    border: 1px solid #ccc7b0;
+    background: var(--white);
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #756b63;
+    white-space: nowrap;
+}
+
+.propostas__tag--sua-vez {
+    background: #a94b64;
+    border-color: #a94b64;
+    color: var(--white);
+}
+
+.propostas__tag--pendente {
+    background: #fff6dc;
+    border-color: var(--yellow-pow);
+    color: #7a5f12;
+}
+
+.propostas__tag--aceita {
+    background: #eef5e6;
+    border-color: var(--green-mid);
+    color: var(--green-deep);
+}
+
+.propostas__tag--recusada,
+.propostas__tag--cancelada,
+.propostas__tag--expirada {
+    background: #f4efe9;
+    color: #8a7f75;
+}
+
+/* ---------- Tela da negociação ---------- */
+.negociacao {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.negociacao h1 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 4vw, 2rem);
+    line-height: 1.15;
+}
+
+.negociacao h2 {
+    margin: 0 0 12px;
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+}
+
+.negociacao__livro {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+}
+
+.negociacao__livro .propostas__capa {
+    width: 80px;
+    height: 116px;
+}
+
+.negociacao__rotulo {
+    margin: 0;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+    color: #a94b64;
+}
+
+.negociacao__atual,
+.negociacao__contra,
+.negociacao__historico {
+    padding: 20px;
+    border: 2px solid var(--ink);
+    border-radius: 18px;
+    background: var(--white);
+    box-shadow: 5px 5px 0 var(--ink);
+}
+
+.negociacao__atual--aceita {
+    background: #f6faf1;
+}
+
+.negociacao__atual-topo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.negociacao__oferta {
+    margin: 12px 0 2px;
+    font-weight: 600;
+}
+
+.negociacao__valor {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.negociacao__livros,
+.negociacao__escolhidos {
+    margin: 10px 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.negociacao__livros li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px 8px 8px;
+    border: 1px solid var(--cream-dark);
+    border-radius: 12px;
+    background: var(--cream);
+}
+
+.negociacao__livros img {
+    width: 34px;
+    height: 48px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.negociacao__livros span,
+.negociacao__opcao span {
+    display: flex;
+    flex-direction: column;
+    font-size: 0.85rem;
+    min-width: 0;
+}
+
+.negociacao__livros small,
+.negociacao__opcao small {
+    color: #756b63;
+}
+
+.negociacao__mensagem {
+    margin: 12px 0;
+    padding: 10px 14px;
+    border-left: 4px solid var(--pink-deep);
+    background: var(--cream);
+    border-radius: 0 10px 10px 0;
+    font-style: italic;
+}
+
+.negociacao__espera {
+    margin: 16px 0 10px;
+    color: var(--ink-soft);
+}
+
+.negociacao__acoes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 18px;
+}
+
+.negociacao__acoes form {
+    margin: 0;
+}
+
+.btn-negociacao {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 11px 22px;
+    border: 2px solid var(--ink);
+    border-radius: 100px;
+    background: var(--white);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 0.92rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 4px 4px 0 var(--ink);
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+
+.btn-negociacao:hover {
+    transform: translate(-1px, -1px);
+    box-shadow: 5px 5px 0 var(--ink);
+}
+
+.btn-negociacao:active {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0 var(--ink);
+}
+
+.btn-negociacao--aceitar {
+    background: var(--pink);
+}
+
+.btn-negociacao--recusar {
+    background: #f4efe9;
+}
+
+.btn-negociacao--secundario {
+    padding: 8px 16px;
+    font-size: 0.85rem;
+    box-shadow: 3px 3px 0 var(--ink);
+}
+
+.negociacao__contato {
+    margin-top: 16px;
+    padding: 12px 14px;
+    border: 1px dashed var(--green-mid);
+    border-radius: 12px;
+    background: #eef5e6;
+}
+
+.negociacao__contato p {
+    margin: 0 0 6px;
+}
+
+.negociacao__contato ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.negociacao__contato a {
+    color: var(--green-deep);
+}
+
+/* Formulário de contraproposta */
+.negociacao__contra label {
+    display: block;
+    margin: 14px 0 4px;
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+}
+
+.negociacao__contra input[type="number"],
+.negociacao__contra textarea {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px 12px;
+    border: 1px solid #ccc7b0;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 0.95rem;
+    background: #fff;
+}
+
+.negociacao__contra > .btn-negociacao {
+    margin-top: 18px;
+}
+
+.negociacao__tipos {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    max-width: 360px;
+}
+
+.negociacao__tipos label {
+    margin: 0;
+    cursor: pointer;
+}
+
+.negociacao__tipos input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.negociacao__tipos span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px;
+    border: 2px solid var(--ink);
+    border-radius: 100px;
+    background: #fff;
+    font-weight: 600;
+    color: var(--ink);
+}
+
+.negociacao__tipos input:checked + span {
+    background: var(--pink);
+    box-shadow: 3px 3px 0 var(--ink);
+}
+
+.negociacao__tipos input:focus-visible + span {
+    outline: 3px solid #a94b64;
+    outline-offset: 2px;
+}
+
+.negociacao__secao .negociacao__rotulo {
+    margin-top: 16px;
+}
+
+.negociacao__escolhidos li {
+    padding: 5px 12px;
+    border-radius: 999px;
+    background: var(--pink);
+    border: 1px solid var(--pink-deep);
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.negociacao__escolhidos li.is-vazio {
+    background: transparent;
+    border-style: dashed;
+    border-color: #ccc7b0;
+    font-weight: 400;
+    color: #756b63;
+}
+
+/* Modal com os livros do interessado */
+#modalLivrosTroca {
+    background: rgba(30, 20, 20, 0.35);
+}
+
+.modal-perfil.modal-livros-troca {
+    max-width: 480px;
+}
+
+.modal-perfil.modal-livros-troca h2 {
+    color: #a94b64;
+    font-family: var(--font-comic);
+    font-weight: normal;
+    letter-spacing: 1px;
+}
+
+.negociacao__opcoes {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 14px 0 18px;
+    max-height: 50vh;
+    overflow-y: auto;
+}
+
+.modal-perfil .negociacao__opcao {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 0;
+    padding: 8px 10px;
+    border: 1px solid #ccc7b0;
+    border-radius: 10px;
+    background: #fff;
+    cursor: pointer;
+}
+
+.negociacao__opcao:has(input:checked) {
+    border-color: #a94b64;
+    background: #fcecef;
+}
+
+.modal-perfil .negociacao__opcao input {
+    width: 18px;
+    height: 18px;
+    flex: none;
+    accent-color: #a94b64;
+}
+
+.negociacao__opcao img {
+    width: 38px;
+    height: 54px;
+    object-fit: cover;
+    border-radius: 4px;
+    flex: none;
+}
+
+/* Histórico */
+.negociacao__historico ol {
+    margin: 0;
+    padding: 0 0 0 18px;
+    border-left: 2px dashed var(--pink-deep);
+    list-style: none;
+}
+
+.negociacao__historico li {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 0 0 14px 4px;
+}
+
+.negociacao__historico li::before {
+    content: '';
+    position: absolute;
+    left: -26px;
+    top: 4px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 2px solid var(--ink);
+    background: var(--white);
+}
+
+.negociacao__historico li.is-atual::before {
+    background: var(--pink-deep);
+}
+
+.negociacao__historico small {
+    color: #756b63;
+    font-style: italic;
+}
+
+@media (max-width: 640px) {
+    .propostas__item,
+    .propostas__lista--enviadas .propostas__item {
+        grid-template-columns: minmax(0, 1fr) auto;
+    }
+
+    .propostas__lista--enviadas .propostas__capa--mini {
+        display: none;
+    }
+
+    .propostas__item-oferta {
+        grid-column: 1 / -1;
+        grid-row: 2;
+        white-space: normal;
+    }
+
+    .negociacao__acoes .btn-negociacao,
+    .negociacao__acoes form {
+        flex: 1 1 auto;
+    }
+
+    .negociacao__acoes form .btn-negociacao {
+        width: 100%;
+    }
+}

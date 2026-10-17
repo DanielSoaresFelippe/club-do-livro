@@ -217,18 +217,33 @@ class Chat extends BaseController
         return $this->response->setStatusCode(500)->setJSON(['erro' => 'Erro ao salvar mensagem']);
     }
 
-    // public function deletarMensagem(int $id_mensagem)
-    // {
-    //     $usuarioLogado = session()->get('usuario_id');
+public function deletarMensagem(int $id_mensagem)
+    {
+        try {
+            $usuarioLogado = session()->get('usuario_id');
+            if (!$usuarioLogado) {
+                return $this->response->setJSON(['sucesso' => false, 'erro' => 'Sessão expirada']);
+            }
 
-    //     $db = \Config\Database::connect();
-    //     $mensagem = $db->table('mensagens')->where('id_mensagem', $id_mensagem)->get()->getRowArray();
+            $db = \Config\Database::connect();
+            
+            $mensagem = $db->table('mensagens')->where('id', $id_mensagem)->get()->getRowArray();
 
-    //     if ($mensagem && (int)$mensagem['id_remetente'] === (int)$usuarioLogado) {
-    //         $db->table('mensagens')->where('id_mensagem', $id_mensagem)->delete();
-    //         return $this->response->setJSON(['sucesso' => true]);
-    //     }
+            if (!$mensagem) {
+                return $this->response->setJSON(['sucesso' => false, 'erro' => 'Mensagem não encontrada na base de dados']);
+            }
 
-    //     return $this->response->setJSON(['sucesso' => false, 'erro' => 'Não autorizado'], 403);
-    // }
+            $remetenteId = $mensagem['remetente_id'] ?? $mensagem['id_remetente'] ?? null;
+
+            if ((int)$remetenteId === (int)$usuarioLogado) {
+                $db->table('mensagens')->where('id', $id_mensagem)->delete();
+                return $this->response->setJSON(['sucesso' => true]);
+            }
+
+            return $this->response->setJSON(['sucesso' => false, 'erro' => 'Não autorizado']);
+
+        } catch (\Exception $e) {
+            return $this->response->setJSON(['sucesso' => false, 'erro' => $e->getMessage()]);
+        }
+    }
 }

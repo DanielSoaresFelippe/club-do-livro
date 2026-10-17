@@ -45,10 +45,11 @@
 
         <div class="lista-conversas">
             <?php if (!empty($conversas)): ?>
-                <?php foreach ($conversas as$c): ?>
+                <?php foreach ($conversas as $c): ?>
+                
                 <a href="<?= base_url('chat/' . $c['id_conversa']) ?>" 
-                class="item-conversa <?= (isset($idConversaSelecionada) && $c['id_conversa'] == $idConversaSelecionada) ? 'ativo' : '' ?>"
-                onclick="event.preventDefault(); abrirConversa(<?= $c['id_outro_usuario'] ?>, '<?= esc($c['nome_outro_usuario']) ?>', '<?= esc($c['foto_perfil']) ?>', <?= $c['id_conversa'] ?>);">
+                   class="item-conversa <?= (isset($idConversaSelecionada) && $c['id_conversa'] == $idConversaSelecionada) ? 'ativo' : '' ?>"
+                   onclick="event.preventDefault(); selecionarConversa(this); abrirConversa(<?= $c['id_outro_usuario'] ?>, '<?= esc($c['nome_outro_usuario']) ?>', '<?= esc($c['foto_perfil']) ?>', <?= $c['id_conversa'] ?>);">
                     
                     <div class="avatar">
                         <?php if (!empty($c['foto_perfil']) && $c['foto_perfil'] !== 'default.png'): ?>
@@ -63,6 +64,7 @@
                         <p><small>Livro: <?= esc($c['livro_titulo']) ?></small></p>
                     </div>
                 </a>
+                
                 <?php endforeach; ?>
             <?php else: ?>
                 <p style="padding: 20px; text-align: center; color: #667781; font-size: 14px;">Nenhuma conversa iniciada.</p>
@@ -116,13 +118,20 @@
         socket.emit('registrar_usuario', MEU_ID);
     });
 
+    function selecionarConversa(elemento) {
+        document.querySelectorAll('.item-conversa').forEach(el => {
+            el.classList.remove('ativo');
+        });
+        elemento.classList.add('ativo');
+    }
+
     socket.on('receber_mensagem', (dados) => {
         if (dados.id_conversa == ID_CONVERSA_ATUAL) {
             adicionarMensagemNaTela({
-                id_mensagem: dados.id_mensagem,
-                id_remetente: dados.remetente_id,
-                texto: dados.conteudo,
-                hora: dados.criado_em
+                id_mensagem: dados.id_mensagem || dados.id || dados.mensagem_id,
+                id_remetente: dados.remetente_id || dados.id_remetente,
+                texto: dados.conteudo || dados.texto,
+                hora: dados.criado_em || dados.data_envio
             });
         }
     });
@@ -203,12 +212,13 @@
                 if (data.mensagens && data.mensagens.length > 0) {
                     data.mensagens.forEach(msg => {
                         adicionarMensagemNaTela({
-                            id_mensagem: msg.id_mensagem,
+                            id_mensagem: msg.id_mensagem || msg.id,
                             id_remetente: msg.id_remetente || msg.remetente_id,
                             texto: msg.texto || msg.conteudo,
                             hora: msg.data_envio || msg.criado_em
                         });
                     });
+                
                 } else {
                     containerMensagens.innerHTML = '<p id="mensagem-vazia" style="text-align:center; color:#888; padding:20px;">Nenhuma mensagem ainda. Diga oi!</p>';
                 }
@@ -223,12 +233,17 @@
 
     function adicionarMensagemNaTela(msg) {
         const mensagensDiv = document.getElementById('mensagens');
+
+        const avisoVazio = document.getElementById('mensagem-vazia');
+        if (avisoVazio) {
+            avisoVazio.remove();
+        }
         
         const ehMinha = (msg.id_remetente == MEU_ID);
         
         const div = document.createElement('div');
         div.className = `mensagem ${ehMinha ? 'minha-mensagem' : 'mensagem-outro'}`;
-        div.id = `msg-${msg.id_mensagem}`; 
+        div.id = `msg-${msg.id_mensagem}`;
         
         let horaFormatada = 'Agora';
         if (msg.hora) {
@@ -245,47 +260,56 @@
             <span class="hora-msg">${horaFormatada}</span>
         `;
         
-        // if (ehMinha && msg.id_mensagem) {
-        //     html += `
-        //         <button type="button" class="btn-deletar-msg" onclick="deletarMensagem(${msg.id_mensagem})" title="Apagar mensagem">
-        //             🗑️
-        //         </button>
-        //     `;
-        // }
+        if (ehMinha && msg.id_mensagem) {
+            html += `
+                <button type="button" class="btn-deletar-msg" onclick="deletarMensagem(${msg.id_mensagem})" title="Apagar mensagem">
+                    🗑️
+                </button>
+            `;
+        }
         
         div.innerHTML = html;
         mensagensDiv.appendChild(div);
         mensagensDiv.scrollTop = mensagensDiv.scrollHeight;
     }
 
-    // function deletarMensagem(idMensagem) {
-    //     if (!confirm('Deseja realmente apagar esta mensagem?')) return;
+    function deletarMensagem(idMensagem) {
+        if (!confirm('Deseja realmente apagar esta mensagem?')) return;
 
-    //     fetch(`<?= base_url('chat/deletar-mensagem') ?>/${idMensagem}`, {
-    //         method: 'POST',
-    //         headers: {
-    //             'X-Requested-With': 'XMLHttpRequest'
-    //         }
-    //     })
-    //     .then(res => res.json())
-    //     .then(data => {
-    //         if (data.sucesso) {
-    //             socket.emit('deletar_mensagem', {
-    //                 id_mensagem: idMensagem,
-    //                 id_conversa: ID_CONVERSA_ATUAL
-    //             });
-    //         } else {
-    //             alert('Erro ao apagar mensagem.');
-    //         }
-    //     });
-    // }
+        fetch(`<?= base_url('chat/deletarMensagem') ?>/${idMensagem}`, {
+            method: 'POST',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.sucesso) {
+                const el = document.getElementById(`msg-${idMensagem}`);
+                if (el) {
+                    el.remove();
+                    verificarSeFicouVazio();
+                }
 
-    // socket.on('mensagem_deletada', (data) => {
-    //     const el = document.getElementById(`msg-${data.id_mensagem}`);
-    //     if (el) {
-    //         el.remove();
-    //     }
-    // });
+                socket.emit('deletar_mensagem', {
+                    id_mensagem: idMensagem,
+                    destinatario_id: DESTINATARIO_ID_ATUAL
+                });
+            } else {
+                alert('Erro ao apagar mensagem.');
+            }
+        });
+    }
+
+    socket.on('mensagem_deletada', (data) => {        
+        const idParaApagar = data.id_mensagem || data.id;
+        
+        const el = document.getElementById(`msg-${idParaApagar}`);
+        if (el) {
+            el.remove();
+            verificarSeFicouVazio();
+        }
+    });
 
     const chatForm = document.getElementById('chat-form');
     const campoMensagem = document.getElementById('campo-mensagem');
@@ -321,14 +345,14 @@
                 }
 
                 adicionarMensagemNaTela({
-                    id_mensagem: data.mensagem.id_mensagem,
+                    id_mensagem: data.mensagem.id_mensagem || data.mensagem.id,
                     id_remetente: MEU_ID,
                     texto: conteudo,
                     hora: data.mensagem.criado_em
                 });
                 
                 socket.emit('enviar_mensagem', {
-                    id_mensagem: data.mensagem.id_mensagem,
+                    id_mensagem: data.mensagem.id_mensagem || data.mensagem.id,
                     id_conversa: ID_CONVERSA_ATUAL,
                     remetente_id: MEU_ID,
                     destinatario_id: DESTINATARIO_ID_ATUAL,
@@ -353,6 +377,15 @@
             alert('Erro de conexão ao enviar mensagem.');
         });
     });
+
+    function verificarSeFicouVazio() {
+        const mensagensDiv = document.getElementById('mensagens');
+        if (mensagensDiv.querySelectorAll('.mensagem').length === 0) {
+            if (!document.getElementById('mensagem-vazia')) {
+                mensagensDiv.innerHTML = '<p id="mensagem-vazia" style="text-align:center; color:#888; padding:20px;">Nenhuma mensagem ainda. Diga oi!</p>';
+            }
+        }
+    }
 </script>
 
 </body>

@@ -10,7 +10,7 @@ $routes->get('chat', 'Chat::index');
 $routes->get('chat/(:num)', 'Chat::index/$1');
 $routes->get('chat/carregarConversa/(:num)', 'Chat::carregarConversa/$1');
 $routes->post('chat/enviarMensagem', 'Chat::enviarMensagem');
-// $routes->post('chat/deletarMensagem/(:num)', 'Chat::deletarMensagem/$1');
+$routes->post('chat/deletarMensagem/(:num)', 'Chat::deletarMensagem/$1');
 
 $routes->post('/logout', 'Home::logout');
 

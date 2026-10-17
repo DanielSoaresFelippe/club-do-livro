@@ -357,3 +357,59 @@
         padding: 10px 30px;
     }
 }
+/* Endereço do livro (CEP + ViaCEP) */
+.form-livro__endereco {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.2fr) minmax(0, 1.2fr) minmax(0, 0.45fr);
+    column-gap: 28px;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: none;
+}
+
+.form-livro__endereco legend {
+    padding: 0;
+    margin-bottom: 8px;
+    font-family: 'Kalam', cursive;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #cf4a3d;
+}
+
+.form-livro__cep-status,
+.form-livro__dica {
+    margin-top: 4px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.78rem;
+    color: #69755f;
+}
+
+.form-livro__cep-status {
+    color: #a94b64;
+}
+
+.form-livro__cep-status:empty {
+    display: none;
+}
+
+@media (max-width: 800px) {
+    .form-livro__endereco {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        column-gap: 22px;
+    }
+}
+
+@media (max-width: 520px) {
+    .form-livro__endereco {
+        grid-template-columns: minmax(0, 1fr) 80px;
+        column-gap: 14px;
+    }
+
+    /* CEP e bairro em linha cheia; cidade + UF lado a lado (o legend é o 1º filho) */
+    .form-livro__endereco .form-livro__grupo:nth-child(2),
+    .form-livro__endereco .form-livro__grupo:nth-child(3) {
+        grid-column: 1 / -1;
+    }
+}

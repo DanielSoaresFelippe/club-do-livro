@@ -75,6 +75,8 @@ sort($generosDisponiveis);
             </p>
         <?php endif; ?>
 
+        <?php $ehDono = $ehDono ?? ((int) session()->get('usuario_id') === (int) $livro['id_usuario']); ?>
+
         <div class="detalhes-hero">
             <div class="detalhes-hero-texto">
                 <h1><?= esc($livro['titulo']) ?></h1>
@@ -101,7 +103,8 @@ sort($generosDisponiveis);
 
                 <?php if (!empty($livro['localizacao'])): ?>
                     <p class="detalhes-localizacao">
-                        <i class="fa-solid fa-location-dot"></i> <?= esc($livro['localizacao']) ?>
+                        <i class="fa-solid fa-location-dot"></i>
+                        <?= esc(implode(', ', array_filter([$livro['bairro'] ?? null, $livro['localizacao']]))) ?>
                     </p>
                 <?php endif; ?>
 
@@ -121,9 +124,30 @@ sort($generosDisponiveis);
                         <?php endif; ?>
                     </div>
 
-                    <div style="display: flex; gap: 15px; align-items: center; flex-wrap: wrap;">
-                        <?php if ((int) session()->get('usuario_id') !== (int) $livro['id_usuario']): ?>
-                            
+                    <div class="detalhes-proposta">
+                        <?php if ($ehDono): ?>
+                            <button type="button" class="detalhes-btn-proposta" disabled aria-disabled="true">
+                                <i class="fa-solid fa-lock"></i> Fazer proposta
+                            </button>
+                            <p class="detalhes-proposta__aviso">Este livro é seu — você não pode fazer propostas nele.</p>
+                        <?php elseif (!empty($propostaPendente)): ?>
+                            <button type="button" class="detalhes-btn-proposta" disabled aria-disabled="true">
+                                <i class="fa-solid fa-hourglass-half"></i> Proposta enviada
+                            </button>
+                            <p class="detalhes-proposta__aviso">Você já tem uma proposta pendente para este livro. Aguarde a resposta do dono.</p>
+                        <?php elseif (!session()->get('usuario_id')): ?>
+                            <a href="<?= site_url('livro/proposta/' . $livro['id_livro']) ?>" class="detalhes-btn-proposta">
+                                <i class="fa-solid fa-hand-holding-dollar"></i> Entrar para fazer proposta
+                            </a>
+                        <?php else: ?>
+                            <button type="button" class="detalhes-btn-proposta" id="btnFazerProposta">
+                                <i class="fa-solid fa-hand-holding-dollar"></i> Fazer proposta
+                            </button>
+                        <?php endif; ?>
+                    </div>
+
+                    <?php if (!$ehDono): ?>
+                        <div style="display: flex; gap: 15px; align-items: center; flex-wrap: wrap;">
                             <button type="button" class="blob-btn detalhes-btn-chat" id="btnConversarDono">
                                 <span class="blob-btn__text">Conversar com o dono</span>
                                 <span class="blob-btn__inner">
@@ -149,15 +173,14 @@ sort($generosDisponiveis);
                                     </span>
                                 </button>
                             </a>
-
-                        <?php endif; ?>
-                    </div>
+                        </div>
+                    <?php endif; ?>
                     
                     <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
                         <defs>
                             <filter id="goo">
                             <feGaussianBlur in="SourceGraphic" result="blur" stdDeviation="10"></feGaussianBlur>
-                            <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 21 -7" result="goo"></feColorMatrix>
+                            <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 0 21 -7" result="goo"></feColorMatrix>
                             <feBlend in2="goo" in="SourceGraphic" result="mix"></feBlend>
                             </filter>
                         </defs>
@@ -171,8 +194,8 @@ sort($generosDisponiveis);
                 <div class="detalhes-capa-fundo">
                     <?php foreach ($galeria as $i => $imagem): ?>
                         <img src="<?= esc($imagem) ?>" alt="<?= esc($livro['titulo']) ?>"
-                             class="detalhes-capa-img<?= $i === 0 ? ' is-ativa' : '' ?>"
-                             data-indice="<?= $i ?>">
+                            class="detalhes-capa-img<?= $i === 0 ? ' is-ativa' : '' ?>"
+                            data-indice="<?= $i ?>">
                     <?php endforeach; ?>
                 </div>
 
@@ -280,6 +303,10 @@ sort($generosDisponiveis);
 <?= $this->include('partials/modal_perfil_script') ?>
 
 <?= $this->include('partials/modal_contato') ?>
+
+<?php if (session()->get('usuario_id') && empty($ehDono) && empty($propostaPendente) && $livro['status'] === 'disponivel'): ?>
+    <?= $this->include('partials/modal_proposta') ?>
+<?php endif; ?>
 
 <?= $this->include('partials/footer') ?>
 

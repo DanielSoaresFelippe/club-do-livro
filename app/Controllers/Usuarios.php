@@ -273,11 +273,7 @@ class Usuarios extends BaseController
             return $this->response->setStatusCode(404)->setJSON(['success' => false]);
         }
 
-        unset($usuario['senha']);
-        $usuario['foto_url'] = $usuario['foto_perfil']
-            ? base_url('uploads/perfil/' . $usuario['foto_perfil'])
-            : null;
-
+        // A Entity Usuario já inclui foto_url (com avatar padrão) e omite a senha no JSON
         return $this->response->setJSON(['success' => true, 'usuario' => $usuario]);
     }
  
@@ -372,10 +368,6 @@ class Usuarios extends BaseController
         ]);
 
         $usuarioAtualizado = $usuarioModel->find($id);
-        unset($usuarioAtualizado['senha']);
-        $usuarioAtualizado['foto_url'] = $usuarioAtualizado['foto_perfil']
-            ? base_url('uploads/perfil/' . $usuarioAtualizado['foto_perfil'])
-            : null;
 
         return $this->response->setJSON([
             'success' => true,

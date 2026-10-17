@@ -894,3 +894,228 @@
         gap: 14px;
     }
 }
+/* ---------- Proposta / lance ---------- */
+.detalhes-proposta {
+    margin-bottom: 18px;
+}
+
+.detalhes-btn-proposta {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: #000000;
+    background: #f5c9d6;
+    border: 2px solid #000000;
+    border-radius: 100px;
+    padding: 14px 28px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    text-decoration: none;
+    box-shadow: 5px 5px 0 #000000;
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+
+.detalhes-btn-proposta:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 7px 7px 0 #000000;
+}
+
+.detalhes-btn-proposta:active {
+    transform: translate(3px, 3px);
+    box-shadow: 2px 2px 0 #000000;
+}
+
+.detalhes-btn-proposta:disabled {
+    background: #ece7dc;
+    color: #756b63;
+    border-style: dashed;
+    border-color: #756b63;
+    box-shadow: none;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.detalhes-proposta__aviso {
+    margin: 10px 0 0;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.85rem;
+    color: #756b63 !important;
+}
+
+.modal-proposta {
+    max-width: 500px;
+    font-family: 'Poppins', sans-serif;
+}
+
+#modalProposta {
+    background: rgba(30, 20, 20, 0.35);
+}
+
+.modal-perfil.modal-proposta h2 {
+    color: #a94b64;
+}
+
+.modal-proposta__intro {
+    margin: 4px 0 16px;
+    font-size: 0.9rem;
+    color: #3d3a35;
+}
+
+.modal-proposta__erros {
+    margin: 0 0 14px;
+    padding: 10px 14px 10px 30px;
+    background: #fcecef;
+    border: 1px dashed #e894a8;
+    border-radius: 9px;
+    color: #a94b64;
+    font-size: 0.85rem;
+}
+
+.modal-proposta__tipos {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 4px;
+}
+
+.modal-proposta__tipo {
+    margin: 0 !important;
+    cursor: pointer;
+}
+
+.modal-proposta__tipo input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.modal-proposta__tipo span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 11px;
+    border: 2px solid #000000;
+    border-radius: 100px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #000000;
+    background: #ffffff;
+    transition: background 0.15s ease, box-shadow 0.15s ease;
+}
+
+.modal-proposta__tipo input:checked + span {
+    background: #f5c9d6;
+    box-shadow: 3px 3px 0 #000000;
+}
+
+.modal-proposta__tipo input:focus-visible + span {
+    outline: 3px solid #a94b64;
+    outline-offset: 2px;
+}
+
+.modal-proposta__rotulo {
+    margin: 14px 0 6px;
+    font-size: 13px;
+    color: #3d3a35;
+}
+
+.modal-proposta__livros {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-height: 240px;
+    overflow-y: auto;
+}
+
+.modal-proposta__livro {
+    display: flex !important;
+    align-items: center;
+    gap: 12px;
+    margin: 0 !important;
+    padding: 8px 10px;
+    border: 1px solid #ccc7b0;
+    border-radius: 10px;
+    background: #ffffff;
+    cursor: pointer;
+    transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.modal-proposta__livro:has(input:checked) {
+    border-color: #a94b64;
+    background: #fcecef;
+}
+
+.modal-proposta .modal-proposta__livro input {
+    width: 18px;
+    height: 18px;
+    flex: none;
+    accent-color: #a94b64;
+}
+
+.modal-proposta__livro img {
+    width: 38px;
+    height: 54px;
+    object-fit: cover;
+    border-radius: 4px;
+    flex: none;
+}
+
+.modal-proposta__livro span {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    font-size: 0.85rem;
+    color: #000000;
+}
+
+.modal-proposta__livro small {
+    color: #756b63;
+}
+
+.modal-proposta__vazio {
+    margin: 0;
+    padding: 12px;
+    border: 1px dashed #ccc7b0;
+    border-radius: 10px;
+    font-size: 0.85rem;
+    color: #756b63;
+}
+
+.modal-proposta__vazio a {
+    color: #a94b64;
+    font-weight: 600;
+}
+
+.modal-proposta textarea {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px 12px;
+    border: 1px solid #ccc7b0;
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 14px;
+    resize: vertical;
+}
+
+.modal-proposta__enviar {
+    width: 100%;
+    margin-top: 18px;
+    padding: 13px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: #000000;
+    background: #f5c9d6;
+    border: 2px solid #000000;
+    border-radius: 100px;
+    box-shadow: 4px 4px 0 #000000;
+    cursor: pointer;
+}
+
+.modal-proposta__enviar:active {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0 #000000;
+}

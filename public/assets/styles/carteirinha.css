@@ -2093,3 +2093,60 @@ footer {
         gap: 14px;
     }
 }
+/* Catálogo: livro do próprio usuário (não pode receber proposta dele) */
+.livro-card__dono {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    align-self: flex-start;
+    margin-top: 4px;
+    padding: 2px 10px;
+    border: 1px dashed #756b63;
+    border-radius: 999px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: #756b63;
+}
+
+/* Menu: contador de propostas aguardando resposta */
+.nav-propostas {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.nav-propostas__contador {
+    min-width: 18px;
+    height: 18px;
+    padding: 0 5px;
+    box-sizing: border-box;
+    border-radius: 999px;
+    background: #a94b64;
+    color: #fffdf8;
+    font-size: 0.68rem;
+    font-weight: 700;
+    line-height: 18px;
+    text-align: center;
+}
+
+/* Catálogo: busca dinâmica */
+.livro-grid__total {
+    margin: 0 0 14px;
+    font-size: 0.9rem;
+    color: #756b63;
+}
+
+.livro-grid {
+    transition: opacity 0.15s ease;
+}
+
+.livro-grid.is-carregando {
+    opacity: 0.45;
+    pointer-events: none;
+}
+
+.livro-filtros__limpar[hidden] {
+    display: none;
+}

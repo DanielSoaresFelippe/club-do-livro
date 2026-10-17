@@ -44,7 +44,7 @@
                 <img class="certificado-bg" src="<?= base_url('assets/img/certificadoLeitor.png') ?>" alt="Certificado de amante de livros">
 
                 <div class="foto-perfil-usuario">
-                    <img src="<?= $usuario['foto_perfil'] ? base_url('uploads/perfil/' . $usuario['foto_perfil']) : base_url('assets/img/avatar-padrao.png') ?>" alt="Foto de <?= esc($usuario['nome']) ?>">
+                    <img src="<?= esc($usuario->foto_url, 'attr') ?>" alt="Foto de <?= esc($usuario->nome) ?>">
                 </div>
 
                 <div class="campo-nome"><?= esc($usuario['nome']) ?></div>

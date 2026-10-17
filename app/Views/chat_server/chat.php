@@ -14,6 +14,7 @@
     <meta charset="UTF-8">
     <title>Chat - Clube do Livro</title>
     <link rel="stylesheet" href="<?= assetUrl('assets/styles/chat.css') ?>">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
 </head>
 
@@ -32,10 +33,12 @@
                     <?php endif; ?>
                 </div>
                 <div class="my-name">
-                    <?= esc($usuarioLogado['nome'] ?? 'Meu Perfil') ?> <span style="font-size:11px; color:#00a884; display:block;">(Você)</span>
+                    <?= esc($usuarioLogado['nome'] ?? 'Meu Perfil') ?> <span style="font-size:11px; color:#f076af; display:block;">(Você)</span>
                 </div>
             </div>
-            <a href="<?= base_url('/') ?>" class="btn-voltar">Voltar</a>
+            <a href="<?= base_url('/') ?>" class="btn-voltar" title="Voltar para a página inicial" aria-label="Voltar">
+                <i class="fa-solid fa-chevron-left"></i>
+            </a>
         </div>
 
         <div class="sidebar-header">Conversas</div>

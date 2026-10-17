@@ -121,20 +121,38 @@ sort($generosDisponiveis);
                         <?php endif; ?>
                     </div>
 
-                    <?php if ((int) session()->get('usuario_id') !== (int) $livro['id_usuario']): ?>
-                        <button type="button" class="blob-btn detalhes-btn-chat" id="btnConversarDono">
-                            <span class="blob-btn__text">Conversar com o dono</span>
-
-                            <span class="blob-btn__inner">
-                                <span class="blob-btn__blobs">
-                                    <span class="blob-btn__blob"></span>
-                                    <span class="blob-btn__blob"></span>
-                                    <span class="blob-btn__blob"></span>
-                                    <span class="blob-btn__blob"></span>
+                    <div style="display: flex; gap: 15px; align-items: center; flex-wrap: wrap;">
+                        <?php if ((int) session()->get('usuario_id') !== (int) $livro['id_usuario']): ?>
+                            
+                            <button type="button" class="blob-btn detalhes-btn-chat" id="btnConversarDono">
+                                <span class="blob-btn__text">Conversar com o dono</span>
+                                <span class="blob-btn__inner">
+                                    <span class="blob-btn__blobs">
+                                        <span class="blob-btn__blob"></span>
+                                        <span class="blob-btn__blob"></span>
+                                        <span class="blob-btn__blob"></span>
+                                        <span class="blob-btn__blob"></span>
+                                    </span>
                                 </span>
-                            </span>
-                        </button>
-                    <?php endif; ?>
+                            </button>
+
+                            <a href="<?= base_url('chat/iniciar/' . $livro['id_livro']) ?>" style="text-decoration: none; display: inline-block;">
+                                <button type="button" class="blob-btn detalhes-btn-chat" id="btnIniciarChat">
+                                    <span class="blob-btn__text">Conversar por chat</span>
+                                    <span class="blob-btn__inner">
+                                        <span class="blob-btn__blobs">
+                                            <span class="blob-btn__blob"></span>
+                                            <span class="blob-btn__blob"></span>
+                                            <span class="blob-btn__blob"></span>
+                                            <span class="blob-btn__blob"></span>
+                                        </span>
+                                    </span>
+                                </button>
+                            </a>
+
+                        <?php endif; ?>
+                    </div>
+                    
                     <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
                         <defs>
                             <filter id="goo">

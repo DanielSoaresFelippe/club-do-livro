@@ -1,0 +1,252 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+    background: #d1d7db;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.app-wrapper {
+    width: 90vw;
+    max-width: 1300px;
+    height: 90vh;
+    background: #fff;
+    border-radius: 8px;
+    display: flex;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.sidebar {
+    width: 35%;
+    background: #ffffff;
+    border-right: 1px solid #e9edef;
+    display: flex;
+    flex-direction: column;
+}
+
+.my-profile-header {
+    background: #f0f2f5;
+    padding: 12px 15px;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #e9edef;
+    justify-content: space-between;
+}
+
+.my-profile-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.my-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #00a884;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    overflow: hidden;
+}
+
+.my-name {
+    font-size: 15px;
+    font-weight: 600;
+    color: #111b21;
+}
+
+.btn-voltar {
+    font-size: 13px;
+    color: #00a884;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.btn-voltar:hover {
+    text-decoration: underline;
+}
+
+.sidebar-header {
+    background: #f0f2f5;
+    padding: 10px 15px;
+    font-weight: bold;
+    color: #54656f;
+    border-bottom: 1px solid #e9edef;
+    font-size: 13px;
+    text-transform: uppercase;
+}
+
+.lista-conversas {
+    flex: 1;
+    overflow-y: auto;
+}
+
+.item-conversa {
+    display: flex;
+    align-items: center;
+    padding: 12px 15px;
+    border-bottom: 1px solid #f0f2f5;
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+    transition: 0.2s;
+}
+
+.item-conversa:hover,
+.item-conversa.ativo {
+    background: #f0f2f5;
+}
+
+.avatar {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background: #00a884;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    margin-right: 12px;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.info {
+    flex: 1;
+    overflow: hidden;
+}
+
+.info h4 {
+    font-size: 15px;
+    font-weight: 600;
+    color: #111b21;
+}
+
+.info p {
+    font-size: 13px;
+    color: #667781;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-top: 3px;
+}
+
+.chat-panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: #efeae2;
+}
+
+.chat-header {
+    background: #f0f2f5;
+    padding: 12px 20px;
+    border-bottom: 1px solid #e9edef;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.chat-messages {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.mensagem {
+    max-width: 65%;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 14px;
+    word-wrap: break-word;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+    position: relative;
+    padding-bottom: 15px;
+}
+
+.mensagem {
+    position: relative;
+}
+
+.btn-deletar-msg {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 11px;
+    opacity: 0.5;
+    margin-left: 8px;
+    transition: opacity 0.2s;
+}
+
+.btn-deletar-msg:hover {
+    opacity: 1;
+}
+
+.minha-mensagem {
+    align-self: flex-end;
+    background: #d9fdd3;
+}
+
+.mensagem-outro {
+    align-self: flex-start;
+    background: #ffffff;
+}
+
+.hora-msg {
+    position: absolute;
+    right: 10px;
+    bottom: 2px;
+    font-size: 10px;
+    color: #667781;
+}
+
+.chat-input {
+    display: flex;
+    background: #f0f2f5;
+    padding: 10px 15px;
+    border-top: 1px solid #e9edef;
+}
+
+.chat-input input {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    outline: none;
+    font-size: 15px;
+}
+
+.chat-input button {
+    margin-left: 10px;
+    padding: 10px 20px;
+    border: none;
+    background: #00a884;
+    color: white;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.placeholder-chat {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    color: #667781;
+}

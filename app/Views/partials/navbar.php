@@ -38,6 +38,7 @@
                 <a href="<?= base_url('livro') ?>">Ver Catálogo</a>
                 <a href="javascript:void(0)" class="js-abrir-perfil">Alterar Perfil</a>
                 <a href="<?= base_url('usuarios/favoritos') ?>">Visualizar Favoritos</a>
+                <a href="<?= base_url('/chat') ?>">Chat</a>
             </div>
 
             <form action="<?= base_url('usuarios/logout') ?>" method="post" class="nav-actions">

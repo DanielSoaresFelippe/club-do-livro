@@ -58,8 +58,6 @@ sort($generosDisponiveis);
 
 <?= $this->include('partials/navbar') ?>
 
-<header class="header-detalhes-livro"></header>
-
 <section class="painel-pasta painel-ativo pagina-secundaria" data-painel="livro-detalhes">
     <div class="painel-conteudo">
 

@@ -51,6 +51,15 @@ body {
     line-height: 1.5;
 }
 
+.body-index {
+    font-family: var(--font-body);
+    color: var(--ink);
+    background: #fff;
+    width: 100%;
+    overflow-x: hidden;
+    line-height: 1.5;
+}
+
 img, svg { display: block; max-width: 100%; height: auto; }
 a { text-decoration: none; color: inherit; }
 button { font-family: inherit; cursor: pointer; border: none; background: none; }
@@ -1639,7 +1648,7 @@ footer {
 }
 
 .livro-hero {
-    min-height: 80vh;
+    min-height: 90vh;
     background-image: url('../img/fundoHeaderLivro.png');
     background-size: 100% 100%;
     background-position: center;
@@ -1761,11 +1770,6 @@ footer {
         left: 65%;
         top: 45%;
     }
-}
-
-.livro-hero__overlay {
-    max-width: 640px;
-    margin: 0 auto;
 }
 
 .livro-hero__overlay h1 {

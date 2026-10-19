@@ -63,8 +63,6 @@
             </select>
         </div>
 
-        <button type="submit">Filtrar</button>
-
         <a href="<?= base_url('livro') ?>" class="livro-filtros__limpar" id="limparFiltros"
             <?= ($generoSelecionado || $tipoSelecionado || $localizacaoSelecionada || $buscaSelecionada) ? '' : 'hidden' ?>>Limpar filtros</a>
     </form>

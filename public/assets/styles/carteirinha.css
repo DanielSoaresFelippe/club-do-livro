@@ -1811,6 +1811,15 @@ footer {
     box-shadow: 4px 4px 0 var(--ink);
 }
 
+.livro-filtros__form #busca {
+    padding: 10px 14px;
+    border: 2px solid var(--ink);
+    border-radius: 10px;
+    font-size: 1rem;
+    background: var(--white);
+    box-shadow: 4px 4px 0 var(--ink);
+}
+
 .livro-filtros__form .campo label {
     font-size: 1rem;
     font-weight: 600;

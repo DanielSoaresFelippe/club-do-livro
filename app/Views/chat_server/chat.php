@@ -84,9 +84,10 @@
                     <?php endif; ?>
                 </div>
                 <div class="info">
-                    <div class="contato-nome" id="header-nome" style="font-size: 15px; font-weight: 600; color: #111b21;">
+                    <div class="contato-nome" id="header-nome">
                         <?= esc($nomeOutroUsuario ?? 'Selecione uma conversa') ?>
                     </div>
+                    <div id="status-digitando" style="font-size: 12px; color: #f076af; display: none; font-style: italic;">a digitar...</div>
                 </div>
             </div>
 
@@ -162,6 +163,8 @@
     const containerMensagens = document.getElementById('mensagens');
 
     function abrirConversa(destinatarioId, nomeUsuario, fotoPerfil, idConversa = null) {
+        document.getElementById('status-digitando').style.display = 'none';
+
         DESTINATARIO_ID_ATUAL = destinatarioId;
         ID_CONVERSA_ATUAL = idConversa;
 
@@ -386,6 +389,51 @@
             }
         }
     }
+
+    let digitandoTimeout = null;
+    let estaDigitando = false;
+
+    document.addEventListener('input', (e) => {
+        if (e.target && e.target.id === 'campo-mensagem') {
+            if (!DESTINATARIO_ID_ATUAL) return;
+
+            if (!estaDigitando) {
+                estaDigitando = true;
+                socket.emit('digitando', {
+                    destinatario_id: DESTINATARIO_ID_ATUAL,
+                    remetente_id: MEU_ID
+                });
+            }
+
+            clearTimeout(digitandoTimeout);
+
+            digitandoTimeout = setTimeout(() => {
+                estaDigitando = false;
+                socket.emit('parou_de_digitar', {
+                    destinatario_id: DESTINATARIO_ID_ATUAL,
+                    remetente_id: MEU_ID
+                });
+            }, 500);
+        }
+    });
+
+    socket.on('exibir_digitando', (data) => {
+        if (data.remetente_id == DESTINATARIO_ID_ATUAL) {
+            const statusEl = document.getElementById('status-digitando');
+            if (statusEl) {
+                statusEl.style.display = 'inline-block';
+            }
+        }
+    });
+
+    socket.on('remover_digitando', (data) => {
+        if (data.remetente_id == DESTINATARIO_ID_ATUAL) {
+            const statusEl = document.getElementById('status-digitando');
+            if (statusEl) {
+                statusEl.style.display = 'none';
+            }
+        }
+    });
 </script>
 
 </body>

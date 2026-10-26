@@ -120,6 +120,15 @@ class Chat extends BaseController
                 ->findAll();
         }
 
+        $encrypter = \Config\Services::encrypter();
+            foreach ($mensagens as &$msg) {
+                try {
+                    $msg['conteudo'] = $encrypter->decrypt(hex2bin($msg['conteudo']));
+                } catch (\Exception $e) {
+                    // Se for mensagem antiga sem criptografia não faz nada
+                }
+            }
+
         return $this->response->setJSON([
             'destinatario' => $destinatario,
             'id_conversa'  => $idConversa,
@@ -196,11 +205,15 @@ class Chat extends BaseController
             }
         }
 
+        $encrypter = \Config\Services::encrypter();
+        $conteudoOriginal = $conteudo;
+        $conteudoCriptografado = bin2hex($encrypter->encrypt($conteudo));
+
         $dados = [
             'id_conversa'     => $idConversa,
             'remetente_id'    => $meuId,
             'destinatario_id' => $destinatarioId,
-            'conteudo'        => $conteudo,
+            'conteudo'        => $conteudoCriptografado,
             'criado_em'       => date('Y-m-d H:i:s')
         ];
 
@@ -208,6 +221,8 @@ class Chat extends BaseController
 
         if ($idMensagem) {
             $dados['id'] = $idMensagem;
+            $dados['conteudo'] = $conteudoOriginal;
+
             return $this->response->setJSON([
                 'status'   => 'sucesso',
                 'mensagem' => $dados
@@ -217,33 +232,25 @@ class Chat extends BaseController
         return $this->response->setStatusCode(500)->setJSON(['erro' => 'Erro ao salvar mensagem']);
     }
 
-public function deletarMensagem(int $id_mensagem)
+    public function deletarMensagem(int $id_mensagem)
     {
-        try {
-            $usuarioLogado = session()->get('usuario_id');
-            if (!$usuarioLogado) {
-                return $this->response->setJSON(['sucesso' => false, 'erro' => 'Sessão expirada']);
-            }
-
-            $db = \Config\Database::connect();
-            
-            $mensagem = $db->table('mensagens')->where('id', $id_mensagem)->get()->getRowArray();
-
-            if (!$mensagem) {
-                return $this->response->setJSON(['sucesso' => false, 'erro' => 'Mensagem não encontrada na base de dados']);
-            }
-
-            $remetenteId = $mensagem['remetente_id'] ?? $mensagem['id_remetente'] ?? null;
-
-            if ((int)$remetenteId === (int)$usuarioLogado) {
-                $db->table('mensagens')->where('id', $id_mensagem)->delete();
-                return $this->response->setJSON(['sucesso' => true]);
-            }
-
-            return $this->response->setJSON(['sucesso' => false, 'erro' => 'Não autorizado']);
-
-        } catch (\Exception $e) {
-            return $this->response->setJSON(['sucesso' => false, 'erro' => $e->getMessage()]);
+        $usuarioLogado = $this->getUsuarioLogado();
+        if (!$usuarioLogado) {
+            return $this->response->setStatusCode(401)->setJSON(['sucesso' => false, 'erro' => 'Não autorizado']);
         }
+
+        $mensagem = $this->mensagemModel->find($id_mensagem);
+
+        if (!$mensagem) {
+            return $this->response->setStatusCode(404)->setJSON(['sucesso' => false, 'erro' => 'Mensagem não encontrada']);
+        }
+
+        if ((int)$mensagem['remetente_id'] !== (int)$usuarioLogado) {
+            return $this->response->setStatusCode(403)->setJSON(['sucesso' => false, 'erro' => 'Não autorizado']);
+        }
+
+        $this->mensagemModel->delete($id_mensagem);
+
+        return $this->response->setJSON(['sucesso' => true]);
     }
 }

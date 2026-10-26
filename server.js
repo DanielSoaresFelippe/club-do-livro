@@ -34,6 +34,22 @@ io.on('connection', (socket) => {
         }
     });
 
+    socket.on('digitando', (data) => {
+        if (data.destinatario_id) {
+            io.to(`usuario_${data.destinatario_id}`).emit('exibir_digitando', {
+                remetente_id: data.remetente_id
+            });
+        }
+    });
+
+    socket.on('parou_de_digitar', (data) => {
+        if (data.destinatario_id) {
+            io.to(`usuario_${data.destinatario_id}`).emit('remover_digitando', {
+                remetente_id: data.remetente_id
+            });
+        }
+    });
+
 });
 
 server.listen(3000, () => {

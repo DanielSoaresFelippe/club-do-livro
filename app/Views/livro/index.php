@@ -13,7 +13,11 @@
     <link rel="stylesheet" href="<?= assetUrl('assets/styles/carteirinha.css') ?>">
 </head>
 <body class="body-index">
+
 <section class="livro-hero">
+    <video class="livro-hero__video" autoplay muted playsinline>
+        <source src="<?= assetUrl('assets/img/hero-catalogo.mp4') ?>" type="video/mp4">
+    </video>
     <div class="livro-hero__overlay"></div>
 </section>
 

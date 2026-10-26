@@ -1648,10 +1648,9 @@ footer {
 }
 
 .livro-hero {
-    min-height: 90vh;
-    background-image: url('../img/fundoHeaderLivro.png');
-    background-size: 100% 100%;
-    background-position: center;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    min-height: auto; /* remove o min-height fixo */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1659,6 +1658,19 @@ footer {
     padding: 0 60px;
     position: relative;
     overflow: hidden;
+}
+
+.livro-hero__video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: fill; /* estica para caber exatamente */
+}
+
+.livro-hero__overlay {
+    position: relative;
+    z-index: 1;
 }
 
 /* .livro-hero__sticker {

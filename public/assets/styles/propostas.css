@@ -1,3 +1,19 @@
+body.pagina-propostas {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    min-height: 100dvh; 
+}
+
+body.pagina-propostas .propostas {
+    flex: 1 0 auto;
+}
+
+body.pagina-propostas .nuvem-divisor--footer,
+body.pagina-propostas footer {
+    flex-shrink: 0;
+}
+
 /* =========================================================
    Painel de negociação (Minhas propostas)
    Usa os tokens de carteirinha.css (--cream, --ink, --pink...)

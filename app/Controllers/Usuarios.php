@@ -81,8 +81,8 @@ class Usuarios extends BaseController
         $tipo = $this->request->getPost('tipo');
 
         $redirect = $tipo === 'colaborador'
-        ? base_url('livro/meus-livros')
-        : base_url('livro/');
+        ? base_url('usuarios/perfil')
+        : base_url('usuarios/perfil');
 
         return $this->response->setJSON([
             'success'  => true,
@@ -130,8 +130,8 @@ class Usuarios extends BaseController
         ]);
 
         $redirect = $usuario['tipo'] === 'colaborador'
-        ? base_url('livro/meus-livros')
-        : base_url('livro/');
+        ? base_url('usuarios/perfil')
+        : base_url('usuarios/perfil');
 
         return $this->response->setJSON([
             'sucess'   => true,
@@ -159,6 +159,7 @@ class Usuarios extends BaseController
                 'usuario_id' => $usuario['id_usuario'],
                 'chave' => hash('sha256', $token),
                 'statusRegistro' => 1,
+                'created_at' => date('Y-m-d H:i:s'),
             ]);
 
             $emailService = service('email');

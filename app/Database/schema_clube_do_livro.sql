@@ -88,15 +88,16 @@ CREATE TABLE conversas (
   CONSTRAINT fk_conversas_usuario_interessado  FOREIGN KEY (id_usuario_interessado) REFERENCES usuarios(id_usuario) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
+DROP TABLE IF EXISTS mensagens;
+
 CREATE TABLE mensagens (
-  id_mensagem   INT AUTO_INCREMENT PRIMARY KEY,
-  id_conversa   INT NOT NULL,
-  id_remetente  INT NOT NULL,
-  texto         TEXT NOT NULL,
-  lida          TINYINT(1) NOT NULL DEFAULT 0,
-  data_envio    DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  CONSTRAINT fk_mensagens_conversa  FOREIGN KEY (id_conversa)  REFERENCES conversas(id_conversa) ON DELETE CASCADE,
-  CONSTRAINT fk_mensagens_remetente FOREIGN KEY (id_remetente) REFERENCES usuarios(id_usuario)   ON DELETE CASCADE
+  id              INT AUTO_INCREMENT PRIMARY KEY,
+  id_conversa     INT DEFAULT NULL,
+  remetente_id    INT NOT NULL,
+  destinatario_id INT NOT NULL,
+  conteudo        TEXT COLLATE utf8mb4_unicode_ci NOT NULL,
+  criado_em       TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT fk_mensagens_conversa FOREIGN KEY (id_conversa) REFERENCES conversas(id_conversa) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
 CREATE TABLE historico_transacoes (

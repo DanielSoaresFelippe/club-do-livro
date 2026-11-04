@@ -1,5 +1,3 @@
-<?= $this->include('partials/navbar') ?>
-
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -11,15 +9,40 @@
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,500;1,9..144,600&family=Caveat:wght@500;600;700&family=Bangers&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
     <link rel="stylesheet" href="<?= assetUrl('assets/styles/carteirinha.css') ?>">
+    <link rel="stylesheet" href="<?= assetUrl('assets/styles/catalogo.css') ?>">
 </head>
 <body class="body-index">
 
-<section class="livro-hero">
-    <video class="livro-hero__video" autoplay muted playsinline>
-        <source src="<?= assetUrl('assets/img/hero-catalogo.mp4') ?>" type="video/mp4">
-    </video>
-    <div class="livro-hero__overlay"></div>
-</section>
+<?= $this->include('partials/navbar') ?>
+
+<div class="pagina-catalogo">
+
+<header class="catalogo-header">
+    <div class="catalogo-header__inner">
+        <span class="eyebrow catalogo-header__eyebrow">
+            a estante do clube 
+        </span>
+        <h1>Catálogo</h1>
+        <a href="#formFiltros" class="catalogo-header__cta">
+            Explorar a estante <i class="fa-solid fa-arrow-down"></i>
+        </a>
+    </div>
+
+    <div class="ribbon" aria-hidden="true">
+        <div class="ribbon-track">
+            <span>Venda</span><span>Troca</span><span>Leitura compartilhada</span><span>Livros com história</span><span>Novos leitores</span><span>Clube do Livro</span>
+            <span>Venda</span><span>Troca</span><span>Leitura compartilhada</span><span>Livros com história</span><span>Novos leitores</span><span>Clube do Livro</span>
+            <span>Venda</span><span>Troca</span><span>Leitura compartilhada</span><span>Livros com história</span><span>Novos leitores</span><span>Clube do Livro</span>
+            <span>Venda</span><span>Troca</span><span>Leitura compartilhada</span><span>Livros com história</span><span>Novos leitores</span><span>Clube do Livro</span>
+            <span>Venda</span><span>Troca</span><span>Leitura compartilhada</span><span>Livros com história</span><span>Novos leitores</span><span>Clube do Livro</span>
+            <span>Venda</span><span>Troca</span><span>Leitura compartilhada</span><span>Livros com história</span><span>Novos leitores</span><span>Clube do Livro</span>
+            <span>Venda</span><span>Troca</span><span>Leitura compartilhada</span><span>Livros com história</span><span>Novos leitores</span><span>Clube do Livro</span>
+            <span>Venda</span><span>Troca</span><span>Leitura compartilhada</span><span>Livros com história</span><span>Novos leitores</span><span>Clube do Livro</span>
+        </div>
+    </div>
+</header>
+
+<main class="catalogo-conteudo">
 
 <section class="livro-filtros">
     <form method="get" action="<?= base_url('livro') ?>" class="livro-filtros__form" id="formFiltros" role="search">
@@ -75,6 +98,15 @@
 <section class="livro-grid" id="gradeLivros" aria-live="polite" aria-busy="false">
     <?= $this->include('livro/_grade') ?>
 </section>
+
+</main>
+
+<?= $this->include('partials/footer') ?>
+
+</div>
+
+<?= $this->include('partials/modal_perfil') ?>
+<?= $this->include('partials/modal_perfil_script') ?>
 
 <script>
 /*
@@ -182,6 +214,3 @@
 </script>
 </body>
 </html>
-<?= $this->include('partials/footer') ?>
-<?= $this->include('partials/modal_perfil') ?>
-<?= $this->include('partials/modal_perfil_script') ?>

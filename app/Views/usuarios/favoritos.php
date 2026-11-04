@@ -37,7 +37,7 @@ if (!isset($favoritos)) {
     <img src="<?= base_url('assets/img/pato.png') ?>" alt="" class="sticker-decor sticker-pato">
 
     <div class="header-favoritos-conteudo">
-        <h2><i class="fa-solid fa-heart"></i>Favoritos<i class="fa-solid fa-heart"></i></h2>
+        <h2>Favoritos</h2>
         <p>Seus livros favoritos na sua cestinha, esperando para serem lidos.</p>
     </div>
 </header>
